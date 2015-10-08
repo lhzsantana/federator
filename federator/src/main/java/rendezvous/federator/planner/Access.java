@@ -1,7 +1,10 @@
 package rendezvous.federator.planner;
 
+import rendezvous.federator.canonicalModel.DataElement;
+
 public class Access {
-	
+
+	private DataElement dataElement;
 	private String database;
 	private String query;
 	
@@ -16,6 +19,12 @@ public class Access {
 	}
 	public void setQuery(String query) {
 		this.query = query;
+	}
+	public DataElement getDataElement() {
+		return dataElement;
+	}
+	public void setDataElement(DataElement dataElement) {
+		this.dataElement = dataElement;
 	}
 
 }

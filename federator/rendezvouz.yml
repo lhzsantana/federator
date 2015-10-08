@@ -1,15 +1,5 @@
+name: luiz
+
 entities:
-- user: MongoDB, Cassandra
-    -username:
-        -dataElement:
-            name       : username
-            model      : MongoDB
-            repository : localhost
-            collection : User
-            type       : string
-        -dataElement:
-            name       : username
-            model      : Cassandra
-            repository : localhost
-            keystore   : User
-            type       : text
+  user: [ 'mongodb' ]
+  comment: [ 'mongodb', 'cassandra' ]

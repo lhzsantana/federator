@@ -4,34 +4,36 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
+import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
 import rendezvous.federator.api.Response;
 import rendezvous.federator.api.endpoint.Endpoint;
 import rendezvous.federator.canonicalModel.DataElement;
-import rendezvous.federator.canonicalModel.DataSource;
 import rendezvous.federator.planner.Plan;
 
 public class InsertEndpoint extends Endpoint {
+	
+	final static Logger logger = Logger.getLogger(InsertEndpoint.class);
 
-	public Response insert(String string) throws JsonParseException, JsonMappingException, IOException, ParseException {
+	public Response insert(String string) throws IOException, ParseException {
 		
 		super.isJSONValid(string);
 		
 		//find the data elements
-		Set<DataElement> dataElements = super.extractDataElements(string);
+		Set<String> elements = super.extractElements(string);
 		
-		//find the datasources related to the insert
-		Set<DataSource> dataSources = new HashSet<DataSource>();
+		//find the dataElments related with each new insertion
+		Set<DataElement> dataElements = new HashSet<DataElement>();
 		
-		for(DataElement dataElement:dataElements){
-			dataSources.add(dictionary.getDataSource(dataElement));
+		for(String element:elements){
+			logger.debug("The element " + element + " will be inserted");
+			
+			dataElements.add(dictionary.getDataElement(element));
 		}
 		
 		//create plan
-		Plan plan = super.planner.createPlan(dataElements, dataSources);
+		Plan plan = super.planner.createPlan(dataElements);
 		
 		//execute plan
 		return super.executor.execute(plan);
