@@ -39,4 +39,7 @@ public class Cassandra extends DatasourceColumn {
 		session = cluster.connect("demo");
 	}
 
+	public void insertString(String collection, String field, String value){
+		
+	}
 }

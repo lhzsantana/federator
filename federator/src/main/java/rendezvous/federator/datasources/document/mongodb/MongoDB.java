@@ -13,8 +13,8 @@ import rendezvous.federator.datasources.document.DatasourceDocument;
 public class MongoDB extends DatasourceDocument {
 
 	private final static Logger logger = Logger.getLogger(MongoDB.class);
-	private MongoClient mongoClient = new MongoClient();
-	private DB db;
+	private static MongoClient mongoClient = new MongoClient();
+	private static DB db;
 
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -38,6 +38,8 @@ public class MongoDB extends DatasourceDocument {
 
 	    DBObject document=new BasicDBObject();
 	    document.put(field, value);
+	    
+	    logger.debug(document);
 	    
 		table.insert(document);
 	}
