@@ -2,11 +2,13 @@ package rendezvous.federator.canonicalModel;
 
 import java.util.Set;
 
+import rendezvous.federator.datasources.Datasource;
+
 public class DataElement {
 
 	private String name;
 	private DataType type;
-	private Set<DataSource> dataSources;
+	private Set<Datasource> datasources;
 
 	public String getName() {
 		return name;
@@ -24,12 +26,12 @@ public class DataElement {
 		this.type = type;
 	}
 
-	public Set<DataSource> getDataSources() {
-		return dataSources;
+	public Set<Datasource> getDatasources() {
+		return this.datasources;
 	}
 
-	public void setDataSources(Set<DataSource> dataSources) {
-		this.dataSources = dataSources;
+	public void setDataSources(Set<Datasource> datasources) {
+		this.datasources = datasources;
 	}
 
 }

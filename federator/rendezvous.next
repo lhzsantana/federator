@@ -1,0 +1,6 @@
+
+entities:
+  user:
+  	name: 
+  		type: string
+  		sources : [ 'cassandra', 'mongodb' ] 

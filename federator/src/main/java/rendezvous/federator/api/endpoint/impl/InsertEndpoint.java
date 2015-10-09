@@ -10,13 +10,14 @@ import org.json.simple.parser.ParseException;
 import rendezvous.federator.api.Response;
 import rendezvous.federator.api.endpoint.Endpoint;
 import rendezvous.federator.canonicalModel.DataElement;
+import rendezvous.federator.planner.Action;
 import rendezvous.federator.planner.Plan;
 
 public class InsertEndpoint extends Endpoint {
 	
 	final static Logger logger = Logger.getLogger(InsertEndpoint.class);
 
-	public Response insert(String string) throws IOException, ParseException {
+	public Response insert(String string) throws Exception {
 		
 		super.isJSONValid(string);
 		
@@ -28,14 +29,14 @@ public class InsertEndpoint extends Endpoint {
 		
 		for(String element:elements){
 			logger.debug("The element " + element + " will be inserted");
-			
 			dataElements.add(dictionary.getDataElement(element));
 		}
-		
+				
 		//create plan
-		Plan plan = super.planner.createPlan(dataElements);
+		Plan plan = super.planner.createPlan(Action.INSERT, dataElements);
 		
 		//execute plan
+		super.executor.connectToSources(dictionary.getDatasources());;
 		return super.executor.execute(plan);
 	}
 

@@ -1,5 +1,28 @@
-name: luiz
-
+oldEntities:
+  user: [ 'cassandra', 'mongodb' ]
+mappings:
+  user: [ 'name', 'username','email' ]
+types:
+  user: 
+    name: [string]
+    username: [string]
+    email: [string]
+finalEntities:
+  user: 
+    name: 
+        type: string
+    username:
+        type: string
+    email:
+        type: string
 entities:
-  user: [ 'mongodb' ]
-  comment: [ 'mongodb', 'cassandra' ]
+  user: 
+    name: 
+        type: [string]
+        source: [ 'cassandra', 'mongodb']
+    username:
+        type: [string]
+        source: [ 'cassandra']
+    email:
+        type: [string]
+        source: [ 'cassandra', 'mongodb']

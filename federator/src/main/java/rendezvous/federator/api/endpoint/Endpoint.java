@@ -7,8 +7,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import rendezvous.federator.canonicalModel.DictionaryReader;
-import rendezvous.federator.canonicalModel.impl.DictionaryReaderImpl;
+import rendezvous.federator.dictionary.DictionaryReader;
+import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.impl.ExecutorImpl;
 import rendezvous.federator.planner.Planner;

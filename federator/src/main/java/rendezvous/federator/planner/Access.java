@@ -5,6 +5,7 @@ import rendezvous.federator.canonicalModel.DataElement;
 public class Access {
 
 	private DataElement dataElement;
+	private Action action;
 	private String database;
 	private String query;
 	
@@ -25,6 +26,12 @@ public class Access {
 	}
 	public void setDataElement(DataElement dataElement) {
 		this.dataElement = dataElement;
+	}
+	public Action getAction() {
+		return action;
+	}
+	public void setAction(Action action) {
+		this.action = action;
 	}
 
 }
