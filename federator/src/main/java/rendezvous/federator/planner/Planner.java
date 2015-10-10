@@ -6,6 +6,6 @@ import rendezvous.federator.canonicalModel.DataElement;
 
 public interface Planner {
 
-	public Plan createPlan(Action action, Set<DataElement> elements);
+	public Plan createPlan(Action action, Set<DataElement> dataElements);
 
 }

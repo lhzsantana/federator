@@ -13,7 +13,7 @@ import rendezvous.federator.datasources.document.DatasourceDocument;
 public class MongoDB extends DatasourceDocument {
 
 	private final static Logger logger = Logger.getLogger(MongoDB.class);
-	private static MongoClient mongoClient = new MongoClient();
+    MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
 	private static DB db;
 
 	public String getName() {
@@ -29,19 +29,27 @@ public class MongoDB extends DatasourceDocument {
 	public void connect() {
 		logger.debug("Connecting to " + getDatabaseType());
 
-		db = mongoClient.getDB("testdb");
+		if(db==null){
+			db = mongoClient.getDB("federator");
+		}
 	}
 	
-	public void insertString(String collection, String field, String value){
+	public void insertString(String collectionName, String field, String value){
 
-		DBCollection table = db.getCollection(collection);
+		DBCollection collection = db.getCollection(collectionName);
 
+		logger.debug(collectionName);
+		logger.debug(field);
+		logger.debug(value);
+		
 	    DBObject document=new BasicDBObject();
 	    document.put(field, value);
-	    
-	    logger.debug(document);
-	    
-		table.insert(document);
+
+		logger.debug(document.toString());
+		
+	    if(collection!=null){
+	    	collection.insert(document);
+	    }
 	}
 
 	@Override

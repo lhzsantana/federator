@@ -33,13 +33,20 @@ public abstract class Endpoint {
 		}
 	}
 
-	public Set<String> extractElements(String string) throws ParseException {
+	public JSONObject extractElements(String string) throws ParseException {
+
+		JSONObject jsonObject = (JSONObject) parser.parse(string);
+		
+		return jsonObject;
+	}
+
+	public Set<String> extractValues(String string) throws ParseException {
 
 		JSONObject jsonObject = (JSONObject) parser.parse(string);
 
 		Set<String> elements = new HashSet<String>();		
 		
-		for(Object object : jsonObject.keySet()){
+		for(Object object : jsonObject.values()){
 			elements.add(object.toString());
 		}
 

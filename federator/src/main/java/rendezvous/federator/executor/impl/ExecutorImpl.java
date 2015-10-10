@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import rendezvous.federator.api.Response;
 import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.executor.Executor;
+import rendezvous.federator.executor.TransactionManager;
 import rendezvous.federator.planner.Access;
 import rendezvous.federator.planner.Action;
 import rendezvous.federator.planner.Plan;
@@ -17,6 +18,7 @@ import rendezvous.federator.planner.Plan;
 public class ExecutorImpl implements Executor {
 
 	private final static Logger logger = Logger.getLogger(ExecutorImpl.class);
+	private final static TransactionManager transactionManager = new TransactionManagerInMemoryImpl();
 
 	public void connectToSources(Set<Datasource> datasources) throws JsonParseException, IOException {
 
@@ -35,15 +37,19 @@ public class ExecutorImpl implements Executor {
 				
 				Action action=access.getAction(); 
 				
-		        switch (action) {
-		            case INSERT:{		            	
-		                datasource.insertString("", access.getField(), access.getValue());
-		                break;
+				String transactionId = transactionManager.register(plan, access);
+
+            	transactionManager.start(transactionId);
+            	switch (action) {
+		            case INSERT:{
+		                datasource.insertString("federator", access.getField(), access.getValue());
+		            	break;
 		            }
 					default:{
 						break;
 					}
-		        }			
+		        }
+		        transactionManager.finish(transactionId);	
 			}
 		}
 		

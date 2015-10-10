@@ -6,6 +6,7 @@ import rendezvous.federator.datasources.Datasource;
 
 public class DataElement {
 
+	private String value;
 	private String name;
 	private DataType type;
 	private Set<Datasource> datasources;
@@ -32,6 +33,14 @@ public class DataElement {
 
 	public void setDataSources(Set<Datasource> datasources) {
 		this.datasources = datasources;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 }

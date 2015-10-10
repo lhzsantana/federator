@@ -1,11 +1,10 @@
 package rendezvous.federator.api.endpoint.impl;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.json.simple.parser.ParseException;
+import org.json.simple.JSONObject;
 
 import rendezvous.federator.api.Response;
 import rendezvous.federator.api.endpoint.Endpoint;
@@ -20,18 +19,20 @@ public class InsertEndpoint extends Endpoint {
 	public Response insert(String string) throws Exception {
 		
 		super.isJSONValid(string);
-		
+
 		//find the data elements
-		Set<String> elements = super.extractElements(string);
+		JSONObject elements = super.extractElements(string);
 		
 		//find the dataElments related with each new insertion
 		Set<DataElement> dataElements = new HashSet<DataElement>();
 		
-		for(String element:elements){
+		for(Object element : elements.keySet()){
 			logger.debug("The element " + element + " will be inserted");
-			dataElements.add(dictionary.getDataElement(element));
+			DataElement dataElement =dictionary.getDataElement(element.toString());
+			dataElement.setValue(elements.get(element).toString());			
+			dataElements.add(dataElement);
 		}
-				
+
 		//create plan
 		Plan plan = super.planner.createPlan(Action.INSERT, dataElements);
 		
