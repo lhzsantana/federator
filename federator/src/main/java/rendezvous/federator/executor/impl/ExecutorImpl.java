@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
@@ -27,7 +28,7 @@ public class ExecutorImpl implements Executor {
 		}
 	}
 
-	public Response execute(Plan plan) {
+	public Response execute(Plan plan) throws ParseException {
 
 		for (Access access : plan.getAccesses()) {
 
@@ -42,7 +43,7 @@ public class ExecutorImpl implements Executor {
             	transactionManager.start(transactionId);
             	switch (action) {
 		            case INSERT:{
-		                datasource.insertString("federator", access.getField(), access.getValue());
+		                datasource.insertString("federator", access.getValue());
 		            	break;
 		            }
 					default:{

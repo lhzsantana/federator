@@ -1,6 +1,9 @@
 package rendezvous.federator.datasources.document.mongodb;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -11,9 +14,9 @@ import com.mongodb.MongoClient;
 import rendezvous.federator.datasources.document.DatasourceDocument;
 
 public class MongoDB extends DatasourceDocument {
-
+	private JSONParser parser = new JSONParser();
 	private final static Logger logger = Logger.getLogger(MongoDB.class);
-    MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+    private MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
 	private static DB db;
 
 	public String getName() {
@@ -34,19 +37,17 @@ public class MongoDB extends DatasourceDocument {
 		}
 	}
 	
-	public void insertString(String collectionName, String field, String value){
+	public void insertString(String collectionName, String value) throws ParseException{
 
 		DBCollection collection = db.getCollection(collectionName);
-
-		logger.debug(collectionName);
-		logger.debug(field);
-		logger.debug(value);
+	    DBObject document=new BasicDBObject();	    
+		JSONObject jsonObject = (JSONObject) parser.parse(value);
 		
-	    DBObject document=new BasicDBObject();
-	    document.put(field, value);
-
-		logger.debug(document.toString());
-		
+		for(Object field:jsonObject.keySet()){
+		    document.put(field.toString(), jsonObject.get(field));
+		    logger.debug("Field:"+field+"");
+		}
+	
 	    if(collection!=null){
 	    	collection.insert(document);
 	    }

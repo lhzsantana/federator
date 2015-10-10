@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import rendezvous.federator.api.Response;
 import rendezvous.federator.api.endpoint.Endpoint;
@@ -15,7 +16,7 @@ import rendezvous.federator.planner.Plan;
 public class InsertEndpoint extends Endpoint {
 	
 	final static Logger logger = Logger.getLogger(InsertEndpoint.class);
-
+	
 	public Response insert(String string) throws Exception {
 		
 		super.isJSONValid(string);

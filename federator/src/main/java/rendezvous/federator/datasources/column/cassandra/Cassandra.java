@@ -1,6 +1,7 @@
 package rendezvous.federator.datasources.column.cassandra;
 
 import org.apache.log4j.Logger;
+import org.json.simple.parser.ParseException;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
@@ -40,6 +41,12 @@ public class Cassandra extends DatasourceColumn {
 	}
 
 	public void insertString(String collection, String field, String value){
+		
+	}
+
+	@Override
+	public void insertString(String collection, String value) throws ParseException {
+		// TODO Auto-generated method stub
 		
 	}
 }
