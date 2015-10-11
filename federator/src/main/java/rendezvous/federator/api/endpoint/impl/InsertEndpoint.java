@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import rendezvous.federator.api.Response;
 import rendezvous.federator.api.endpoint.Endpoint;
