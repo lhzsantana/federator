@@ -2,7 +2,6 @@ package rendezvous.federator.datasources.document.mongodb;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.mongodb.BasicDBObject;
@@ -14,7 +13,6 @@ import com.mongodb.MongoClient;
 import rendezvous.federator.datasources.document.DatasourceDocument;
 
 public class MongoDB extends DatasourceDocument {
-	private JSONParser parser = new JSONParser();
 	private final static Logger logger = Logger.getLogger(MongoDB.class);
     private MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
 	private static DB db;
@@ -37,7 +35,7 @@ public class MongoDB extends DatasourceDocument {
 		}
 	}
 	
-	public void insertString(String collectionName, String value) throws ParseException{
+	public void insertString(String collectionName, String entity, String value) throws ParseException {
 
 		DBCollection collection = db.getCollection(collectionName);
 	    DBObject document=new BasicDBObject();	    

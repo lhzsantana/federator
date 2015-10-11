@@ -14,6 +14,6 @@ public class InsertEndpointTest extends TestCase {
 
 		endpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
 		endpoint.insert("{\"user\":{\"username\":\"eduardo\",\"password\":\"eduardo\",\"address\":\"luiz\"}}");
-		
+		endpoint.insert("{\"user\":{\"name\":\"bruna\"}}");
 	}
 }

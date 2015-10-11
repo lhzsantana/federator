@@ -19,7 +19,7 @@ entities:
   user: 
     name: 
         type: [string]
-        source: [ 'mongodb']
+        source: [ 'mongodb','cassandra']
     username:
         type: [string]
         source: [ 'mongodb']
