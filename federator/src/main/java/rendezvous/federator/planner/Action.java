@@ -1,5 +1,5 @@
 package rendezvous.federator.planner;
 
 public enum Action {
-	INSERT, DELETE, UPDATE
+	INSERT, DELETE, UPDATE, GET
 }

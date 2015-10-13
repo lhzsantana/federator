@@ -1,25 +1,8 @@
-oldEntities:
-  user: [ 'mongodb' ]
-mappings:
-  user: [ 'name', 'username','email' ]
-types:
-  user: 
-    name: [string]
-    username: [string]
-    email: [string]
-finalEntities:
-  user: 
-    name: 
-        type: string
-    username:
-        type: string
-    email:
-        type: string
 entities:
   user: 
     name: 
         type: [string]
-        source: [ 'mongodb','cassandra']
+        source: [ 'mongodb']
     username:
         type: [string]
         source: [ 'mongodb']

@@ -1,10 +1,6 @@
 package rendezvous.federator.api.endpoint.impl;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
 
 import rendezvous.federator.api.GetResponse;
 import rendezvous.federator.api.endpoint.Endpoint;
@@ -16,29 +12,16 @@ public class GetEndpoint extends Endpoint {
 	
 	final static Logger logger = Logger.getLogger(GetEndpoint.class);
 	
-	public GetResponse get(String string) throws Exception {
+	public GetResponse get(String id) throws Exception {
+				
+		//find the dataSources that have to be queries to this call
+		 DataElement dataElement = dictionary.getEntityById(id);
 		
-		super.isJSONValid(string);
-
-		//find the data elements
-		JSONObject elements = super.extractElements(string);
-		
-		//find the dataElments related with each new insertion
-		Set<DataElement> dataElements = new HashSet<DataElement>();
-		
-		for(Object element : elements.keySet()){
-			logger.debug("The element " + element + " will be inserted");
-			DataElement dataElement =dictionary.getDataElement(element.toString());
-			dataElement.setValue(elements.get(element).toString());			
-			dataElements.add(dataElement);
-		}
-
-		//create plan
-		Plan plan = super.planner.createPlan(Action.INSERT, dataElements);
+		 //create plan
+		Plan plan = super.planner.createPlan(Action.GET, dataElement);
 		
 		//execute plan
-		super.executor.connectToSources(dictionary.getDatasources());;
+		super.executor.connectToSources(dictionary.getDatasources());
 		return super.executor.getExecute(plan);
 	}
-
 }

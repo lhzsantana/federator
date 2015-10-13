@@ -110,4 +110,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		return datasources;
 	}
 
+	public DataElement getEntityById(String id) throws Exception {
+		return null;
+	}
 }

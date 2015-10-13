@@ -1,9 +1,13 @@
 package rendezvous.federator.cache;
 
+import java.util.List;
+
+import rendezvous.federator.api.Hit;
+
 public interface Cache {
 
 	public void expiresAll();
-	public Value get(Key key);
-	public Value get(String key);
-	public Value get(Integer key);
+	public List<Hit>  get(Key key);
+	public List<Hit> get(String key);
+	public List<Hit> get(Integer key);
 }

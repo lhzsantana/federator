@@ -32,13 +32,14 @@ public class ExecutorImpl implements Executor {
 	public InsertResponse insertExecute(Plan plan) throws ParseException {
 		for (Access access : plan.getAccesses()) {
 			switch (access.getAction()) {
-				case INSERT: {
-					(new Thread(new ExecutorInsert(plan))).start();;
-					break;
-				}
-				default: {
-					break;
-				}
+			case INSERT: {
+				(new Thread(new ExecutorInsert(plan))).start();
+				;
+				break;
+			}
+			default: {
+				break;
+			}
 			}
 		}
 
@@ -47,13 +48,15 @@ public class ExecutorImpl implements Executor {
 
 	@Override
 	public GetResponse getExecute(Plan plan) throws ParseException {
-		
-		List<Hit> hits=new ArrayList<Hit>();
-		
-		for (Access access : plan.getAccesses()) {
-						
-			Hit hit = new Hit();
-			hit.setValue(cache.get("1").toString());
+
+		List<Hit> hits = cache.get("");
+
+		if (hits == null) {
+			for (Access access : plan.getAccesses()) {
+
+				Hit hit = new Hit();
+				hit.setValue(cache.get("1").toString());
+			}
 		}
 
 		GetResponse response = new GetResponse();

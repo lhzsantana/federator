@@ -39,19 +39,23 @@ public class Cassandra extends DatasourceColumn {
 		
 		logger.debug("Connecting to " + getDatabaseType());		
 		
-		cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
-		
-		try{
-			session = cluster.connect("federator");
-		}catch(Exception e){
-
-			session = cluster.connect();
-			String query = "CREATE KEYSPACE federator WITH replication "
-					   + "= {'class':'SimpleStrategy', 'replication_factor':1}; ";
+		if(cluster==null){
+			cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
 			
-			session.execute(query);
-			session = cluster.connect("federator");
-		}		
+			try{
+				session = cluster.connect("federator");
+			}catch(Exception e){
+	
+				session = cluster.connect();
+				String query = "CREATE KEYSPACE federator WITH replication "
+						   + "= {'class':'SimpleStrategy', 'replication_factor':1}; ";
+				
+				session.execute(query);
+				session = cluster.connect("federator");
+			}		
+		}else{
+			logger.debug("Already connected");
+		}
 	}
 	@Override
 	public void insertString(String table, String entity, String value) throws ParseException {

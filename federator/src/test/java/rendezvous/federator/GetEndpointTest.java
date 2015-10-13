@@ -4,10 +4,22 @@ import org.junit.Test;
 
 import rendezvous.federator.api.GetResponse;
 import rendezvous.federator.api.InsertResponse;
+import rendezvous.federator.api.Response;
+import rendezvous.federator.api.endpoint.impl.DeleteEndpoint;
 import rendezvous.federator.api.endpoint.impl.GetEndpoint;
 import rendezvous.federator.api.endpoint.impl.InsertEndpoint;
 
 public class GetEndpointTest {
+
+	@Test
+	public void testGetUnexistent() throws Exception {
+
+		DeleteEndpoint deleteEndpoint = new DeleteEndpoint();
+		Response response = deleteEndpoint.delete("12345");
+		
+		GetEndpoint getEndpoint = new GetEndpoint();
+		GetResponse getResponse = getEndpoint.get("12345");
+	}
 
 	@Test
 	public void test() throws Exception {

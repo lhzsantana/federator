@@ -15,4 +15,6 @@ public interface DictionaryReader {
 	public Dictionary refreshDictionary() throws JsonParseException, IOException, Exception;
 	
 	public Set<Datasource> getDatasources() throws JsonParseException, IOException, Exception;
+
+	public DataElement getEntityById(String id) throws Exception;
 }
