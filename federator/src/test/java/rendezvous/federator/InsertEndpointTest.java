@@ -13,8 +13,17 @@ public class InsertEndpointTest extends TestCase {
 
 		InsertEndpoint endpoint = new InsertEndpoint();
 
+		Response response = endpoint.insert("{\"user\":{\"name\":\"bruna\"}}");
 		Response response1 = endpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
-		Response response2 = endpoint.insert("{\"user\":{\"username\":\"eduardo\",\"password\":\"eduardo\",\"address\":\"luiz\"}}");
-		Response response3 = endpoint.insert("{\"user\":{\"name\":\"bruna\"}}");
 	}
+
+	@Test
+	public void simpleInsert() throws Exception {
+
+		InsertEndpoint endpoint = new InsertEndpoint();
+		//Response response1 = endpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		//Response response2 = endpoint.insert("{\"user\":{\"username\":\"eduardo\",\"password\":\"eduardo\",\"address\":\"luiz\"}}");
+		//Response response3 = endpoint.insert("{\"user\":{\"name\":\"bruna\"}}");
+	}
+
 }

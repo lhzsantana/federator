@@ -3,30 +3,21 @@ package rendezvous.federator.canonicalModel;
 import java.util.Set;
 
 import rendezvous.federator.datasources.Datasource;
+import rendezvous.federator.dictionary.Value;
 
 public class DataElement {
 
-	private String value;
-	private String name;
-	private DataType type;
+	private Set<Value> values;
+	private String entity;
 	private Set<Datasource> datasources;
 
-	public String getName() {
-		return name;
+	public String getEntity() {
+		return entity;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setEntity(String entity) {
+		this.entity = entity;
 	}
-
-	public DataType getType() {
-		return type;
-	}
-
-	public void setType(DataType type) {
-		this.type = type;
-	}
-
 	public Set<Datasource> getDatasources() {
 		return this.datasources;
 	}
@@ -35,12 +26,12 @@ public class DataElement {
 		this.datasources = datasources;
 	}
 
-	public String getValue() {
-		return value;
+	public Set<Value> getValues() {
+		return values;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setValues(Set<Value> values) {
+		this.values = values;
 	}
 
 }

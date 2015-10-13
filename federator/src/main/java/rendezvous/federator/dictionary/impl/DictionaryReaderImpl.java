@@ -44,8 +44,6 @@ public class DictionaryReaderImpl implements DictionaryReader {
 			logger.debug("The entity " + entity + " was found in the dictionary");
 
 			DataElement dataElement = new DataElement();
-			dataElement.setName(entity);
-			dataElement.setType(DataType.STRING);
 
 			Set<Datasource> datasources = new HashSet<Datasource>();
 

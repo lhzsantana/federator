@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import rendezvous.federator.canonicalModel.DataElement;
 import rendezvous.federator.datasources.Datasource;
+import rendezvous.federator.dictionary.Value;
 import rendezvous.federator.planner.Access;
 import rendezvous.federator.planner.Action;
 import rendezvous.federator.planner.Plan;
@@ -24,17 +25,17 @@ public class PlannerImpl implements Planner {
 		List<Access> accesses = new ArrayList<Access>();
 
 		for (Datasource dataSouce : dataElement.getDatasources()) {
-
-			logger.debug("Adding a new access");
-			Access access = new Access();
-			access.setDataElement(dataElement);
-			access.setDatabase(dataSouce.getName());
-			access.setQuery("def");
-			access.setAction(action);
-			access.setField(dataElement.getName());
-			access.setValue(dataElement.getValue());
-
-			accesses.add(access);
+			for (Value value : dataElement.getValues()) {
+				logger.debug("Adding a new access");
+				Access access = new Access();
+				access.setDataElement(dataElement);
+				access.setDatabase(dataSouce.getName());
+				access.setAction(action);
+				access.setField(value.getField());
+				access.setValue(value.getValue());
+	
+				accesses.add(access);
+			}
 		}
 
 		plan.setAccesses(accesses);
@@ -49,21 +50,20 @@ public class PlannerImpl implements Planner {
 		List<Access> accesses = new ArrayList<Access>();
 
 		for (DataElement dataElement : dataElements) {
-
 			for (Datasource dataSouce : dataElement.getDatasources()) {
+				for (Value value : dataElement.getValues()) {
+					
+					Access access = new Access();
+					access.setDataElement(dataElement);
+					access.setDatabase(dataSouce.getName());
+					access.setAction(action);
+					access.setField(value.getField());
+					access.setValue(value.getValue());
 
-				logger.debug("Adding a new access");
-				Access access = new Access();
-				access.setDataElement(dataElement);
-				access.setDatabase(dataSouce.getName());
-				access.setQuery("def");
-				access.setAction(action);
-				access.setField(dataElement.getName());
-				access.setValue(dataElement.getValue());
-
-				accesses.add(access);
+					logger.debug("Adding a new access"+access.toString());
+					accesses.add(access);
+				}
 			}
-
 		}
 
 		plan.setAccesses(accesses);

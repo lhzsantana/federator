@@ -2,6 +2,8 @@ package rendezvous.federator;
 
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 import rendezvous.federator.api.GetResponse;
 import rendezvous.federator.api.InsertResponse;
 import rendezvous.federator.api.Response;
@@ -17,8 +19,12 @@ public class GetEndpointTest {
 		DeleteEndpoint deleteEndpoint = new DeleteEndpoint();
 		Response response = deleteEndpoint.delete("12345");
 		
+		assertNotNull(response.getHits());
+		
 		GetEndpoint getEndpoint = new GetEndpoint();
 		GetResponse getResponse = getEndpoint.get("12345");
+
+		assertNotNull(getResponse.getHits());
 	}
 
 	@Test
@@ -29,6 +35,7 @@ public class GetEndpointTest {
 		
 		GetEndpoint getEndpoint = new GetEndpoint();
 		GetResponse response = getEndpoint.get(response1.getId());
-	}
-	
+
+		assertNotNull(response.getHits());
+	}	
 }

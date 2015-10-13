@@ -7,7 +7,6 @@ public class Access {
 	private DataElement dataElement;
 	private Action action;
 	private String database;
-	private String query;
 	private String field;
 	private String value;
 	
@@ -16,12 +15,6 @@ public class Access {
 	}
 	public void setDatabase(String database) {
 		this.database = database;
-	}
-	public String getQuery() {
-		return query;
-	}
-	public void setQuery(String query) {
-		this.query = query;
 	}
 	public DataElement getDataElement() {
 		return dataElement;

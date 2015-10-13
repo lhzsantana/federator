@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import rendezvous.federator.api.InsertResponse;
 import rendezvous.federator.api.endpoint.Endpoint;
 import rendezvous.federator.canonicalModel.DataElement;
+import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.planner.Action;
 import rendezvous.federator.planner.Plan;
 
@@ -20,16 +21,23 @@ public class InsertEndpoint extends Endpoint {
 		
 		super.isJSONValid(string);
 
-		//find the data elements
-		JSONObject elements = super.extractElements(string);
-		
+		//find the data entities
+		JSONObject entities = super.extractEntities(string);
+						
 		//find the dataElments related with each new insertion
 		Set<DataElement> dataElements = new HashSet<DataElement>();
 		
-		for(Object element : elements.keySet()){
-			logger.debug("The element " + element + " will be inserted");
-			DataElement dataElement =dictionary.getDataElement(element.toString());
-			dataElement.setValue(elements.get(element).toString());			
+		for(Object entityObject : entities.keySet()){
+			
+			String entity = entityObject.toString();
+			String values  = entities.get(entity).toString();
+			
+			logger.debug("The element " + entity + " will be inserted with the values " + values);
+			
+			DataElement dataElement =dictionary.getDataElement(entity);
+			dataElement.setValues(super.extractValues(values));
+			dataElement.setEntity(entity);
+			
 			dataElements.add(dataElement);
 		}
 
@@ -40,5 +48,4 @@ public class InsertEndpoint extends Endpoint {
 		super.executor.connectToSources(dictionary.getDatasources());;
 		return super.executor.insertExecute(plan);
 	}
-
 }

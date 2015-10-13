@@ -35,7 +35,7 @@ public class ExecutorInsert implements Runnable {
 
 				transactionManager.start(transactionId);
 				try {
-					datasource.insertString("federator", access.getDataElement().getName(), access.getValue());
+					datasource.insertString("federator", access.getDataElement().getEntity(), access.getValue());
 				} catch (ParseException e) {
 					logger.debug(e);
 				}
