@@ -1,5 +1,5 @@
 package rendezvous.federator.cache;
 
-public interface Key {
+public class Key {
 
 }

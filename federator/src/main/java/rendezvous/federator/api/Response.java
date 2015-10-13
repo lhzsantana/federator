@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface Response {
 
-	List<Hit> getHits();
+	public List<Hit> getHits();
+	public void setHits(List<Hit> hits);
 }

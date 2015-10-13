@@ -7,14 +7,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.gson.Gson;
+
 import rendezvous.federator.dictionary.DictionaryReader;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.impl.ExecutorImpl;
 import rendezvous.federator.planner.Planner;
 import rendezvous.federator.planner.impl.PlannerImpl;
-
-import com.google.gson.Gson;
 
 public abstract class Endpoint {
 

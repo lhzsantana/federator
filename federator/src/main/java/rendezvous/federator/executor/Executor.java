@@ -7,12 +7,14 @@ import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
-import rendezvous.federator.api.Response;
+import rendezvous.federator.api.GetResponse;
+import rendezvous.federator.api.InsertResponse;
 import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.planner.Plan;
 
 public interface Executor {
 
 	public void connectToSources(Set<Datasource> datasources) throws JsonParseException, IOException;
-	public Response execute(Plan plan) throws ParseException;
+	public InsertResponse insertExecute(Plan plan) throws ParseException;
+	public GetResponse getExecute(Plan plan) throws ParseException;
 }

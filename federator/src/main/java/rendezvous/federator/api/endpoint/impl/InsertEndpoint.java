@@ -6,7 +6,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
-import rendezvous.federator.api.Response;
+import rendezvous.federator.api.InsertResponse;
 import rendezvous.federator.api.endpoint.Endpoint;
 import rendezvous.federator.canonicalModel.DataElement;
 import rendezvous.federator.planner.Action;
@@ -16,7 +16,7 @@ public class InsertEndpoint extends Endpoint {
 	
 	final static Logger logger = Logger.getLogger(InsertEndpoint.class);
 	
-	public Response insert(String string) throws Exception {
+	public InsertResponse insert(String string) throws Exception {
 		
 		super.isJSONValid(string);
 
@@ -38,7 +38,7 @@ public class InsertEndpoint extends Endpoint {
 		
 		//execute plan
 		super.executor.connectToSources(dictionary.getDatasources());;
-		return super.executor.execute(plan);
+		return super.executor.insertExecute(plan);
 	}
 
 }
