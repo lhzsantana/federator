@@ -12,11 +12,11 @@ import rendezvous.federator.canonicalModel.DataElement;
 import rendezvous.federator.planner.Action;
 import rendezvous.federator.planner.Plan;
 
-public class InsertEndpoint extends Endpoint {
+public class GetEndpoint extends Endpoint {
 	
-	final static Logger logger = Logger.getLogger(InsertEndpoint.class);
+	final static Logger logger = Logger.getLogger(GetEndpoint.class);
 	
-	public Response insert(String string) throws Exception {
+	public Response get(String string) throws Exception {
 		
 		super.isJSONValid(string);
 

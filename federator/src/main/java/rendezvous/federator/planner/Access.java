@@ -8,6 +8,8 @@ public class Access {
 	private Action action;
 	private String database;
 	private String query;
+	private String field;
+	private String value;
 	
 	public String getDatabase() {
 		return database;
@@ -32,6 +34,18 @@ public class Access {
 	}
 	public void setAction(Action action) {
 		this.action = action;
+	}
+	public String getField() {
+		return field;
+	}
+	public void setField(String field) {
+		this.field = field;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 }

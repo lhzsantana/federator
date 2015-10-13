@@ -3,6 +3,8 @@ package rendezvous.federator.executor;
 import java.io.IOException;
 import java.util.Set;
 
+import org.json.simple.parser.ParseException;
+
 import com.fasterxml.jackson.core.JsonParseException;
 
 import rendezvous.federator.api.Response;
@@ -12,5 +14,5 @@ import rendezvous.federator.planner.Plan;
 public interface Executor {
 
 	public void connectToSources(Set<Datasource> datasources) throws JsonParseException, IOException;
-	public Response execute(Plan plan);
+	public Response execute(Plan plan) throws ParseException;
 }

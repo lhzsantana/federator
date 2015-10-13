@@ -1,5 +1,5 @@
 oldEntities:
-  user: [ 'cassandra', 'mongodb' ]
+  user: [ 'mongodb' ]
 mappings:
   user: [ 'name', 'username','email' ]
 types:
@@ -19,10 +19,10 @@ entities:
   user: 
     name: 
         type: [string]
-        source: [ 'cassandra', 'mongodb']
+        source: [ 'mongodb','cassandra']
     username:
         type: [string]
-        source: [ 'cassandra']
+        source: [ 'mongodb']
     email:
         type: [string]
-        source: [ 'cassandra', 'mongodb']
+        source: [ 'mongodb']

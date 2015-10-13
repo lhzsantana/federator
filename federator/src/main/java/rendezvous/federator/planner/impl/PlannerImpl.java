@@ -32,6 +32,8 @@ public class PlannerImpl implements Planner{
 				access.setDatabase(dataSouce.getName());
 				access.setQuery("def");
 				access.setAction(action);
+				access.setField(dataElement.getName());
+				access.setValue(dataElement.getValue());
 				
 				accesses.add(access);
 			}
