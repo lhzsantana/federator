@@ -1,5 +1,0 @@
-entities:
-  user: [ 'mongodb' ]
-%  comment: [ 'mongodb', 'cassandra' ]
-%  relation: [ 'titan' ]
-%  likes: ['redis']

@@ -1,0 +1,10 @@
+mongodb:
+  host:localhost
+  port:999
+  collection:collection
+  database:database
+cassandra:  
+  host:localhost
+  port:999
+  keystore:keystore
+  
