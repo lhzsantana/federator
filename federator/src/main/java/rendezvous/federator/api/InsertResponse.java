@@ -1,6 +1,14 @@
 package rendezvous.federator.api;
 
-public interface InsertResponse extends Response{
+public class InsertResponse extends Response{
 
-	public String getId();
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }

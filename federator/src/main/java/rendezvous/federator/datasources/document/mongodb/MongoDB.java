@@ -12,6 +12,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import rendezvous.federator.api.Hit;
 import rendezvous.federator.datasources.document.DatasourceDocument;
 import rendezvous.federator.dictionary.Value;
 
@@ -71,5 +72,11 @@ public class MongoDB extends DatasourceDocument {
 	@Override
 	public String getDatabaseType() {
 		return "MongoDB";
+	}
+
+	@Override
+	public Hit get(String string, String entity, Set<Value> values) {
+		logger.debug("Getting from MongoDB");
+		return null;
 	}
 }

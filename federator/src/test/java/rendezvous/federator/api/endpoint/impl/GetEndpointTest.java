@@ -1,26 +1,24 @@
 package rendezvous.federator.api.endpoint.impl;
 
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
-import static org.junit.Assert.*;
+import org.apache.log4j.Logger;
+import org.junit.Test;
 
 import rendezvous.federator.api.GetResponse;
 import rendezvous.federator.api.InsertResponse;
 import rendezvous.federator.api.Response;
-import rendezvous.federator.api.endpoint.impl.DeleteEndpoint;
-import rendezvous.federator.api.endpoint.impl.GetEndpoint;
-import rendezvous.federator.api.endpoint.impl.InsertEndpoint;
 
 public class GetEndpointTest {
+	
+	final static Logger logger = Logger.getLogger(GetEndpointTest.class);
 
 	@Test
 	public void testGetUnexistent() throws Exception {
 
 		DeleteEndpoint deleteEndpoint = new DeleteEndpoint();
 		Response response = deleteEndpoint.delete("12345");
-		
-		assertNotNull(response.getHits());
-		
+				
 		GetEndpoint getEndpoint = new GetEndpoint();
 		GetResponse getResponse = getEndpoint.get("12345");
 
@@ -31,11 +29,13 @@ public class GetEndpointTest {
 	public void test() throws Exception {
 
 		InsertEndpoint insertEndpoint = new InsertEndpoint();
-		InsertResponse response1 = insertEndpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		InsertResponse insertResponse = insertEndpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		
+		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
 		
 		GetEndpoint getEndpoint = new GetEndpoint();
-		GetResponse response = getEndpoint.get(response1.getId());
-
+		GetResponse response = getEndpoint.get(insertResponse.getId());
+		
 		assertNotNull(response.getHits());
 	}	
 }

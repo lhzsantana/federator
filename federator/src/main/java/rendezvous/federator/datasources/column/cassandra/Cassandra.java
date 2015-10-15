@@ -9,6 +9,7 @@ import org.json.simple.parser.ParseException;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
+import rendezvous.federator.api.Hit;
 import rendezvous.federator.datasources.column.DatasourceColumn;
 import rendezvous.federator.dictionary.Value;
 
@@ -85,5 +86,11 @@ public class Cassandra extends DatasourceColumn {
 		//session.execute(cql);
 		
 		return id;
+	}
+
+	@Override
+	public Hit get(String string, String entity, Set<Value> values) {
+		logger.debug("Getting from Cassandra");
+		return null;
 	}
 }

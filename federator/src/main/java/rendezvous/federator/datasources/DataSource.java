@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.json.simple.parser.ParseException;
 
+import rendezvous.federator.api.Hit;
 import rendezvous.federator.dictionary.Value;
 
 public abstract class DataSource {
@@ -34,4 +35,6 @@ public abstract class DataSource {
 			}			
 		}
 	}
+	
+	public abstract Hit get(String string, String entity, Set<Value> values);
 }

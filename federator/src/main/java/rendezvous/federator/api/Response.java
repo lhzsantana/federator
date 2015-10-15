@@ -1,9 +1,24 @@
 package rendezvous.federator.api;
 
-import java.util.List;
+import java.util.Date;
 
-public interface Response {
-
-	public List<Hit> getHits();
-	public void setHits(List<Hit> hits);
+public abstract class Response {
+	
+	public Response(){
+		status=Status.PROCESSING;
+		date=new Date();
+	}
+	
+	private Status status;
+	private Date date;
+	
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	public Date getDate() {
+		return date;
+	}
 }

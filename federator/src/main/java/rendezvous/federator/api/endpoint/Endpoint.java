@@ -20,8 +20,10 @@ import rendezvous.federator.dictionary.DictionaryReader;
 import rendezvous.federator.dictionary.Value;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 import rendezvous.federator.dictionary.impl.Field;
+import rendezvous.federator.entityManager.EntityManager;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.impl.ExecutorImpl;
+import rendezvous.federator.planner.Access;
 import rendezvous.federator.planner.Planner;
 import rendezvous.federator.planner.impl.PlannerImpl;
 
@@ -95,4 +97,5 @@ public abstract class Endpoint {
 	public String extractEntity(String json) throws ParseException {
 		return extractEntities(json).get(0);
 	}
+	
 }
