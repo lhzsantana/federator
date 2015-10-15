@@ -2,10 +2,30 @@ entities:
   user: 
     name: 
         type: [string]
-        source: [ 'mongodb']
+        source: ['mongodb','cassandra']
     username:
         type: [string]
-        source: [ 'mongodb']
+        source: ['mongodb']        
+    password: 
+        type: [string]
+        source: ['mongodb','cassandra']
+    address: 
+        type: [string]
+        source: ['mongodb','cassandra']
     email:
         type: [string]
-        source: [ 'mongodb']
+        source: ['mongodb']
+  post:
+    body: 
+        type: [string]
+        source: ['mongodb']
+    createdAt:
+        type: [date]
+        source: ['mongodb']
+  comment:
+    body: 
+        type: [string]
+        source: ['mongodb']
+    createdAt:
+        type: [date]
+        source: ['mongodb']

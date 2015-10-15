@@ -1,4 +1,4 @@
-package rendezvous.federator;
+package rendezvous.federator.api.endpoint.impl;
 
 import org.junit.Test;
 
@@ -12,9 +12,7 @@ public class InsertEndpointTest extends TestCase {
 	public void testInsert() throws Exception {
 
 		InsertEndpoint endpoint = new InsertEndpoint();
-
-		Response response = endpoint.insert("{\"user\":{\"name\":\"bruna\"}}");
-		Response response1 = endpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		Response response = endpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
 	}
 
 	@Test

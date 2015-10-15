@@ -1,8 +1,8 @@
 package rendezvous.federator.datasources.impl;
 
-import rendezvous.federator.datasources.Datasource;
+import rendezvous.federator.datasources.DataSource;
 
-public abstract class DatasourceImpl implements Datasource {
+public abstract class DatasourceImpl extends DataSource {
 
 	private String name;
 

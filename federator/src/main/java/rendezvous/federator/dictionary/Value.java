@@ -1,17 +1,24 @@
 package rendezvous.federator.dictionary;
 
+import java.util.Set;
+
 import rendezvous.federator.canonicalModel.DataType;
+import rendezvous.federator.datasources.DataSource;
 
 public class Value {
 	
+	private String entity;
 	private String field;
 	private String value;
 	private DataType type;
+	private Set<DataSource> sources;
 	
-	public Value(String field, String value, DataType type){
+	public Value(String entity, String field, String value, DataType type, Set<DataSource> sources){
+		this.setEntity(entity);
 		this.field=field;
 		this.value=value;
 		this.type=type;
+		this.sources=sources;
 	}
 	
 	public String getField() {
@@ -31,5 +38,21 @@ public class Value {
 	}
 	public void setType(DataType type) {
 		this.type = type;
+	}
+
+	public Set<DataSource> getSources() {
+		return sources;
+	}
+
+	public void setSources(Set<DataSource> sources) {
+		this.sources = sources;
+	}
+
+	public String getEntity() {
+		return entity;
+	}
+
+	public void setEntity(String entity) {
+		this.entity = entity;
 	}
 }

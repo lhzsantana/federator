@@ -1,13 +1,15 @@
 package rendezvous.federator.planner.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import rendezvous.federator.canonicalModel.DataElement;
-import rendezvous.federator.datasources.Datasource;
+import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.dictionary.Value;
 import rendezvous.federator.planner.Access;
 import rendezvous.federator.planner.Action;
@@ -17,58 +19,56 @@ import rendezvous.federator.planner.Planner;
 public class PlannerImpl implements Planner {
 
 	final static Logger logger = Logger.getLogger(PlannerImpl.class);
-
-	public Plan createPlan(Action action, DataElement dataElement) {
-
-		Plan plan = new Plan();
-
-		List<Access> accesses = new ArrayList<Access>();
-
-		for (Datasource dataSouce : dataElement.getDatasources()) {
-			for (Value value : dataElement.getValues()) {
-				logger.debug("Adding a new access");
-				Access access = new Access();
-				access.setDataElement(dataElement);
-				access.setDatabase(dataSouce.getName());
-				access.setAction(action);
-				access.setField(value.getField());
-				access.setValue(value.getValue());
 	
-				accesses.add(access);
-			}
-		}
-
-		plan.setAccesses(accesses);
-
-		return plan;
-	}
-
-	public Plan createPlan(Action action, Set<DataElement> dataElements) {
+	@Override
+	public Plan createPlan(Action action, String entity, Set<Value> values) {
 
 		Plan plan = new Plan();
 
 		List<Access> accesses = new ArrayList<Access>();
+		
+		Map<DataSource,Set<Value>> reorderedValues = reorder(values);
 
-		for (DataElement dataElement : dataElements) {
-			for (Datasource dataSouce : dataElement.getDatasources()) {
-				for (Value value : dataElement.getValues()) {
-					
-					Access access = new Access();
-					access.setDataElement(dataElement);
-					access.setDatabase(dataSouce.getName());
-					access.setAction(action);
-					access.setField(value.getField());
-					access.setValue(value.getValue());
+		for(DataSource dataSource:reorderedValues.keySet()){
 
-					logger.debug("Adding a new access"+access.toString());
-					accesses.add(access);
-				}
-			}
+			Access access = new Access();
+			access.setAction(action);
+			access.setValues(reorderedValues.get(dataSource));
+			access.setDataSource(dataSource);
+			access.setEntity(entity);
+						
+			accesses.add(access);
+			
+			logger.info("Added another access for the dataSource <"+dataSource.getName()+">");
 		}
 
 		plan.setAccesses(accesses);
 
 		return plan;
 	}
+	
+	private Map<DataSource,Set<Value>> reorder(Set<Value> values){
+		
+		Map<DataSource,Set<Value>> result = new HashMap<DataSource,Set<Value>>();
+		
+		for(Value value:values){
+			for(DataSource dataSource:value.getSources()){
+				Set<Value> valuesForDataSource = result.get(dataSource);
+				if(valuesForDataSource==null){
+					valuesForDataSource=new HashSet<Value>();
+				}
+				valuesForDataSource.add(value);
+				result.put(dataSource, valuesForDataSource);
+			}
+		}
+		
+		return result;
+	}
 
+	@Override
+	public Plan createPlan(Action get, String entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

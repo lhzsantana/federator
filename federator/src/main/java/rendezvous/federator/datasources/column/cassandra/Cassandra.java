@@ -1,21 +1,23 @@
 package rendezvous.federator.datasources.column.cassandra;
 
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
 import rendezvous.federator.datasources.column.DatasourceColumn;
+import rendezvous.federator.dictionary.Value;
 
 public class Cassandra extends DatasourceColumn {
 
 	private final static Logger logger = Logger.getLogger(Cassandra.class);
 	private static Cluster cluster;
 	private static Session session;
+	private String name;
 	
 	@Override
 	public String getDatabaseType() {
@@ -24,14 +26,12 @@ public class Cassandra extends DatasourceColumn {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-
+		this.name=name;
 	}
 
 	@Override
@@ -58,18 +58,17 @@ public class Cassandra extends DatasourceColumn {
 		}
 	}
 	@Override
-	public void insertString(String table, String entity, String value) throws ParseException {
+	public String insert(String table, String entity, Set<Value> values) throws ParseException {
 		
-		JSONObject jsonObject = (JSONObject) parser.parse(value);
-		
-		String fieldList = "id,";
-		String fieldListTable = "id uuid PRIMARY KEY,";
-		String valueList = UUID.randomUUID().toString()+",";
+		String id = UUID.randomUUID().toString();
+		String fieldList = "rendezvous_id,";
+		String fieldListTable = "rendezvous_id uuid PRIMARY KEY,";
+		String valueList = id+",";
 
-		for(Object field:jsonObject.keySet()){
-			fieldList+=field+",";
-			fieldListTable+=field+" text,";
-			valueList+= "'"+jsonObject.get(field)+"',";
+		for(Value value:values){
+			fieldList+=value.getField()+",";
+			fieldListTable+=value.getField()+" text,";
+			valueList+= "'"+value.getValue()+"',";
 		}
 		
 		try{
@@ -81,8 +80,10 @@ public class Cassandra extends DatasourceColumn {
 		String cql ="INSERT INTO "+table+"."+entity+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
 			      "VALUES ("+valueList.substring(0,valueList.length()-1)+")";
 
-		logger.debug(cql);
+		logger.info(cql);
 		
-		session.execute(cql);
+		//session.execute(cql);
+		
+		return id;
 	}
 }

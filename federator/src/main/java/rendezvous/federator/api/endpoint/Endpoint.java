@@ -1,6 +1,9 @@
 package rendezvous.federator.api.endpoint;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -8,13 +11,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.gson.Gson;
 
-import rendezvous.federator.api.endpoint.impl.InsertEndpoint;
 import rendezvous.federator.canonicalModel.DataType;
+import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.dictionary.DictionaryReader;
 import rendezvous.federator.dictionary.Value;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
+import rendezvous.federator.dictionary.impl.Field;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.impl.ExecutorImpl;
 import rendezvous.federator.planner.Planner;
@@ -46,30 +51,48 @@ public abstract class Endpoint {
 		return jsonObject;
 	}
 
-	public Set<Value> extractValues(String string) throws ParseException {
-		
-		JSONObject jsonObject = (JSONObject) parser.parse(string);
+	public Set<Value> extractValues(String string) throws JsonParseException, IOException, Exception {
 
 		Set<Value> values = new HashSet<Value>();
+		
+		JSONObject jsonEntity = (JSONObject) parser.parse(string);
 
-		for(Object object : jsonObject.keySet()){
-			
-			String rawField = object.toString();
-			String rawValue = jsonObject.get(object).toString();
+		for(Object entity : jsonEntity.keySet()){
 
-			logger.debug("The value "+rawValue+" was extracted for field "+rawField);
+			String rawEntity = entity.toString();
 			
-			Value value = new Value(rawField,rawValue,DataType.STRING);
-			values.add(value);			
+			JSONObject jsonField = (JSONObject) parser.parse(jsonEntity.get(entity).toString());
+			
+			for(Object field : jsonField.keySet()){
+			
+				String rawField = field.toString();
+				String rawValue = jsonField.get(field).toString();
+	
+				logger.debug("The value <"+rawValue+"> was extracted for field <"+rawField+"> of the entity <"+rawEntity+">");
+				
+				Set<DataSource> sources = dictionary.getDatasources(new Field(rawField,rawEntity));
+				
+				values.add(new Value(rawEntity,rawField,rawValue,DataType.STRING, sources));			
+			}
 		}
 		 
 		return values;
 	}
 
-	public JSONObject extractEntities(String string) throws ParseException {
+	public List<String> extractEntities(String json) throws ParseException {
 
-		JSONObject jsonObject = (JSONObject) parser.parse(string);
+		JSONObject jsonEntity = (JSONObject) parser.parse(json);
+
+		List<String> entities = new ArrayList<String>();
 		
-		return jsonObject;
+		for(Object entity : jsonEntity.keySet()){
+			entities.add(entity.toString());
+		}
+		
+		return entities;
+	}
+
+	public String extractEntity(String json) throws ParseException {
+		return extractEntities(json).get(0);
 	}
 }

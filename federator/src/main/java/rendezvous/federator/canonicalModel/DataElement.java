@@ -1,15 +1,16 @@
 package rendezvous.federator.canonicalModel;
 
+import java.util.Map;
 import java.util.Set;
 
-import rendezvous.federator.datasources.Datasource;
+import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.dictionary.Value;
 
 public class DataElement {
 
 	private Set<Value> values;
 	private String entity;
-	private Set<Datasource> datasources;
+	private Map<String, DataSource> datasources;
 
 	public String getEntity() {
 		return entity;
@@ -18,11 +19,12 @@ public class DataElement {
 	public void setEntity(String entity) {
 		this.entity = entity;
 	}
-	public Set<Datasource> getDatasources() {
+
+	public Map<String, DataSource> getDatasources() {
 		return this.datasources;
 	}
 
-	public void setDataSources(Set<Datasource> datasources) {
+	public void setDataSources(Map<String, DataSource> datasources) {
 		this.datasources = datasources;
 	}
 

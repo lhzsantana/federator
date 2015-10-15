@@ -38,14 +38,14 @@ public class TransactionManagerInMemoryImpl extends TransactionManager{
 	public void start(String id) {
 		Transaction transaction = transactions.get(id);
 		transaction.setState(TransactionStates.STARTED);
-		logger.debug("The transaction "+id+" started");
+		logger.info("The transaction "+id+" started");
 	}
 
 	@Override
 	public void finish(String id) {
 		Transaction transaction = transactions.get(id);
 		transaction.setState(TransactionStates.FINISHED);
-		logger.debug("The transaction "+id+" finished");	
+		logger.info("The transaction "+id+" finished");	
 	}
 
 	@Override

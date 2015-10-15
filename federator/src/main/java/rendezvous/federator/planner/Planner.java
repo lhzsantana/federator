@@ -2,12 +2,12 @@ package rendezvous.federator.planner;
 
 import java.util.Set;
 
-import rendezvous.federator.canonicalModel.DataElement;
+import rendezvous.federator.dictionary.Value;
 
 public interface Planner {
 
-	public Plan createPlan(Action action, Set<DataElement> dataElements);
-	
-	public Plan createPlan(Action action, DataElement dataElements);
+	public Plan createPlan(Action action, String entity, Set<Value> values);
+
+	public Plan createPlan(Action get, String entity);
 
 }

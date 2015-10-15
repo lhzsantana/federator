@@ -1,4 +1,4 @@
-package rendezvous.federator;
+package rendezvous.federator.api.endpoint.impl;
 
 import org.junit.Test;
 

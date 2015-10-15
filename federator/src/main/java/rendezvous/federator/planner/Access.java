@@ -1,44 +1,39 @@
 package rendezvous.federator.planner;
 
-import rendezvous.federator.canonicalModel.DataElement;
+import java.util.Set;
+
+import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.dictionary.Value;
 
 public class Access {
 
-	private DataElement dataElement;
+	private DataSource dataSource;
 	private Action action;
-	private String database;
-	private String field;
-	private String value;
+	private String entity;
+	private Set<Value> values;
 	
-	public String getDatabase() {
-		return database;
-	}
-	public void setDatabase(String database) {
-		this.database = database;
-	}
-	public DataElement getDataElement() {
-		return dataElement;
-	}
-	public void setDataElement(DataElement dataElement) {
-		this.dataElement = dataElement;
-	}
 	public Action getAction() {
 		return action;
 	}
 	public void setAction(Action action) {
 		this.action = action;
 	}
-	public String getField() {
-		return field;
+	public Set<Value> getValues() {
+		return values;
 	}
-	public void setField(String field) {
-		this.field = field;
+	public void setValues(Set<Value> values) {
+		this.values = values;
 	}
-	public String getValue() {
-		return value;
+	public DataSource getDataSource() {
+		return dataSource;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
-
+	public String getEntity() {
+		return entity;
+	}
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
 }

@@ -5,16 +5,12 @@ import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
-import rendezvous.federator.canonicalModel.DataElement;
-import rendezvous.federator.datasources.Datasource;
+import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.dictionary.impl.Field;
 
 public interface DictionaryReader {
 
-	public DataElement getDataElement(String element) throws JsonParseException, IOException, Exception;
+	public Set<DataSource> getDatasources(Field field) throws JsonParseException, IOException, Exception;
 
-	public Dictionary refreshDictionary() throws JsonParseException, IOException, Exception;
-	
-	public Set<Datasource> getDatasources() throws JsonParseException, IOException, Exception;
-
-	public DataElement getEntityById(String id) throws Exception;
+	public Set<Field> getFields() throws Exception;
 }
