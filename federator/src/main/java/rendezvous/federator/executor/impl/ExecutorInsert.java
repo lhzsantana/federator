@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import rendezvous.federator.dictionary.EntityManager;
 import rendezvous.federator.executor.TransactionManager;
 import rendezvous.federator.planner.Access;
+import rendezvous.federator.planner.Action;
 import rendezvous.federator.planner.Plan;
 
 public class ExecutorInsert implements Runnable {
@@ -28,8 +29,10 @@ public class ExecutorInsert implements Runnable {
 		
 		logger.debug("Executing a new plan");
 
-		String entityId = UUID.randomUUID().toString();		
-		List<String> entityIdList = new ArrayList<String>();
+		String entityId = UUID.randomUUID().toString();
+		
+		List<Access> accessed = new ArrayList<Access>();
+		
 		for (Access access : plan.getAccesses()) {
 
 			logger.debug("Executing a new access");
@@ -38,13 +41,17 @@ public class ExecutorInsert implements Runnable {
 
 			transactionManager.start(transactionId);
 			try {
-				entityIdList.add(access.getDataSource().insert("federator", access.getEntity(), access.getValues()));
+				access.getDataSource().insert("federator", access.getEntity(), access.getValues());
 			} catch (ParseException e) {
+		
 				logger.debug(e);
 			}
 			transactionManager.finish(transactionId);
+			
+			access.setAction(Action.GET);			
+			accessed.add(access);
 		}
 		
-		EntityManager.addEntity(entityId, entityIdList);
+		EntityManager.addEntity(entityId, accessed);
 	}
 }

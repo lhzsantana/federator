@@ -17,10 +17,12 @@ public class ExecutorImpl implements Executor {
 
 	private Cache cache = new BloomFilterImpl();
 
+	
 	public InsertResponse insertExecute(Plan plan) throws ParseException {
 
 		(new Thread(new ExecutorInsert(plan))).start();
 
+		
 		return null;
 	}
 
@@ -37,6 +39,7 @@ public class ExecutorImpl implements Executor {
 			}
 		}
 
+		
 		GetResponse response = new GetResponse();
 		response.setHits(hits);
 		
