@@ -2,8 +2,8 @@ package rendezvous.federator.executor;
 
 import java.util.Date;
 
-import rendezvous.federator.planner.Access;
-import rendezvous.federator.planner.Plan;
+import rendezvous.federator.core.Access;
+import rendezvous.federator.core.Plan;
 
 public class Transaction {
 

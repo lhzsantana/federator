@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import rendezvous.federator.api.GetResponse;
 import rendezvous.federator.api.endpoint.Endpoint;
+import rendezvous.federator.api.response.GetResponse;
+import rendezvous.federator.core.Access;
+import rendezvous.federator.core.Plan;
 import rendezvous.federator.entityManager.EntityManager;
-import rendezvous.federator.planner.Access;
-import rendezvous.federator.planner.Plan;
 
 public class GetEndpoint extends Endpoint {
 

@@ -9,9 +9,9 @@ import org.json.simple.parser.ParseException;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
-import rendezvous.federator.api.Hit;
+import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.column.DatasourceColumn;
-import rendezvous.federator.dictionary.Value;
 
 public class Cassandra extends DatasourceColumn {
 

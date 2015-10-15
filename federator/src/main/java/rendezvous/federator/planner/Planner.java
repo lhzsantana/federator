@@ -2,7 +2,9 @@ package rendezvous.federator.planner;
 
 import java.util.Set;
 
-import rendezvous.federator.dictionary.Value;
+import rendezvous.federator.core.Action;
+import rendezvous.federator.core.Plan;
+import rendezvous.federator.core.Value;
 
 public interface Planner {
 

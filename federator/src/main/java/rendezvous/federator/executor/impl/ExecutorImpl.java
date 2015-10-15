@@ -7,17 +7,17 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
-import rendezvous.federator.api.GetResponse;
-import rendezvous.federator.api.Hit;
-import rendezvous.federator.api.InsertResponse;
+import rendezvous.federator.api.response.GetResponse;
+import rendezvous.federator.api.response.InsertResponse;
 import rendezvous.federator.cache.Cache;
 import rendezvous.federator.cache.impl.BloomFilterImpl;
+import rendezvous.federator.core.Access;
+import rendezvous.federator.core.Action;
+import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Plan;
 import rendezvous.federator.entityManager.EntityManager;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.TransactionManager;
-import rendezvous.federator.planner.Access;
-import rendezvous.federator.planner.Action;
-import rendezvous.federator.planner.Plan;
 
 public class ExecutorImpl implements Executor {
 

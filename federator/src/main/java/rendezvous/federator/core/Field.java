@@ -1,4 +1,4 @@
-package rendezvous.federator.dictionary.impl;
+package rendezvous.federator.core;
 
 public class Field {
 

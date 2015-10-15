@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import rendezvous.federator.core.Field;
 import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.datasources.column.cassandra.Cassandra;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;

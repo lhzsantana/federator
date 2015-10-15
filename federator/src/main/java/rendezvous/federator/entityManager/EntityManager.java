@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import rendezvous.federator.planner.Access;
+import rendezvous.federator.core.Access;
 
 public class EntityManager {
 

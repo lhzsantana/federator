@@ -1,9 +1,8 @@
-package rendezvous.federator.planner;
+package rendezvous.federator.core;
 
 import java.util.Set;
 
 import rendezvous.federator.datasources.DataSource;
-import rendezvous.federator.dictionary.Value;
 
 public class Access {
 

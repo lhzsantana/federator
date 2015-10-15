@@ -6,15 +6,13 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import rendezvous.federator.api.Hit;
+import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.document.DatasourceDocument;
-import rendezvous.federator.dictionary.Value;
 
 public class MongoDB extends DatasourceDocument {
 	

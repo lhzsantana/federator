@@ -2,7 +2,7 @@ package rendezvous.federator.cache;
 
 import java.util.List;
 
-import rendezvous.federator.api.Hit;
+import rendezvous.federator.core.Hit;
 
 public interface Cache {
 

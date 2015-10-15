@@ -1,4 +1,4 @@
-package rendezvous.federator.api;
+package rendezvous.federator.api.response.impl;
 
 import java.util.Date;
 

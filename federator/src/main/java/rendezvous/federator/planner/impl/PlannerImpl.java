@@ -9,11 +9,11 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import rendezvous.federator.core.Access;
+import rendezvous.federator.core.Action;
+import rendezvous.federator.core.Plan;
+import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSource;
-import rendezvous.federator.dictionary.Value;
-import rendezvous.federator.planner.Access;
-import rendezvous.federator.planner.Action;
-import rendezvous.federator.planner.Plan;
 import rendezvous.federator.planner.Planner;
 
 public class PlannerImpl implements Planner {

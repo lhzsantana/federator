@@ -15,15 +15,13 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.google.gson.Gson;
 
 import rendezvous.federator.canonicalModel.DataType;
+import rendezvous.federator.core.Field;
+import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.dictionary.DictionaryReader;
-import rendezvous.federator.dictionary.Value;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
-import rendezvous.federator.dictionary.impl.Field;
-import rendezvous.federator.entityManager.EntityManager;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.impl.ExecutorImpl;
-import rendezvous.federator.planner.Access;
 import rendezvous.federator.planner.Planner;
 import rendezvous.federator.planner.impl.PlannerImpl;
 

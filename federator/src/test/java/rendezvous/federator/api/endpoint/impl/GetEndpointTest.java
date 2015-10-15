@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import rendezvous.federator.api.GetResponse;
-import rendezvous.federator.api.InsertResponse;
-import rendezvous.federator.api.Response;
+import rendezvous.federator.api.response.GetResponse;
+import rendezvous.federator.api.response.InsertResponse;
+import rendezvous.federator.api.response.impl.Response;
 
 public class GetEndpointTest {
 	

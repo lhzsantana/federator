@@ -2,8 +2,8 @@ package rendezvous.federator.api.endpoint.impl;
 
 import org.apache.log4j.Logger;
 
-import rendezvous.federator.api.Response;
 import rendezvous.federator.api.endpoint.Endpoint;
+import rendezvous.federator.api.response.impl.Response;
 import rendezvous.federator.entityManager.EntityManager;
 
 public class DeleteEndpoint extends Endpoint {

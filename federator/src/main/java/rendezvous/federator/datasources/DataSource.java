@@ -4,8 +4,8 @@ import java.util.Set;
 
 import org.json.simple.parser.ParseException;
 
-import rendezvous.federator.api.Hit;
-import rendezvous.federator.dictionary.Value;
+import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Value;
 
 public abstract class DataSource {
 

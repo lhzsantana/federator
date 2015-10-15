@@ -5,8 +5,8 @@ import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
+import rendezvous.federator.core.Field;
 import rendezvous.federator.datasources.DataSource;
-import rendezvous.federator.dictionary.impl.Field;
 
 public interface DictionaryReader {
 

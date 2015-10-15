@@ -1,4 +1,4 @@
-package rendezvous.federator.api;
+package rendezvous.federator.core;
 
 public class Hit {
 

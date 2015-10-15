@@ -1,4 +1,4 @@
-package rendezvous.federator.entityManager;
+package rendezvous.federator.core;
 
 public class Entity {
 

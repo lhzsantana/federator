@@ -1,4 +1,4 @@
-package rendezvous.federator.dictionary;
+package rendezvous.federator.core;
 
 import java.util.Set;
 

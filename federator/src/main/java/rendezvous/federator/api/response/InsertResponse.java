@@ -1,4 +1,6 @@
-package rendezvous.federator.api;
+package rendezvous.federator.api.response;
+
+import rendezvous.federator.api.response.impl.Response;
 
 public class InsertResponse extends Response{
 

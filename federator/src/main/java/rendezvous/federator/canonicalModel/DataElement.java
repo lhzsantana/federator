@@ -3,8 +3,8 @@ package rendezvous.federator.canonicalModel;
 import java.util.Map;
 import java.util.Set;
 
+import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSource;
-import rendezvous.federator.dictionary.Value;
 
 public class DataElement {
 

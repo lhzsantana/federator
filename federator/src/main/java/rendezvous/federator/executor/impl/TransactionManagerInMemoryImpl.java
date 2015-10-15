@@ -7,11 +7,11 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import rendezvous.federator.core.Access;
+import rendezvous.federator.core.Plan;
 import rendezvous.federator.executor.Transaction;
 import rendezvous.federator.executor.TransactionManager;
 import rendezvous.federator.executor.TransactionStates;
-import rendezvous.federator.planner.Access;
-import rendezvous.federator.planner.Plan;
 
 public class TransactionManagerInMemoryImpl extends TransactionManager{
 

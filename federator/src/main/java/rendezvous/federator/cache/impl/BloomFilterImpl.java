@@ -4,9 +4,9 @@ import java.util.List;
 
 import orestes.bloomfilter.BloomFilter;
 import orestes.bloomfilter.FilterBuilder;
-import rendezvous.federator.api.Hit;
 import rendezvous.federator.cache.Cache;
 import rendezvous.federator.cache.Key;
+import rendezvous.federator.core.Hit;
 
 public class BloomFilterImpl implements Cache {
 

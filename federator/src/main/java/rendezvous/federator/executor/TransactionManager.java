@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import rendezvous.federator.planner.Access;
-import rendezvous.federator.planner.Plan;
+import rendezvous.federator.core.Access;
+import rendezvous.federator.core.Plan;
 
 public abstract class TransactionManager {
 

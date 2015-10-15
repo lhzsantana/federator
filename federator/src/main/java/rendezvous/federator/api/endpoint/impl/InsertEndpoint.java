@@ -4,11 +4,11 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import rendezvous.federator.api.InsertResponse;
 import rendezvous.federator.api.endpoint.Endpoint;
-import rendezvous.federator.dictionary.Value;
-import rendezvous.federator.planner.Action;
-import rendezvous.federator.planner.Plan;
+import rendezvous.federator.api.response.InsertResponse;
+import rendezvous.federator.core.Action;
+import rendezvous.federator.core.Plan;
+import rendezvous.federator.core.Value;
 
 public class InsertEndpoint extends Endpoint {
 	

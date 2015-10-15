@@ -1,4 +1,4 @@
-package rendezvous.federator.planner;
+package rendezvous.federator.core;
 
 import java.util.ArrayList;
 import java.util.Date;

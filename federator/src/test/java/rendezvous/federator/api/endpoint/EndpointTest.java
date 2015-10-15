@@ -9,8 +9,8 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 
 import rendezvous.federator.api.endpoint.impl.InsertEndpoint;
+import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSource;
-import rendezvous.federator.dictionary.Value;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 
 public class EndpointTest {

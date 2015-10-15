@@ -3,8 +3,8 @@ package rendezvous.federator.api.endpoint.impl;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import rendezvous.federator.api.Response;
 import rendezvous.federator.api.endpoint.impl.InsertEndpoint;
+import rendezvous.federator.api.response.impl.Response;
 
 public class InsertEndpointTest extends TestCase {
 
