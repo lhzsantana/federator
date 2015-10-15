@@ -1,5 +1,6 @@
 package rendezvous.federator.datasources.column.cassandra;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -91,6 +92,18 @@ public class Cassandra extends DatasourceColumn {
 	@Override
 	public Hit get(String string, String entity, Set<Value> values) {
 		logger.debug("Getting from Cassandra");
+		return null;
+	}
+
+	@Override
+	public List<Hit> query(String string, String entity, Set<Value> values) {
+		
+		logger.debug("Searching from Cassandra");
+		
+		for(Value value:values){
+			logger.debug("The following values <"+value.getValue()+">");
+		}
+		
 		return null;
 	}
 }

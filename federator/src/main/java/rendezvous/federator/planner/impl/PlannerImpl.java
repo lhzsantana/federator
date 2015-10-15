@@ -39,7 +39,15 @@ public class PlannerImpl implements Planner {
 						
 			accesses.add(access);
 			
-			logger.info("Added another access for the dataSource <"+dataSource.getName()+">");
+			for(Value value:access.getValues()){
+				logger.info(
+						"Added another access for the dataSource <"+dataSource.getName()+"> "
+						+ "for entity <"+entity+"> "
+						+ "in the field <"+value.getField()+"> "
+						+ "and value <"+value.getValue()+"> "
+						+ "and action <"+action+">"
+				);
+			}
 		}
 
 		plan.setAccesses(accesses);

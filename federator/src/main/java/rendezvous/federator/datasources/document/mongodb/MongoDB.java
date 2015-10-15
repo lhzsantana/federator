@@ -1,5 +1,6 @@
 package rendezvous.federator.datasources.document.mongodb;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -75,6 +76,17 @@ public class MongoDB extends DatasourceDocument {
 	@Override
 	public Hit get(String string, String entity, Set<Value> values) {
 		logger.debug("Getting from MongoDB");
+		return null;
+	}
+
+	@Override
+	public List<Hit> query(String string, String entity, Set<Value> values) {
+		logger.debug("Searching from MongoDB");
+		
+		for(Value value:values){
+			logger.debug("The following values <"+value.getValue()+">");
+		}
+		
 		return null;
 	}
 }

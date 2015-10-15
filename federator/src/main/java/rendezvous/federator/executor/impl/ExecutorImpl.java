@@ -9,6 +9,7 @@ import org.json.simple.parser.ParseException;
 
 import rendezvous.federator.api.response.GetResponse;
 import rendezvous.federator.api.response.InsertResponse;
+import rendezvous.federator.api.response.QueryResponse;
 import rendezvous.federator.cache.Cache;
 import rendezvous.federator.cache.impl.BloomFilterImpl;
 import rendezvous.federator.core.Access;
@@ -42,6 +43,17 @@ public class ExecutorImpl implements Executor {
 		List<Hit> hits = this.executeGet(plan);
 
 		GetResponse response = new GetResponse();
+		response.setHits(hits);
+
+		return response;
+	}
+
+	@Override
+	public QueryResponse queryExecute(Plan plan) throws ParseException {
+
+		List<Hit> hits = this.executeQuery(plan);
+
+		QueryResponse response = new QueryResponse();
 		response.setHits(hits);
 
 		return response;
@@ -81,13 +93,9 @@ public class ExecutorImpl implements Executor {
 
 	private List<Hit> executeGet(Plan plan) {
 
-		logger.debug("Executing a new plan");
-
 		List<Hit> intermediateHits = new ArrayList<Hit>();
 
 		for (Access access : plan.getAccesses()) {
-
-			logger.debug("Executing a new access");
 
 			intermediateHits.add(access.getDataSource().get("federator", access.getEntity(), access.getValues()));
 		}
@@ -95,8 +103,21 @@ public class ExecutorImpl implements Executor {
 		return this.mergeHits(intermediateHits);
 	}
 
+	private List<Hit> executeQuery(Plan plan) {
+
+		List<Hit> intermediateHits = new ArrayList<Hit>();
+
+		for (Access access : plan.getAccesses()) {			
+			intermediateHits.addAll(access.getDataSource().query("federator", access.getEntity(), access.getValues()));
+		}
+
+		return this.mergeHits(intermediateHits);
+	}
+
 	private List<Hit> mergeHits(List<Hit> intermediateHits) {
-		// TODO Auto-generated method stub
-		return null;
+
+		logger.debug("Merging <"+intermediateHits.size()+"> intermediate hits");
+		
+		return intermediateHits;
 	}
 }

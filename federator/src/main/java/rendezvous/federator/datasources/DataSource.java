@@ -1,5 +1,6 @@
 package rendezvous.federator.datasources;
 
+import java.util.List;
 import java.util.Set;
 
 import org.json.simple.parser.ParseException;
@@ -14,7 +15,9 @@ public abstract class DataSource {
 	public abstract void setName(String name);
 	public abstract void connect();
 	public abstract String insert(String table, String entity, Set<Value> values) throws ParseException;
-
+	public abstract Hit get(String string, String entity, Set<Value> values);
+	public abstract List<Hit> query(String string, String entity, Set<Value> values);
+	
     @Override
     public int hashCode() {
         return getName().hashCode();
@@ -35,6 +38,4 @@ public abstract class DataSource {
 			}			
 		}
 	}
-	
-	public abstract Hit get(String string, String entity, Set<Value> values);
 }

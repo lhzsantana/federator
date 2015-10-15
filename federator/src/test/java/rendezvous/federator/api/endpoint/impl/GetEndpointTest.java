@@ -1,13 +1,16 @@
 package rendezvous.federator.api.endpoint.impl;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import rendezvous.federator.api.response.DeleteResponse;
 import rendezvous.federator.api.response.GetResponse;
 import rendezvous.federator.api.response.InsertResponse;
-import rendezvous.federator.api.response.impl.Response;
+import rendezvous.federator.api.response.impl.Status;
 
 public class GetEndpointTest {
 	
@@ -17,16 +20,16 @@ public class GetEndpointTest {
 	public void testGetUnexistent() throws Exception {
 
 		DeleteEndpoint deleteEndpoint = new DeleteEndpoint();
-		Response response = deleteEndpoint.delete("12345");
+		DeleteResponse response = deleteEndpoint.delete("12345");
+		assertEquals(Status.SUCCESS,response.getStatus());
 				
 		GetEndpoint getEndpoint = new GetEndpoint();
 		GetResponse getResponse = getEndpoint.get("12345");
-
-		assertNotNull(getResponse.getHits());
+		assertNull(getResponse.getHits());
 	}
 
 	@Test
-	public void test() throws Exception {
+	public void testInsertGet() throws Exception {
 
 		InsertEndpoint insertEndpoint = new InsertEndpoint();
 		InsertResponse insertResponse = insertEndpoint.insert("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
