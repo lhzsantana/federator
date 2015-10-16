@@ -12,6 +12,7 @@ import com.datastax.driver.core.Session;
 
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
+import rendezvous.federator.datasources.DataSourceType;
 import rendezvous.federator.datasources.column.DatasourceColumn;
 
 public class Cassandra extends DatasourceColumn {
@@ -20,10 +21,10 @@ public class Cassandra extends DatasourceColumn {
 	private static Cluster cluster;
 	private static Session session;
 	private String name;
-	
+
 	@Override
-	public String getDatabaseType() {
-		return "Cassandra";
+	public String getDataSourceType() {
+		return DataSourceType.CASSANDRA.toString().toLowerCase();
 	}
 
 	@Override
@@ -37,19 +38,19 @@ public class Cassandra extends DatasourceColumn {
 	}
 
 	@Override
-	public void connect() {
+	public void connect() throws Exception {
 		
-		logger.debug("Connecting to " + getDatabaseType());		
+		logger.debug("Connecting to " + getDataSourceType());		
 		
 		if(cluster==null){
-			cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
+			cluster = Cluster.builder().addContactPoint(getConfiguration().get("host")).build();
 			
 			try{
-				session = cluster.connect("federator");
+				session = cluster.connect(getConfiguration().get("keyspace"));
 			}catch(Exception e){
 	
 				session = cluster.connect();
-				String query = "CREATE KEYSPACE federator WITH replication "
+				String query = "CREATE "+getConfiguration().get("keyspace")+" federator WITH replication "
 						   + "= {'class':'SimpleStrategy', 'replication_factor':1}; ";
 				
 				session.execute(query);

@@ -7,18 +7,21 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
+import rendezvous.federator.datasources.DataSourceType;
 import rendezvous.federator.datasources.document.DatasourceDocument;
 
 public class MongoDB extends DatasourceDocument {
 	
 	private final static Logger logger = Logger.getLogger(MongoDB.class);
-    private static MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+    private static MongoClient mongoClient;
 	private static DB db;
 	private static DBCollection collection;
 	private String name;
@@ -33,11 +36,13 @@ public class MongoDB extends DatasourceDocument {
 		this.name=name;
 	}
 	
-	public void connect() {
+	@Override
+	public void connect() throws NumberFormatException, Exception {
 		if(db==null){
-			db = mongoClient.getDB("federator");			
-			//collection = db.getCollection("collection");
-			logger.debug("Connected to " + getDatabaseType());			
+			mongoClient= new MongoClient(getConfiguration().get("host"), Integer.valueOf(getConfiguration().get("port")));
+			db = mongoClient.getDB(getConfiguration().get("database"));			
+			collection = db.getCollection(getConfiguration().get("database"));
+			logger.debug("Connected to " + getDataSourceType());			
 		}
 	}
 	
@@ -69,8 +74,8 @@ public class MongoDB extends DatasourceDocument {
 	}
 
 	@Override
-	public String getDatabaseType() {
-		return "MongoDB";
+	public String getDataSourceType() {
+		return DataSourceType.MONGODB.toString().toLowerCase();
 	}
 
 	@Override
@@ -81,10 +86,20 @@ public class MongoDB extends DatasourceDocument {
 
 	@Override
 	public List<Hit> query(String string, String entity, Set<Value> values) {
+		
 		logger.debug("Searching from MongoDB");
+		
+		BasicDBObject allQuery = new BasicDBObject();
+		BasicDBObject fields = new BasicDBObject();
 		
 		for(Value value:values){
 			logger.debug("The following values <"+value.getValue()+">");
+			fields.put(value.getField(), value.getEntity());
+		}
+		
+		DBCursor cursor = collection.find(allQuery, fields);
+		while (cursor.hasNext()) {
+			System.out.println(cursor.next());
 		}
 		
 		return null;
