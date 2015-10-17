@@ -213,6 +213,8 @@ public class Cassandra extends DatasourceColumn {
 			hits.add(hit);
 		}		
 		
+		logger.info("<"+hits.size()+"> hits where found in Cassandra");
+		
 		return hits;
 	}
 

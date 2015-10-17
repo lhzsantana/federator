@@ -162,6 +162,8 @@ public class ExecutorImpl implements Executor {
 				for(Value value : hit.getValues()){
 					
 					List<Value> volatileValues = intermediateValues.get(value.getEntity());
+					
+					if(volatileValues == null) volatileValues = new ArrayList<Value>();
 					volatileValues.add(value);
 					
 					intermediateValues.put(value.getEntity(), volatileValues);

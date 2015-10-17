@@ -4,19 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import rendezvous.federator.api.endpoint.EndpointTest;
 import rendezvous.federator.api.response.DeleteResponse;
 import rendezvous.federator.api.response.GetResponse;
 import rendezvous.federator.api.response.InsertResponse;
 import rendezvous.federator.api.response.impl.Status;
-import rendezvous.federator.core.Hit;
-import rendezvous.federator.core.Value;
 
-public class GetEndpointTest {
+public class GetEndpointTest extends EndpointTest {
 	
 	final static Logger logger = Logger.getLogger(GetEndpointTest.class);
 
@@ -73,25 +70,5 @@ public class GetEndpointTest {
 		assertNotNull(response.getHits());
 		
 		printHits(response.getHits());
-	}
-	
-	private void printHits(List<Hit> hits){
-		
-		for(Hit hit : hits){
-			
-			logger.info("-------------------------");
-			
-			for(Value value:hit.getValues()){
-				logger.info("The value <"+value.getValue()+"> was found for field <"+value.getField()+"> of the entity <"+value.getEntity()+">");
-			}
-			
-			logger.info("-------------------------");
-			
-			logger.info(hit.toString());
-			
-			logger.info("-------------------------");
-			logger.info("-------------------------");
-			
-		}
 	}
 }
