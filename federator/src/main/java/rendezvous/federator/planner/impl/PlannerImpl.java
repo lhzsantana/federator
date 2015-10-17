@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import rendezvous.federator.core.Access;
 import rendezvous.federator.core.Action;
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSource;
@@ -35,7 +36,7 @@ public class PlannerImpl implements Planner {
 			access.setAction(action);
 			access.setValues(reorderedValues.get(dataSource));
 			access.setDataSource(dataSource);
-			access.setEntity(entity);
+			access.setEntity(new Entity(entity,null,null));
 						
 			accesses.add(access);
 			

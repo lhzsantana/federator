@@ -38,7 +38,7 @@ public class Cassandra extends DatasourceColumn {
 	}
 
 	@Override
-	public void connect() throws Exception {
+	public boolean connect() throws Exception {
 		
 		logger.info("Connecting to " + getDataSourceType());		
 		
@@ -55,13 +55,16 @@ public class Cassandra extends DatasourceColumn {
 				
 				session.execute(query);
 				session = cluster.connect("federator");
-			}		
+			}
+			
+			return true;
 		}else{
 			logger.debug("Already connected");
-		}
+			return false;
+		}		
 	}
 	@Override
-	public String insert(String table, String entity, Set<Value> values) throws ParseException {
+	public String insert(String entity, Set<Value> values) throws ParseException {
 		
 		String id = UUID.randomUUID().toString();
 		String fieldList = "rendezvous_id,";
@@ -75,12 +78,12 @@ public class Cassandra extends DatasourceColumn {
 		}
 		
 		try{
-			session.execute("CREATE TABLE "+table+"."+entity+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ");");
+			session.execute("CREATE TABLE "+entity+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ");");
 		}catch(Exception e){
 			logger.error(e);
 		}
 		
-		String cql ="INSERT INTO "+table+"."+entity+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
+		String cql ="INSERT INTO "+entity+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
 			      "VALUES ("+valueList.substring(0,valueList.length()-1)+")";
 
 		logger.info(cql);
@@ -91,13 +94,13 @@ public class Cassandra extends DatasourceColumn {
 	}
 
 	@Override
-	public Hit get(String string, String entity, Set<Value> values) {
+	public Hit get(String entity, String id) throws Exception {
 		logger.debug("Getting from Cassandra");
 		return null;
 	}
 
 	@Override
-	public List<Hit> query(String string, String entity, Set<Value> values) {
+	public List<Hit> query(String entity, Set<Value> values) {
 		
 		logger.debug("Searching from Cassandra");
 		

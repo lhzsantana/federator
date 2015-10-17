@@ -24,14 +24,14 @@ public abstract class DataSource {
 	public abstract String getDataSourceType();
 	public abstract String getName();
 	public abstract void setName(String name);
-	public abstract void connect() throws Exception;
-	public abstract String insert(String table, String entity, Set<Value> values) throws ParseException;
-	public abstract Hit get(String string, String entity, Set<Value> values);
-	public abstract List<Hit> query(String string, String entity, Set<Value> values);
+	public abstract boolean connect() throws Exception;
+	
+	public abstract String insert(String entity, Set<Value> values) throws ParseException, Exception;
+	public abstract List<Hit> query(String entity, Set<Value> values) throws Exception;
 	
     @Override
     public int hashCode() {
-        return getName().hashCode();
+    	return getDataSourceType().hashCode();
     }
 
 	@Override
@@ -71,4 +71,5 @@ public abstract class DataSource {
 		
 		return configuration;
 	}
+	public abstract Hit get(String entity, String id) throws Exception;
 }

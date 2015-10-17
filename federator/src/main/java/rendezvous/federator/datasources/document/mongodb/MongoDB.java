@@ -6,13 +6,15 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.json.simple.parser.ParseException;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
@@ -37,7 +39,7 @@ public class MongoDB extends DatasourceDocument {
 	}
 
 	@Override
-	public void connect() throws NumberFormatException, Exception {
+	public boolean connect() throws NumberFormatException, Exception {
 		
 		if (db == null) {			
 			mongoClient = new MongoClient(getConfiguration().get("host"),
@@ -45,33 +47,45 @@ public class MongoDB extends DatasourceDocument {
 			
 			db = mongoClient.getDB(getConfiguration().get("database"));
 			collection = db.getCollection(getConfiguration().get("database"));
+			
 			logger.info("Connected to " + getDataSourceType());
+			
+			return true;
 		}
+		
+		return false;
+	}
+	
+	public void close(){
+		mongoClient.close();
 	}
 
-	public String insert(String collectionName, String entity, Set<Value> values) throws ParseException {
+	public String insert(String entity, Set<Value> values) throws Exception {
 
+		if(values==null||values.isEmpty()||values.size()==0) throw new Exception("Cannot insert an empty list");
+		
 		String id = UUID.randomUUID().toString();
 
-		try {
-			// this.connect();
-
-			// db.createCollection(entity, null);
-			// DBObject document=new BasicDBObject();
-			// document.put("rendezvous_id", id);
-			for (Value value : values) {
-				// document.put(value.getField(), value.getValue());
-				logger.info("Added field " + value.getField() + " and value " + value.getValue());
-			}
-
-			logger.info("Inserted the entity " + entity);
-		} catch (Exception e) {
-			logger.error(e);
+		DBCollection collection = null;
+		
+		if(db.collectionExists(entity)){
+			collection = db.getCollection(entity);
+		}else{
+			collection = db.createCollection(entity, new BasicDBObject());
 		}
-		/*
-		 * if(collection!=null){ collection.insert(document); }
-		 */
+		
+		DBObject document=new BasicDBObject();			
+		document.put("rendezvous_id", id);
+			
+		for (Value value : values) {
+			document.put(value.getField(), value.getValue());
+			logger.info("Added field " + value.getField() + " and value " + value.getValue());
+		}
 
+		collection.insert(document);
+		
+		logger.info("Inserted the entity " + entity);
+		
 		return id;
 	}
 
@@ -81,33 +95,83 @@ public class MongoDB extends DatasourceDocument {
 	}
 
 	@Override
-	public Hit get(String string, String entity, Set<Value> values) {
-		logger.debug("Getting from MongoDB");
+	public Hit get(String entity, String id) throws Exception {
+		
+		if(!db.collectionExists(entity)){
+			throw new Exception ("This entity does not exists");
+		}else{
+			collection = db.getCollection(entity);
+			
+			DBCursor cursor = collection.find(new BasicDBObject("rendezvous_id", id));
+			
+			while(cursor.hasNext()){
+				
+				logger.info("The document was found in MongoDB");
+				
+				Hit hit = new Hit();
+				hit.setRelevance(1);
+				
+				List<Value> values = new ArrayList<Value>();
+
+				DBObject document = cursor.next();
+				
+				for(String field : document.keySet()){
+					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING, this));
+				}
+				
+				hit.setValues(values);
+				
+				return hit;
+			}
+			
+			
+		}
+		
 		return null;
 	}
 
 	@Override
-	public List<Hit> query(String string, String entity, Set<Value> values) {
+	public List<Hit> query(String entity, Set<Value> queryValues) throws Exception {
 
 		logger.info("Searching from MongoDB");
 
-		BasicDBObject fields = new BasicDBObject();
+		if(!db.collectionExists(entity)){
+			throw new Exception ("This entity does not exists");
+		}else{
+			collection = db.getCollection(entity);
 
-		for (Value value : values) {
-			logger.debug("The following values <" + value.getValue() + ">");
-			fields.put(value.getField(), value.getEntity());
-		}
+			DBObject queryDocument=new BasicDBObject();			
+			
+			for(Value value : queryValues){
+				queryDocument.put(value.getField(),value.getValue());
+			}
+			
+			DBCursor cursor = collection.find(queryDocument);
+			
+			List<Hit> hits = new ArrayList<Hit>();
+			
+			while(cursor.hasNext()){
+				
+				logger.info("The document was found in MongoDB");
+				
+				Hit hit = new Hit();
+				hit.setRelevance(1);
+				
+				List<Value> values = new ArrayList<Value>();
 
-		List<Hit> hits = new ArrayList<Hit>();
-
-		/*
-		 * DBCursor cursor = collection.find(allQuery, fields);
-		 * 
-		 * while (cursor.hasNext()) {
-		 * 
-		 * hits.add(new Hit()); logger.info(cursor.next()); }
-		 */
-
-		return hits;
+				DBObject document = cursor.next();
+				
+				for(String field : document.keySet()){
+					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING, this));
+				}
+				
+				hit.setValues(values);
+				
+				hits.add(hit);
+			}
+			
+			return hits;			
+		}		
 	}
+
 }

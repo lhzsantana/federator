@@ -9,7 +9,7 @@ import rendezvous.federator.core.Plan;
 
 public interface Executor {
 
-	public InsertResponse insertExecute(Plan plan) throws ParseException;
-	public GetResponse getExecute(Plan plan) throws ParseException;
-	public QueryResponse queryExecute(Plan plan) throws ParseException;
+	public InsertResponse insertExecute(Plan plan) throws Exception;
+	public GetResponse getExecute(Plan plan) throws Exception;
+	public QueryResponse queryExecute(Plan plan) throws ParseException, Exception;
 }

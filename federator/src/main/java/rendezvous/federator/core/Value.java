@@ -1,5 +1,6 @@
 package rendezvous.federator.core;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -29,6 +30,24 @@ public class Value {
 		this.sources=sources;
 	}
 	
+	public Value(String entity, String field, String value, DataType type, MongoDB mongoDB) {
+		this.setEntity(entity);
+		this.field=field;
+		this.value=value;
+		this.type=type;
+	
+		Set<DataSource> sources = new HashSet<DataSource>();
+		sources.add(mongoDB);
+		this.sources=sources;	
+	}
+
+	public Value(String entity, String field, String value, DataType type) {
+		this.setEntity(entity);
+		this.field=field;
+		this.value=value;
+		this.type=type;
+	}
+
 	public String getField() {
 		return field;
 	}

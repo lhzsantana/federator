@@ -8,7 +8,7 @@ public class Access {
 
 	private DataSource dataSource;
 	private Action action;
-	private String entity;
+	private Entity entity;
 	private Set<Value> values;
 	
 	public Action getAction() {
@@ -29,10 +29,10 @@ public class Access {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-	public String getEntity() {
+	public Entity getEntity() {
 		return entity;
 	}
-	public void setEntity(String entity) {
+	public void setEntity(Entity entity) {
 		this.entity = entity;
-	}
+	}	
 }

@@ -34,7 +34,7 @@ public class ExecutorImpl implements Executor {
 	private Cache cache = new BloomFilterImpl();
 
 	@Override
-	public InsertResponse insertExecute(Plan plan) throws ParseException {
+	public InsertResponse insertExecute(Plan plan) throws Exception {
 
 		InsertResponse response = new InsertResponse();
 		response.setId(this.executeInsert(plan));
@@ -43,7 +43,7 @@ public class ExecutorImpl implements Executor {
 	}
 
 	@Override
-	public GetResponse getExecute(Plan plan) throws ParseException {
+	public GetResponse getExecute(Plan plan) throws Exception {
 
 		List<Hit> hits = this.executeGet(plan);
 
@@ -54,7 +54,7 @@ public class ExecutorImpl implements Executor {
 	}
 
 	@Override
-	public QueryResponse queryExecute(Plan plan) throws ParseException {
+	public QueryResponse queryExecute(Plan plan) throws Exception {
 
 		List<Hit> hits = this.executeQuery(plan);
 
@@ -64,7 +64,7 @@ public class ExecutorImpl implements Executor {
 		return response;
 	}
 
-	private String executeInsert(Plan plan) {
+	private String executeInsert(Plan plan) throws Exception {
 
 		logger.debug("Executing a new plan");
 
@@ -80,7 +80,7 @@ public class ExecutorImpl implements Executor {
 
 			transactionManager.start(transactionId);
 			try {
-				access.getDataSource().insert("federator", access.getEntity(), access.getValues());
+				access.getDataSource().insert(access.getEntity().getName(), access.getValues());
 			} catch (ParseException e) {
 
 				logger.debug(e);
@@ -96,14 +96,14 @@ public class ExecutorImpl implements Executor {
 		return entityId;
 	}
 
-	private List<Hit> executeGet(Plan plan) {
+	private List<Hit> executeGet(Plan plan) throws Exception {
 
 		//TODO: change the String value for a Entity reference
 		Map<String, List<Value>> intermediateValues = new HashMap<String, List<Value>>();
 
 		for (Access access : plan.getAccesses()) {
 
-			Hit hit = access.getDataSource().get("federator", access.getEntity(), access.getValues());
+			Hit hit = access.getDataSource().get(access.getEntity().getName(), access.getEntity().getId());
 			
 			for(Value value : hit.getValues()){
 			
@@ -117,14 +117,14 @@ public class ExecutorImpl implements Executor {
 		return this.mergeHits(intermediateValues);
 	}
 
-	private List<Hit> executeQuery(Plan plan) {
+	private List<Hit> executeQuery(Plan plan) throws Exception {
 
 		//TODO: change the String value for a Entity reference
 		Map<String, List<Value>> intermediateValues = new HashMap<String, List<Value>>();
 
 		for (Access access : plan.getAccesses()) {
 			
-			List<Hit> hits = access.getDataSource().query("federator", access.getEntity(), access.getValues());
+			List<Hit> hits = access.getDataSource().query(access.getEntity().getName(), access.getValues());
 			
 			for(Hit hit : hits){
 				for(Value value : hit.getValues()){

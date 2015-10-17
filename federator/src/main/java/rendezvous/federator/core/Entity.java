@@ -1,9 +1,17 @@
 package rendezvous.federator.core;
 
 public class Entity {
+	
+	public Entity(String name, String id, String source){
+		this.name=name;
+		this.id=id;
+		this.source=source;
+	}
 
+	private String name;
 	private String id;
 	private String source;
+	
 	public String getId() {
 		return id;
 	}
@@ -15,6 +23,12 @@ public class Entity {
 	}
 	public void setSource(String source) {
 		this.source = source;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
