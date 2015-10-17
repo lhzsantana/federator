@@ -1,15 +1,25 @@
 package rendezvous.federator.core;
 
+import java.util.List;
+
 public class Hit {
 
-	//FIXME: turn the value a boxed object
-	private String value;
+	private List<Value> values;
+	private Integer relevance;
 
-	public String getValue() {
-		return value;
+	public List<Value> getValues() {
+		return values;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setValues(List<Value> values) {
+		this.values = values;
+	}
+
+	public Integer getRelevance() {
+		return relevance;
+	}
+
+	public void setRelevance(Integer relevance) {
+		this.relevance = relevance;
 	}
 }

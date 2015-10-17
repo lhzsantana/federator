@@ -40,7 +40,7 @@ public class Cassandra extends DatasourceColumn {
 	@Override
 	public void connect() throws Exception {
 		
-		logger.debug("Connecting to " + getDataSourceType());		
+		logger.info("Connecting to " + getDataSourceType());		
 		
 		if(cluster==null){
 			cluster = Cluster.builder().addContactPoint(getConfiguration().get("host")).build();

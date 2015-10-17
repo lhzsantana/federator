@@ -25,6 +25,7 @@ public class QueryEndpointTest {
 		logger.debug("The insert response has the id <"+insertResponse2.getId()+">");
 					
 		QueryEndpoint getEndpoint = new QueryEndpoint();
+		
 		QueryResponse response = getEndpoint.query("{\"user\":{\"address\":\"lagoa\"}}");
 		
 		assertNotNull(response.getHits());

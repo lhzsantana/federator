@@ -1,11 +1,11 @@
 datasources:
   mongodb:
     host: localhost
-    port: 999
+    port: 9999
     collection: collection
     database: database
-  cassandra:  
+  cassandra:
     host: localhost
-    port: 999
+    port: 9999
     keyspace: keyspace
   

@@ -2,10 +2,18 @@ package rendezvous.federator.core;
 
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.document.mongodb.MongoDB;
 
 public class Value {
+
+	private final static Logger logger = Logger.getLogger(MongoDB.class);
 	
 	private String entity;
 	private String field;
@@ -54,5 +62,19 @@ public class Value {
 
 	public void setEntity(String entity) {
 		this.entity = entity;
+	}
+	
+	@Override
+	public String toString() {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			logger.error(e);
+		}
+		
+		return null;
 	}
 }

@@ -1,7 +1,9 @@
 package rendezvous.federator.executor.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -14,8 +16,11 @@ import rendezvous.federator.cache.Cache;
 import rendezvous.federator.cache.impl.BloomFilterImpl;
 import rendezvous.federator.core.Access;
 import rendezvous.federator.core.Action;
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Plan;
+import rendezvous.federator.core.Value;
+import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.entityManager.EntityManager;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.TransactionManager;
@@ -93,31 +98,63 @@ public class ExecutorImpl implements Executor {
 
 	private List<Hit> executeGet(Plan plan) {
 
-		List<Hit> intermediateHits = new ArrayList<Hit>();
+		//TODO: change the String value for a Entity reference
+		Map<String, List<Value>> intermediateValues = new HashMap<String, List<Value>>();
 
 		for (Access access : plan.getAccesses()) {
 
-			intermediateHits.add(access.getDataSource().get("federator", access.getEntity(), access.getValues()));
+			Hit hit = access.getDataSource().get("federator", access.getEntity(), access.getValues());
+			
+			for(Value value : hit.getValues()){
+			
+				List<Value> volatileValues = intermediateValues.get(value.getEntity());
+				volatileValues.add(value);
+				
+				intermediateValues.put(value.getEntity(), volatileValues);
+			}
 		}
-
-		return this.mergeHits(intermediateHits);
+		
+		return this.mergeHits(intermediateValues);
 	}
 
 	private List<Hit> executeQuery(Plan plan) {
 
-		List<Hit> intermediateHits = new ArrayList<Hit>();
+		//TODO: change the String value for a Entity reference
+		Map<String, List<Value>> intermediateValues = new HashMap<String, List<Value>>();
 
-		for (Access access : plan.getAccesses()) {			
-			intermediateHits.addAll(access.getDataSource().query("federator", access.getEntity(), access.getValues()));
+		for (Access access : plan.getAccesses()) {
+			
+			List<Hit> hits = access.getDataSource().query("federator", access.getEntity(), access.getValues());
+			
+			for(Hit hit : hits){
+				for(Value value : hit.getValues()){
+					
+					List<Value> volatileValues = intermediateValues.get(value.getEntity());
+					volatileValues.add(value);
+					
+					intermediateValues.put(value.getEntity(), volatileValues);
+				}
+			}
 		}
 
-		return this.mergeHits(intermediateHits);
+		return this.mergeHits(intermediateValues);
 	}
 
-	private List<Hit> mergeHits(List<Hit> intermediateHits) {
+	private List<Hit> mergeHits(Map<String, List<Value>> intermediateValues) {
 
-		logger.debug("Merging <"+intermediateHits.size()+"> intermediate hits");
+		logger.debug("Merging <"+intermediateValues.size()+"> intermediate values");
+				
+		List<Hit> finalHits = new ArrayList<Hit>();
+		Integer relevance = 0;
 		
-		return intermediateHits;
+		for(String entity: intermediateValues.keySet()){
+			Hit hit = new Hit();
+			hit.setValues(intermediateValues.get(entity));
+			hit.setRelevance(relevance);
+			
+			finalHits.add(hit);
+		}
+				
+		return finalHits;
 	}
 }
