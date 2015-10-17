@@ -123,7 +123,7 @@ public class Cassandra extends DatasourceColumn {
 		String valueList = "'"+id+"',";
 
 		for(Value value:values){
-			fieldList+=value.getField()+",";
+			fieldList+=value.getField().getFieldName()+",";
 			valueList+= "'"+value.getValue()+"',";			
 		}
 		
@@ -182,7 +182,7 @@ public class Cassandra extends DatasourceColumn {
 
 			++index;
 			
-			cql+=value.getField()+"='"+value.getValue()+"'";
+			cql+=value.getField().getFieldName()+"='"+value.getValue()+"'";
 			if(index<queryValues.size()) cql+=" AND ";
 			else cql+=" ALLOW FILTERING;";			
 		}

@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;
 
@@ -16,23 +15,23 @@ public class Value {
 
 	private final static Logger logger = Logger.getLogger(MongoDB.class);
 	
-	private String entity;
-	private String field;
+	private Field field;
+	private Entity entity;
 	private String value;
 	private String type;
 	private Set<DataSource> sources;
 	
 	public Value(String entity, String field, String value, String type, Set<DataSource> sources){
-		this.setEntity(entity);
-		this.field=field;
+		this.entity=new Entity(entity);
+		this.field=new Field(field,entity);
 		this.value=value;
 		this.type=type;
 		this.sources=sources;
 	}
 	
 	public Value(String entity, String field, String value, String type, DataSource dataSource) {
-		this.setEntity(entity);
-		this.field=field;
+		this.entity=new Entity(entity);
+		this.field=new Field(field,entity);
 		this.value=value;
 		this.type=type;
 	
@@ -42,16 +41,16 @@ public class Value {
 	}
 
 	public Value(String entity, String field, String value, String type) {
-		this.setEntity(entity);
-		this.field=field;
+		this.entity=new Entity(entity);
+		this.field=new Field(field,entity);
 		this.value=value;
 		this.type=type;
 	}
 
-	public String getField() {
+	public Field getField() {
 		return field;
 	}
-	public void setField(String field) {
+	public void setField(Field field) {
 		this.field = field;
 	}
 	public String getValue() {
@@ -75,11 +74,11 @@ public class Value {
 		this.sources = sources;
 	}
 
-	public String getEntity() {
+	public Entity getEntity() {
 		return entity;
 	}
 
-	public void setEntity(String entity) {
+	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
 	

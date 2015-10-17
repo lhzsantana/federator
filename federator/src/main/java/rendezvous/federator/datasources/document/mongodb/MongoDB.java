@@ -92,7 +92,7 @@ public class MongoDB extends DatasourceDocument {
 		document.put("rendezvous_id", id);
 			
 		for (Value value : values) {
-			document.put(value.getField(), value.getValue());
+			document.put(value.getField().getFieldName(), value.getValue());
 			logger.info("Added field " + value.getField() + " and value " + value.getValue());
 		}
 
@@ -157,7 +157,7 @@ public class MongoDB extends DatasourceDocument {
 			DBObject queryDocument=new BasicDBObject();			
 			
 			for(Value value : queryValues){
-				queryDocument.put(value.getField(),value.getValue());
+				queryDocument.put(value.getField().getFieldName(),value.getValue());
 			}
 			
 			DBCursor cursor = collection.find(queryDocument);

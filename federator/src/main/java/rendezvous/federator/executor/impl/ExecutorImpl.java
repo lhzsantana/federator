@@ -124,7 +124,7 @@ public class ExecutorImpl implements Executor {
 										
 					for(Hit hit:response.getHits()){
 						
-						Value subValue = new Value(access.getEntity().getName(), value.getField(), hit.getValues().toString(), value.getType());
+						Value subValue = new Value(access.getEntity().getName(), value.getField().getFieldName(), hit.getValues().toString(), value.getType());
 						subValues.add(subValue);
 					}
 				}
@@ -141,7 +141,7 @@ public class ExecutorImpl implements Executor {
 					if(volatileValues==null) volatileValues=new ArrayList<Value>();				
 					volatileValues.add(value);
 					
-					intermediateValues.put(value.getEntity(), volatileValues);
+					intermediateValues.put(value.getEntity().getName(), volatileValues);
 				}
 			}
 		}
@@ -166,7 +166,7 @@ public class ExecutorImpl implements Executor {
 					if(volatileValues == null) volatileValues = new ArrayList<Value>();
 					volatileValues.add(value);
 					
-					intermediateValues.put(value.getEntity(), volatileValues);
+					intermediateValues.put(value.getEntity().getName(), volatileValues);
 				}
 			}
 		}
