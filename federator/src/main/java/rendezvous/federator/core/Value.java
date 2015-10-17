@@ -30,14 +30,14 @@ public class Value {
 		this.sources=sources;
 	}
 	
-	public Value(String entity, String field, String value, DataType type, MongoDB mongoDB) {
+	public Value(String entity, String field, String value, DataType type, DataSource dataSource) {
 		this.setEntity(entity);
 		this.field=field;
 		this.value=value;
 		this.type=type;
 	
 		Set<DataSource> sources = new HashSet<DataSource>();
-		sources.add(mongoDB);
+		sources.add(dataSource);
 		this.sources=sources;	
 	}
 

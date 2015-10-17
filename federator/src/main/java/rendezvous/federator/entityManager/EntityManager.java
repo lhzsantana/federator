@@ -22,8 +22,8 @@ public class EntityManager {
 		
 		List<Access> accesses = EntityManager.entityList.get(id);
 
-		logger.debug("The entity <"+id+"> was found");
-				
+		logger.info("The entity <"+id+"> was found");
+						
 		return accesses;
 	}
 

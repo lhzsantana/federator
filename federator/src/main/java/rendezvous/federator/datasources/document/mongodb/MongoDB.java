@@ -15,6 +15,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import rendezvous.federator.canonicalModel.DataType;
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
@@ -28,6 +29,10 @@ public class MongoDB extends DatasourceDocument {
 	private static DBCollection collection;
 	private String name;
 
+	public MongoDB() throws NumberFormatException, Exception{
+		this.connect();
+	}
+	
 	@Override
 	public String getName() {
 		return name;
@@ -60,18 +65,18 @@ public class MongoDB extends DatasourceDocument {
 		mongoClient.close();
 	}
 
-	public String insert(String entity, Set<Value> values) throws Exception {
+	public String insert(Entity entity, Set<Value> values) throws Exception {
 
 		if(values==null||values.isEmpty()||values.size()==0) throw new Exception("Cannot insert an empty list");
 		
-		String id = UUID.randomUUID().toString();
+		String id = entity.getId();
 
 		DBCollection collection = null;
 		
-		if(db.collectionExists(entity)){
-			collection = db.getCollection(entity);
+		if(db.collectionExists(entity.getName())){
+			collection = db.getCollection(entity.getName());
 		}else{
-			collection = db.createCollection(entity, new BasicDBObject());
+			collection = db.createCollection(entity.getName(), new BasicDBObject());
 		}
 		
 		DBObject document=new BasicDBObject();			
@@ -84,7 +89,7 @@ public class MongoDB extends DatasourceDocument {
 
 		collection.insert(document);
 		
-		logger.info("Inserted the entity " + entity);
+		logger.info("Inserted the entity " + entity.getName());
 		
 		return id;
 	}

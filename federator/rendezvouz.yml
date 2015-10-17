@@ -1,5 +1,5 @@
 entities:
-  user: 
+  usuario: 
     name: 
         type: [string]
         source: ['mongodb','cassandra']

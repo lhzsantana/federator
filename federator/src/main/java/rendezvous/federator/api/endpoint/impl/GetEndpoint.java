@@ -16,6 +16,8 @@ public class GetEndpoint extends Endpoint {
 
 	public GetResponse get(String id) throws Exception {
 		
+		logger.info("Getting the entity <"+id+">");
+		
 		Plan plan = new Plan();
 		
 		List<Access> access = EntityManager.getEntity(id);

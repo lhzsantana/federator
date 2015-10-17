@@ -55,6 +55,8 @@ public class DictionaryReaderImpl implements DictionaryReader {
 					dataSources.add(this.getDataSource(source));				
 				}
 				
+				logger.debug("Adding the field <" + fieldName + "> of the entity field <" + entityName+ ">");
+				
 				dictionary.put(new Field(fieldName, entityName), dataSources);
 			}			
 		}
@@ -85,7 +87,9 @@ public class DictionaryReaderImpl implements DictionaryReader {
 	public Set<DataSource> getDatasources(Field field) throws JsonParseException, IOException, Exception {
 		
 		this.refreshDictionary();
-	
+
+		logger.info("Querying for the field "+field.getFieldName()+" from the entity "+field.getEntityName());
+		
 		return dictionary.get(field);
 	}
 

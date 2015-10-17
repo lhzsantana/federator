@@ -80,9 +80,12 @@ public class ExecutorImpl implements Executor {
 
 			transactionManager.start(transactionId);
 			try {
-				access.getDataSource().insert(access.getEntity().getName(), access.getValues());
+				Entity entity = access.getEntity();
+				entity.setId(entityId);
+				access.setEntity(entity);
+				
+				access.getDataSource().insert(access.getEntity(), access.getValues());
 			} catch (ParseException e) {
-
 				logger.debug(e);
 			}
 			transactionManager.finish(transactionId);
@@ -91,6 +94,8 @@ public class ExecutorImpl implements Executor {
 			accessed.add(access);
 		}
 
+		logger.info("The entity <"+entityId+"> was added to the Federator");
+		
 		EntityManager.addEntity(entityId, accessed);
 
 		return entityId;
@@ -108,6 +113,8 @@ public class ExecutorImpl implements Executor {
 			for(Value value : hit.getValues()){
 			
 				List<Value> volatileValues = intermediateValues.get(value.getEntity());
+				
+				if(volatileValues==null) volatileValues=new ArrayList<Value>();				
 				volatileValues.add(value);
 				
 				intermediateValues.put(value.getEntity(), volatileValues);

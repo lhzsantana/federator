@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 
@@ -26,7 +27,8 @@ public abstract class DataSource {
 	public abstract void setName(String name);
 	public abstract boolean connect() throws Exception;
 	
-	public abstract String insert(String entity, Set<Value> values) throws ParseException, Exception;
+	public abstract String insert(Entity entity, Set<Value> values) throws ParseException, Exception;
+	
 	public abstract List<Hit> query(String entity, Set<Value> values) throws Exception;
 	
     @Override

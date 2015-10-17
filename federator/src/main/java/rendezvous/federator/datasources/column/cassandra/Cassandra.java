@@ -1,5 +1,6 @@
 package rendezvous.federator.datasources.column.cassandra;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -8,8 +9,13 @@ import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ColumnDefinitions.Definition;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
+import rendezvous.federator.canonicalModel.DataType;
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
@@ -18,9 +24,13 @@ import rendezvous.federator.datasources.column.DatasourceColumn;
 public class Cassandra extends DatasourceColumn {
 
 	private final static Logger logger = Logger.getLogger(Cassandra.class);
-	private static Cluster cluster;
+	private static Cluster cluster = null;
 	private static Session session;
 	private String name;
+	
+	public Cassandra() throws Exception{
+		this.connect();
+	}
 
 	@Override
 	public String getDataSourceType() {
@@ -43,18 +53,28 @@ public class Cassandra extends DatasourceColumn {
 		logger.info("Connecting to " + getDataSourceType());		
 		
 		if(cluster==null){
+			
 			cluster = Cluster.builder().addContactPoint(getConfiguration().get("host")).build();
+
+			String keyspace = getConfiguration().get("keyspace");
 			
 			try{
-				session = cluster.connect(getConfiguration().get("keyspace"));
+				
+				logger.info(keyspace);
+				
+				session = cluster.connect(keyspace);
+				
 			}catch(Exception e){
-	
+				
+				logger.info("Creating keyspace", e);
+							
 				session = cluster.connect();
-				String query = "CREATE "+getConfiguration().get("keyspace")+" federator WITH replication "
+				
+				String query = "CREATE KEYSPACE IF NOT EXISTS '"+keyspace+"' WITH replication "
 						   + "= {'class':'SimpleStrategy', 'replication_factor':1}; ";
 				
 				session.execute(query);
-				session = cluster.connect("federator");
+				session = cluster.connect(keyspace);
 			}
 			
 			return true;
@@ -64,50 +84,125 @@ public class Cassandra extends DatasourceColumn {
 		}		
 	}
 	@Override
-	public String insert(String entity, Set<Value> values) throws ParseException {
-		
-		String id = UUID.randomUUID().toString();
+	public String insert(Entity entity, Set<Value> values) throws ParseException {
+				
+		String id = entity.getId();
 		String fieldList = "rendezvous_id,";
-		String fieldListTable = "rendezvous_id uuid PRIMARY KEY,";
-		String valueList = id+",";
+		String fieldListTable = "rendezvous_id text,";
+		String pureFieldListTable = "rendezvous_id,";
+		String valueList = "'"+id+"',";
 
 		for(Value value:values){
 			fieldList+=value.getField()+",";
 			fieldListTable+=value.getField()+" text,";
-			valueList+= "'"+value.getValue()+"',";
+			pureFieldListTable+=value.getField()+",";
+			valueList+= "'"+value.getValue()+"',";			
 		}
+		
+		String cql = "";
 		
 		try{
-			session.execute("CREATE TABLE "+entity+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ");");
+			cql = "CREATE TABLE "+entity.getName()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY ("+pureFieldListTable.substring(0,pureFieldListTable.length()-1)+"));";
+			session.execute(cql);
+			
+			for(Value value:values){
+				session.execute("CREATE INDEX ON "+entity.getName()+" ("+value.getField()+");");
+			}
+			
 		}catch(Exception e){
-			logger.error(e);
+			logger.warn(cql,e);
 		}
 		
-		String cql ="INSERT INTO "+entity+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
+		cql = "INSERT INTO "+entity.getName()+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
 			      "VALUES ("+valueList.substring(0,valueList.length()-1)+")";
 
 		logger.info(cql);
 		
-		//session.execute(cql);
+		session.execute(cql);
 		
 		return id;
 	}
 
 	@Override
 	public Hit get(String entity, String id) throws Exception {
-		logger.debug("Getting from Cassandra");
-		return null;
+
+		String cql = "SELECT * FROM "+entity+" WHERE rendezvous_id = '" + id + "'";
+
+		logger.info(cql);
+		
+		ResultSet result = session.execute(cql);
+		
+		List<Value> values = new ArrayList<Value>();
+		
+		for(Row row : result.all()){
+			for(Definition definition : row.getColumnDefinitions().asList()){
+				
+				String field = definition.getName();
+				
+				if(!field.equals("rendezvous_id")){
+					values.add(new Value(entity,field,row.getString(field),DataType.STRING, this));
+					
+					logger.info("Added a value for the field "+field);
+				}
+			}			
+		}
+		
+		Hit hit = new Hit();
+		hit.setRelevance(1);
+		hit.setValues(values);
+		
+		return hit;
 	}
 
 	@Override
-	public List<Hit> query(String entity, Set<Value> values) {
+	public List<Hit> query(String entity, Set<Value> queryValues) throws Exception {
 		
 		logger.debug("Searching from Cassandra");
 		
-		for(Value value:values){
-			logger.debug("The following values <"+value.getValue()+">");
-		}
+		if(queryValues==null || queryValues.isEmpty() || queryValues.size() == 0) throw new Exception("No parameter for the query");
 		
-		return null;
+		int index = 0;
+		String cql = "SELECT * FROM "+entity+" WHERE ";
+
+		for(Value value:queryValues){
+
+			++index;
+			
+			cql+=value.getField()+"='"+value.getValue()+"'";
+			if(index<queryValues.size()) cql+=" AND ";
+			else cql+=" ALLOW FILTERING;";			
+		}
+				
+		logger.info(cql);
+		
+		ResultSet result = session.execute(cql);
+		
+		List<Hit> hits = new ArrayList<Hit>();
+		
+		for(Row row : result.all()){
+
+			Hit hit = new Hit();
+			hit.setRelevance(1);
+			
+			List<Value> values = new ArrayList<Value>();
+			
+			for(Definition definition : row.getColumnDefinitions().asList()){
+				
+				String field = definition.getName();
+				
+				if(!field.equals("rendezvous_id")){
+					values.add(new Value(entity,field,row.getString(field),DataType.STRING, this));
+				}
+			}
+			
+			hit.setValues(values);
+			hits.add(hit);
+		}		
+		
+		return hits;
+	}
+
+	public void close() {
+		cluster.close();
 	}
 }
