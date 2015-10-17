@@ -130,7 +130,7 @@ public class MongoDB extends DatasourceDocument {
 				DBObject document = cursor.next();
 				
 				for(String field : document.keySet()){
-					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING, this));
+					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING.toString(), this));
 				}
 				
 				hit.setValues(values);
@@ -176,7 +176,7 @@ public class MongoDB extends DatasourceDocument {
 				DBObject document = cursor.next();
 				
 				for(String field : document.keySet()){
-					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING, this));
+					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING.toString(), this));
 				}
 				
 				hit.setValues(values);

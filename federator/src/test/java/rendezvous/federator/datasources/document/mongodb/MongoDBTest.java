@@ -73,9 +73,9 @@ public class MongoDBTest {
 		mongodb.connect();
 		
 		Set<Value> values = new HashSet<Value>();
-		values.add(new Value("entity1","field1","value1",DataType.STRING));
-		values.add(new Value("entity1","field2","value2",DataType.STRING));
-		values.add(new Value("entity1","field3","value3",DataType.STRING));
+		values.add(new Value("entity1","field1","value1",DataType.STRING.toString()));
+		values.add(new Value("entity1","field2","value2",DataType.STRING.toString()));
+		values.add(new Value("entity1","field3","value3",DataType.STRING.toString()));
 		
 		assertNotNull(mongodb.insert(new Entity("teste","1",""), values));		
 	}
@@ -88,9 +88,9 @@ public class MongoDBTest {
 		String entity = "entity1";
 		
 		Set<Value> values = new HashSet<Value>();
-		values.add(new Value(entity,"field1","value1",DataType.STRING));
-		values.add(new Value(entity,"field2","value2",DataType.STRING));
-		values.add(new Value(entity,"field3","value3",DataType.STRING));
+		values.add(new Value(entity,"field1","value1",DataType.STRING.toString()));
+		values.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
+		values.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
 		String id = mongodb.insert(new Entity(entity,"1",""), values);
 		
@@ -111,35 +111,35 @@ public class MongoDBTest {
 		String entity = "entity1";
 		
 		Set<Value> values1 = new HashSet<Value>();
-		values1.add(new Value(entity,"field1","xpto",DataType.STRING));
-		values1.add(new Value(entity,"field2","value2",DataType.STRING));
-		values1.add(new Value(entity,"field3","value3",DataType.STRING));
+		values1.add(new Value(entity,"field1","xpto",DataType.STRING.toString()));
+		values1.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
+		values1.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
 		mongodb.insert(new Entity(entity,"1",""), values1);
 		
 		Set<Value> values2 = new HashSet<Value>();
-		values2.add(new Value(entity,"field1","xpto",DataType.STRING));
-		values2.add(new Value(entity,"field2","value2",DataType.STRING));
-		values2.add(new Value(entity,"field3","value3",DataType.STRING));
+		values2.add(new Value(entity,"field1","xpto",DataType.STRING.toString()));
+		values2.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
+		values2.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
 		mongodb.insert(new Entity(entity,"1",""), values2);
 		
 		Set<Value> values3 = new HashSet<Value>();
-		values3.add(new Value(entity,"field1","xpto",DataType.STRING));
-		values3.add(new Value(entity,"field2","value2",DataType.STRING));
-		values3.add(new Value(entity,"field3","value3",DataType.STRING));
+		values3.add(new Value(entity,"field1","xpto",DataType.STRING.toString()));
+		values3.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
+		values3.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
 		mongodb.insert(new Entity(entity,"1",""), values3);
 
 		Set<Value> values4 = new HashSet<Value>();
-		values4.add(new Value(entity,"field1","Não é pra vir",DataType.STRING));
-		values4.add(new Value(entity,"field2","value2",DataType.STRING));
-		values4.add(new Value(entity,"field3","value3",DataType.STRING));
+		values4.add(new Value(entity,"field1","Não é pra vir",DataType.STRING.toString()));
+		values4.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
+		values4.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
 		mongodb.insert(new Entity(entity,"1",""), values4);
 		
 		Set<Value> valuesQuery = new HashSet<Value>();
-		valuesQuery.add(new Value(entity,"field1","xpto",DataType.STRING));
+		valuesQuery.add(new Value(entity,"field1","xpto",DataType.STRING.toString()));
 			
 		List<Hit> hits = mongodb.query(entity, valuesQuery);
 

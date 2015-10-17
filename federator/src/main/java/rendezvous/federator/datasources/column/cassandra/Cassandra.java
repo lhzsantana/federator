@@ -154,7 +154,7 @@ public class Cassandra extends DatasourceColumn {
 				String field = definition.getName();
 				
 				if(!field.equals("rendezvous_id")){
-					values.add(new Value(entity,field,row.getString(field),DataType.STRING, this));
+					values.add(new Value(entity,field,row.getString(field),DataType.STRING.toString(), this));
 					
 					logger.info("Added a value for the field "+field);
 				}
@@ -205,7 +205,7 @@ public class Cassandra extends DatasourceColumn {
 				String field = definition.getName();
 				
 				if(!field.equals("rendezvous_id")){
-					values.add(new Value(entity,field,row.getString(field),DataType.STRING, this));
+					values.add(new Value(entity,field,row.getString(field),DataType.STRING.toString(), this));
 				}
 			}
 			

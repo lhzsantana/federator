@@ -28,7 +28,13 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 	private final static Logger logger = Logger.getLogger(DictionaryReaderImpl.class);
 
-	private final static Map<Field, Set<DataSource>> dictionary = new HashMap<Field, Set<DataSource>>();
+	private final static Map<Field, Set<DataSource>> dictionarySources = new HashMap<Field, Set<DataSource>>();
+	private final static Map<Field, List<String>> dictionaryTypes = new HashMap<Field, List<String>>();
+
+	@Override
+	public List<String> getTypes(Field field) {
+		return dictionaryTypes.get(field);
+	}
 
 	private void refreshDictionary() throws Exception {
 
@@ -60,7 +66,10 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				
 				logger.debug("Adding the field <" + fieldName + "> of the entity field <" + entityName+ ">");
 				
-				dictionary.put(new Field(fieldName, entityName), dataSources);
+				Field field = new Field(fieldName, entityName);
+				
+				dictionarySources.put(field, dataSources);
+				dictionaryTypes.put(field, types);
 			}			
 		}
 
@@ -99,7 +108,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 		logger.info("Querying for the field "+field.getFieldName()+" from the entity "+field.getEntityName());
 		
-		return dictionary.get(field);
+		return dictionarySources.get(field);
 	}
 
 	@Override
@@ -107,19 +116,19 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		
 		this.refreshDictionary();
 
-		return dictionary.keySet();
+		return dictionarySources.keySet();
 	}
 	
 	private void createDataElements(){
 		
-		Map<String,Set<Field>> merged = mergeByEntity(dictionary.keySet());
+		Map<String,Set<Field>> merged = mergeByEntity(dictionarySources.keySet());
 		
 		for(String entity:merged.keySet()){
 			
 			List<Field> fields = new ArrayList<Field>();
 			fields.addAll(merged.get(entity));
 			
-			for(DataSource source : dictionary.get(fields.get(0))){
+			for(DataSource source : dictionarySources.get(fields.get(0))){
 				source.createDataElements(new Entity(entity), merged.get(entity));
 			}
 		}

@@ -2,7 +2,7 @@ package rendezvous.federator.core;
 
 public class Field {
 
-	public Field(String fieldName, String entityName) {
+	public Field(String fieldName, String entityName){
 		this.fieldName = fieldName;
 		this.entityName = entityName;
 	}
@@ -26,7 +26,7 @@ public class Field {
 		this.entityName = entityName;
 	}
 
-    @Override
+	@Override
     public int hashCode() {
         return (getEntityName()+getFieldName()).hashCode();
     }

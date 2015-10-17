@@ -69,10 +69,14 @@ public abstract class Endpoint {
 				String rawValue = jsonField.get(field).toString();
 	
 				logger.debug("The value <"+rawValue+"> was extracted for field <"+rawField+"> of the entity <"+rawEntity+">");
+
+				Field dicField = new Field(rawField,rawEntity);
 				
-				Set<DataSource> sources = dictionary.getDatasources(new Field(rawField,rawEntity));
-				
-				values.add(new Value(rawEntity,rawField,rawValue,DataType.STRING, sources));			
+				Set<DataSource> sources = dictionary.getDatasources(dicField);
+
+				for(String type:dictionary.getTypes(dicField)){
+					values.add(new Value(rawEntity,rawField,rawValue,type, sources));
+				}
 			}
 		}
 		 

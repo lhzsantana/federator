@@ -19,10 +19,10 @@ public class Value {
 	private String entity;
 	private String field;
 	private String value;
-	private DataType type;
+	private String type;
 	private Set<DataSource> sources;
 	
-	public Value(String entity, String field, String value, DataType type, Set<DataSource> sources){
+	public Value(String entity, String field, String value, String type, Set<DataSource> sources){
 		this.setEntity(entity);
 		this.field=field;
 		this.value=value;
@@ -30,7 +30,7 @@ public class Value {
 		this.sources=sources;
 	}
 	
-	public Value(String entity, String field, String value, DataType type, DataSource dataSource) {
+	public Value(String entity, String field, String value, String type, DataSource dataSource) {
 		this.setEntity(entity);
 		this.field=field;
 		this.value=value;
@@ -41,7 +41,7 @@ public class Value {
 		this.sources=sources;	
 	}
 
-	public Value(String entity, String field, String value, DataType type) {
+	public Value(String entity, String field, String value, String type) {
 		this.setEntity(entity);
 		this.field=field;
 		this.value=value;
@@ -60,10 +60,10 @@ public class Value {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public DataType getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(DataType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

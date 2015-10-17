@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
@@ -29,6 +31,25 @@ public class GetEndpointTest {
 		GetResponse getResponse = getEndpoint.get("12345");
 		assertNull(getResponse.getHits());
 	}
+	
+	@Test
+	public void testInsertGetRelation() throws Exception {
+		
+		InsertEndpoint insertEndpoint = new InsertEndpoint();
+
+		InsertResponse insertResponse = insertEndpoint.insert("{\"usuarios1\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		
+		logger.info("The insert response has the id <"+insertResponse.getId()+">");
+		
+		insertResponse = insertEndpoint.insert("{\"posts1\":{\"body\":\"TESTE BODY 1\",\"author\":\""+insertResponse.getId()+"\"}}");
+		
+		logger.info("The insert response has the id <"+insertResponse.getId()+">");
+
+		GetEndpoint getEndpoint = new GetEndpoint();
+		GetResponse response = getEndpoint.get(insertResponse.getId());
+
+		printHits(response.getHits());
+	}	
 
 	@Test
 	public void testInsertGet() throws Exception {
@@ -42,12 +63,21 @@ public class GetEndpointTest {
 		
 		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
 		
+		insertResponse = insertEndpoint.insert("{\"posts1\":{\"body\":\"TESTE BODY 1\"}}");
+		
+		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
+				
 		GetEndpoint getEndpoint = new GetEndpoint();
 		GetResponse response = getEndpoint.get(insertResponse.getId());
 
 		assertNotNull(response.getHits());
 		
-		for(Hit hit : response.getHits()){
+		printHits(response.getHits());
+	}
+	
+	private void printHits(List<Hit> hits){
+		
+		for(Hit hit : hits){
 			
 			logger.info("-------------------------");
 			
@@ -63,6 +93,5 @@ public class GetEndpointTest {
 			logger.info("-------------------------");
 			
 		}
-		
-	}	
+	}
 }

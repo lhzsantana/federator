@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
+import rendezvous.federator.api.endpoint.impl.GetEndpoint;
 import rendezvous.federator.api.response.GetResponse;
 import rendezvous.federator.api.response.InsertResponse;
 import rendezvous.federator.api.response.QueryResponse;
@@ -20,7 +21,6 @@ import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.core.Value;
-import rendezvous.federator.datasources.DataSource;
 import rendezvous.federator.entityManager.EntityManager;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.TransactionManager;
@@ -108,16 +108,41 @@ public class ExecutorImpl implements Executor {
 
 		for (Access access : plan.getAccesses()) {
 
-			Hit hit = access.getDataSource().get(access.getEntity().getName(), access.getEntity().getId());
+			logger.info("Getting the access plan "+access.getEntity().getName()+" for the datasource "+access.getDataSource().getDataSourceType());
 			
-			for(Value value : hit.getValues()){
+			if(access.getDataSource().getDataSourceType().equals("Relationship")){
+				
+				GetEndpoint get = new GetEndpoint();
 			
-				List<Value> volatileValues = intermediateValues.get(value.getEntity());
+				List<Value> subValues = new ArrayList<Value>();
 				
-				if(volatileValues==null) volatileValues=new ArrayList<Value>();				
-				volatileValues.add(value);
+				for(Value value : access.getValues()){
+
+					logger.info("Getting the relationship "+value.getValue());
+					
+					GetResponse response = get.get(value.getValue());
+										
+					for(Hit hit:response.getHits()){
+						
+						Value subValue = new Value(access.getEntity().getName(), value.getField(), hit.getValues().toString(), value.getType());
+						subValues.add(subValue);
+					}
+				}
 				
-				intermediateValues.put(value.getEntity(), volatileValues);
+				intermediateValues.put(access.getEntity().getName(), subValues);
+			}else{
+				
+				Hit hit = access.getDataSource().get(access.getEntity().getName(), access.getEntity().getId());
+				
+				for(Value value : hit.getValues()){
+				
+					List<Value> volatileValues = intermediateValues.get(value.getEntity());
+					
+					if(volatileValues==null) volatileValues=new ArrayList<Value>();				
+					volatileValues.add(value);
+					
+					intermediateValues.put(value.getEntity(), volatileValues);
+				}
 			}
 		}
 		
