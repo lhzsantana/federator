@@ -16,6 +16,7 @@ import com.mongodb.MongoClient;
 
 import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
+import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
@@ -63,6 +64,14 @@ public class MongoDB extends DatasourceDocument {
 	
 	public void close(){
 		mongoClient.close();
+	}
+	
+	@Override
+	public void createDataElements(Entity entity, Set<Field> fields) {
+
+		if(!db.collectionExists(entity.getName())){
+			db.createCollection(entity.getName(), new BasicDBObject());
+		}
 	}
 
 	public String insert(Entity entity, Set<Value> values) throws Exception {
@@ -178,5 +187,4 @@ public class MongoDB extends DatasourceDocument {
 			return hits;			
 		}		
 	}
-
 }

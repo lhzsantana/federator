@@ -3,7 +3,6 @@ package rendezvous.federator.datasources.column.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
@@ -13,9 +12,11 @@ import com.datastax.driver.core.ColumnDefinitions.Definition;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.exceptions.AlreadyExistsException;
 
 import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
+import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
@@ -83,37 +84,50 @@ public class Cassandra extends DatasourceColumn {
 			return false;
 		}		
 	}
+	
 	@Override
-	public String insert(Entity entity, Set<Value> values) throws ParseException {
-				
-		String id = entity.getId();
-		String fieldList = "rendezvous_id,";
+	public void createDataElements(Entity entity, Set<Field> fields){
+
 		String fieldListTable = "rendezvous_id text,";
 		String pureFieldListTable = "rendezvous_id,";
-		String valueList = "'"+id+"',";
 
-		for(Value value:values){
-			fieldList+=value.getField()+",";
-			fieldListTable+=value.getField()+" text,";
-			pureFieldListTable+=value.getField()+",";
-			valueList+= "'"+value.getValue()+"',";			
+		for(Field field:fields){
+			fieldListTable+=field.getFieldName()+" text,";
+			pureFieldListTable+=field.getFieldName()+",";			
 		}
 		
 		String cql = "";
 		
 		try{
-			cql = "CREATE TABLE "+entity.getName()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY ("+pureFieldListTable.substring(0,pureFieldListTable.length()-1)+"));";
+
+			//cql = "CREATE TABLE "+entity.getName()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY ("+pureFieldListTable.substring(0,pureFieldListTable.length()-1)+"));";
+			cql = "CREATE TABLE "+entity.getName()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY (rendezvous_id));";
+			
 			session.execute(cql);
 			
-			for(Value value:values){
-				session.execute("CREATE INDEX ON "+entity.getName()+" ("+value.getField()+");");
+			//TODO: avoid this second loop
+			for(Field field:fields){
+				session.execute("CREATE INDEX ON "+entity.getName()+" ("+field.getFieldName()+");");
 			}
 			
-		}catch(Exception e){
-			logger.warn(cql,e);
+		}catch(AlreadyExistsException e){
+			logger.warn(e.getMessage() + " " + cql);
+		}	
+	}	
+	
+	@Override
+	public String insert(Entity entity, Set<Value> values) throws ParseException {
+				
+		String id = entity.getId();
+		String fieldList = "rendezvous_id,";
+		String valueList = "'"+id+"',";
+
+		for(Value value:values){
+			fieldList+=value.getField()+",";
+			valueList+= "'"+value.getValue()+"',";			
 		}
 		
-		cql = "INSERT INTO "+entity.getName()+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
+		String cql = "INSERT INTO "+entity.getName()+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
 			      "VALUES ("+valueList.substring(0,valueList.length()-1)+")";
 
 		logger.info(cql);

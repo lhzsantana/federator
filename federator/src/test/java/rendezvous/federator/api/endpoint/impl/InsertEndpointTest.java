@@ -12,7 +12,7 @@ public class InsertEndpointTest extends TestCase {
 	public void testInsert() throws Exception {
 
 		InsertEndpoint endpoint = new InsertEndpoint();
-		Response response = endpoint.insert("{\"usuario\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		Response response = endpoint.insert("{\"usuarios\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
 	}
 
 	@Test

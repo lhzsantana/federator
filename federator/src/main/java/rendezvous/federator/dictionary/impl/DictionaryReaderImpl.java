@@ -2,6 +2,7 @@ package rendezvous.federator.dictionary.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,8 +15,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.RelationshipManager;
 import rendezvous.federator.datasources.column.cassandra.Cassandra;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;
 import rendezvous.federator.dictionary.DictionaryReader;
@@ -60,6 +63,9 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				dictionary.put(new Field(fieldName, entityName), dataSources);
 			}			
 		}
+
+		logger.info("Creating data elements");
+		createDataElements();
 	}
 	
 	private DataSource getDataSource(String sourceName) throws Exception{
@@ -73,6 +79,9 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				break;
 			case "cassandra":
 				source = new Cassandra();
+				break;
+			case "entity":
+				source = new RelationshipManager();
 				break;	
 			default:
 				throw new Exception("The datasource "+sourceName+" is invalid");
@@ -99,5 +108,36 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		this.refreshDictionary();
 
 		return dictionary.keySet();
+	}
+	
+	private void createDataElements(){
+		
+		Map<String,Set<Field>> merged = mergeByEntity(dictionary.keySet());
+		
+		for(String entity:merged.keySet()){
+			
+			List<Field> fields = new ArrayList<Field>();
+			fields.addAll(merged.get(entity));
+			
+			for(DataSource source : dictionary.get(fields.get(0))){
+				source.createDataElements(new Entity(entity), merged.get(entity));
+			}
+		}
+	}
+	
+	private Map<String,Set<Field>> mergeByEntity(Set<Field> fields){
+		
+		Map<String,Set<Field>> merger = new HashMap<String,Set<Field>>();
+		
+		for(Field field:fields){
+			Set<Field> mergedFields = merger.get(field.getEntityName());
+			
+			if(mergedFields==null) mergedFields = new HashSet<Field>();
+			mergedFields.add(field);
+			
+			merger.put(field.getEntityName(), mergedFields);
+		}		
+		
+		return merger;
 	}
 }

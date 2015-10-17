@@ -61,6 +61,9 @@ public class PlannerImpl implements Planner {
 		Map<DataSource,Set<Value>> result = new HashMap<DataSource,Set<Value>>();
 		
 		for(Value value:values){
+			
+			logger.info("Value "+value.getValue()+" for the field "+value.getField());
+			
 			for(DataSource dataSource:value.getSources()){
 				Set<Value> valuesForDataSource = result.get(dataSource);
 				if(valuesForDataSource==null){

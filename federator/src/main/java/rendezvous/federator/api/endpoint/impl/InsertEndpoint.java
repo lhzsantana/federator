@@ -17,6 +17,7 @@ public class InsertEndpoint extends Endpoint {
 	public InsertResponse insert(String json) throws Exception {
 
 		String extractEntity = super.extractEntity(json);
+		
 		Set<Value> extractedValues = super.extractValues(json);
 
 		Plan plan = super.planner.createPlan(Action.INSERT, extractEntity, extractedValues);

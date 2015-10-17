@@ -94,6 +94,5 @@ public abstract class Endpoint {
 
 	public String extractEntity(String json) throws ParseException {
 		return extractEntities(json).get(0);
-	}
-	
+	}	
 }

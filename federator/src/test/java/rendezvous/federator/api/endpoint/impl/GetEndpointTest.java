@@ -34,11 +34,11 @@ public class GetEndpointTest {
 	public void testInsertGet() throws Exception {
 
 		InsertEndpoint insertEndpoint = new InsertEndpoint();
-		InsertResponse insertResponse = insertEndpoint.insert("{\"usuario\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		InsertResponse insertResponse = insertEndpoint.insert("{\"usuarios1\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
 		
 		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
 		
-		insertResponse = insertEndpoint.insert("{\"usuario\":{\"email\":\"lhzsantana@gmail.com\",\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		insertResponse = insertEndpoint.insert("{\"usuarios1\":{\"email\":\"lhzsantana@gmail.com\",\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
 		
 		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
 		

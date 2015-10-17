@@ -1,5 +1,5 @@
 entities:
-  usuario: 
+  usuarios1: 
     name: 
         type: [string]
         source: ['mongodb','cassandra']
@@ -14,18 +14,25 @@ entities:
         source: ['mongodb','cassandra']
     email:
         type: [string]
-        source: ['mongodb']
-  post:
+        source: ['cassandra']
+  posts1:
     body: 
         type: [string]
         source: ['mongodb']
     createdAt:
         type: [date]
         source: ['mongodb']
-  comment:
+    author:
+        type: [usuario]
+        source: [entity]
+  comments1:
     body: 
         type: [string]
         source: ['mongodb']
     createdAt:
         type: [date]
         source: ['mongodb']
+    parent:
+        type: [post]
+        source: [entity]
+        

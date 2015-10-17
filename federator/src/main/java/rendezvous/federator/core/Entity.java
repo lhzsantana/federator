@@ -8,6 +8,10 @@ public class Entity {
 		this.source=source;
 	}
 
+	public Entity(String name) {
+		this.name=name;
+	}
+
 	private String name;
 	private String id;
 	private String source;
