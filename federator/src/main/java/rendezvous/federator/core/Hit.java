@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Hit {
 
+	private Entity entity;
 	private List<Value> values;
 	private Integer relevance;
 
@@ -38,5 +39,13 @@ public class Hit {
 		}
 		
 		return null;
+	}
+
+	public Entity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(Entity entity) {
+		this.entity = entity;
 	}
 }

@@ -3,7 +3,6 @@ package rendezvous.federator.datasources.document.mongodb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -74,6 +73,7 @@ public class MongoDB extends DatasourceDocument {
 		}
 	}
 
+	@Override
 	public String insert(Entity entity, Set<Value> values) throws Exception {
 
 		if(values==null||values.isEmpty()||values.size()==0) throw new Exception("Cannot insert an empty list");
@@ -136,9 +136,7 @@ public class MongoDB extends DatasourceDocument {
 				hit.setValues(values);
 				
 				return hit;
-			}
-			
-			
+			}			
 		}
 		
 		return null;

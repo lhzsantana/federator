@@ -2,8 +2,10 @@ package rendezvous.federator.executor.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -37,8 +39,12 @@ public class ExecutorImpl implements Executor {
 	public InsertResponse insertExecute(Plan plan) throws Exception {
 
 		InsertResponse response = new InsertResponse();
-		response.setId(this.executeInsert(plan));
-
+		
+		Entity entity = this.executeInsert(plan);
+		response.setId(entity.getId());
+		
+		cache.add(entity);
+		
 		return response;
 	}
 
@@ -46,10 +52,14 @@ public class ExecutorImpl implements Executor {
 	public GetResponse getExecute(Plan plan) throws Exception {
 
 		List<Hit> hits = this.executeGet(plan);
+		
+		for(Hit hit:hits){
+			cache.add(hit.getEntity());			
+		}
 
 		GetResponse response = new GetResponse();
 		response.setHits(hits);
-
+		
 		return response;
 	}
 
@@ -58,20 +68,25 @@ public class ExecutorImpl implements Executor {
 
 		List<Hit> hits = this.executeQuery(plan);
 
+		for(Hit hit:hits){
+			cache.add(hit.getEntity());			
+		}
+		
 		QueryResponse response = new QueryResponse();
 		response.setHits(hits);
 
 		return response;
 	}
 
-	private String executeInsert(Plan plan) throws Exception {
+	private Entity executeInsert(Plan plan) throws Exception {
 
 		logger.debug("Executing a new plan");
 
 		String entityId = UUID.randomUUID().toString();
 
 		List<Access> accessed = new ArrayList<Access>();
-
+		Set<Value> values = new HashSet<Value>();
+		
 		for (Access access : plan.getAccesses()) {
 
 			logger.debug("Executing a new access");
@@ -85,6 +100,8 @@ public class ExecutorImpl implements Executor {
 				access.setEntity(entity);
 				
 				access.getDataSource().insert(access.getEntity(), access.getValues());
+				values.addAll(access.getValues());
+				
 			} catch (ParseException e) {
 				logger.debug(e);
 			}
@@ -98,7 +115,7 @@ public class ExecutorImpl implements Executor {
 		
 		EntityManager.addEntity(entityId, accessed);
 
-		return entityId;
+		return new Entity(entityId,values);
 	}
 
 	private List<Hit> executeGet(Plan plan) throws Exception {
@@ -185,6 +202,7 @@ public class ExecutorImpl implements Executor {
 			Hit hit = new Hit();
 			hit.setValues(intermediateValues.get(entity));
 			hit.setRelevance(relevance);
+			hit.setEntity(new Entity(entity,hit.getValues()));
 			
 			finalHits.add(hit);
 		}

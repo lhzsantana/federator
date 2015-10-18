@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import rendezvous.federator.api.endpoint.Endpoint;
 import rendezvous.federator.api.response.QueryResponse;
 import rendezvous.federator.core.Action;
-import rendezvous.federator.core.Graph;
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.core.Value;
 
@@ -20,12 +20,11 @@ public class QueryEndpoint extends Endpoint{
 	
 	public QueryResponse query(String json) throws JsonParseException, IOException, Exception {
 
-		Graph.refresh();
+		String extractedEntity = super.extractEntity(json);
 		
-		String extractEntity = super.extractEntity(json);
 		Set<Value> extractedValues = super.extractValues(json);
 		
-		Plan plan = super.planner.createPlan(Action.QUERY, extractEntity, extractedValues);
+		Plan plan = super.planner.createPlan(Action.QUERY, new Entity(extractedEntity), extractedValues);
 
 		return super.executor.queryExecute(plan);		
 	}

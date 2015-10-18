@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import rendezvous.federator.api.endpoint.Endpoint;
 import rendezvous.federator.api.response.DeleteResponse;
-import rendezvous.federator.api.response.impl.Response;
 import rendezvous.federator.api.response.impl.Status;
 import rendezvous.federator.entityManager.EntityManager;
 

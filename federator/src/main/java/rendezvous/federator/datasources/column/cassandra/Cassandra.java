@@ -89,18 +89,14 @@ public class Cassandra extends DatasourceColumn {
 	public void createDataElements(Entity entity, Set<Field> fields){
 
 		String fieldListTable = "rendezvous_id text,";
-		String pureFieldListTable = "rendezvous_id,";
 
 		for(Field field:fields){
 			fieldListTable+=field.getFieldName()+" text,";
-			pureFieldListTable+=field.getFieldName()+",";			
 		}
 		
 		String cql = "";
 		
 		try{
-
-			//cql = "CREATE TABLE "+entity.getName()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY ("+pureFieldListTable.substring(0,pureFieldListTable.length()-1)+"));";
 			cql = "CREATE TABLE "+entity.getName()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY (rendezvous_id));";
 			
 			session.execute(cql);

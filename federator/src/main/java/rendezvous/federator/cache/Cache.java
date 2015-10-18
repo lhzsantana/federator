@@ -2,12 +2,17 @@ package rendezvous.federator.cache;
 
 import java.util.List;
 
+import rendezvous.federator.core.Entity;
+import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Value;
 
 public interface Cache {
 
-	public void expiresAll();
-	public List<Hit>  get(Key key);
-	public List<Hit> get(String key);
-	public List<Hit> get(Integer key);
+	public List<Hit> get(Entity entity);
+	public List<Hit> get(Field field);
+	
+	public void add(Entity entity);
+	public void add(Value value);
+
 }

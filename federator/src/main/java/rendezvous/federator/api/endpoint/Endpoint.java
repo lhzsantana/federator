@@ -14,7 +14,6 @@ import org.json.simple.parser.ParseException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.google.gson.Gson;
 
-import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSource;
@@ -74,7 +73,11 @@ public abstract class Endpoint {
 				
 				Set<DataSource> sources = dictionary.getDatasources(dicField);
 
-				for(String type:dictionary.getTypes(dicField)){
+				List<String>types = dictionary.getTypes(dicField);
+				
+				if(types==null || types.size() == 0 || types.isEmpty()) throw new Exception("Mapping error, the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntityName()+">");
+				
+				for(String type:types){
 					values.add(new Value(rawEntity,rawField,rawValue,type, sources));
 				}
 			}

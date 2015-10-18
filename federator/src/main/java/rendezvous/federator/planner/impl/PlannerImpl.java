@@ -22,7 +22,7 @@ public class PlannerImpl implements Planner {
 	final static Logger logger = Logger.getLogger(PlannerImpl.class);
 	
 	@Override
-	public Plan createPlan(Action action, String entity, Set<Value> values) {
+	public Plan createPlan(Action action, Entity entity, Set<Value> values) {
 
 		Plan plan = new Plan();
 
@@ -36,7 +36,7 @@ public class PlannerImpl implements Planner {
 			access.setAction(action);
 			access.setValues(reorderedValues.get(dataSource));
 			access.setDataSource(dataSource);
-			access.setEntity(new Entity(entity,null,null));
+			access.setEntity(entity);
 						
 			accesses.add(access);
 			
@@ -75,12 +75,6 @@ public class PlannerImpl implements Planner {
 		}
 		
 		return result;
-	}
-
-	@Override
-	public Plan createPlan(Action get, String entity) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }
