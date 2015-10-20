@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import rendezvous.federator.core.Access;
+import rendezvous.federator.core.Entity;
 
 public class EntityManager {
 
@@ -14,9 +15,13 @@ public class EntityManager {
 	
 	private static Map<String,List<Access>> entityList = new HashMap<String,List<Access>>();
 	
+	private static Map<Entity,String> mappings = new HashMap<Entity,String>();
+	
 	public static void addEntity(String id, List<Access> accessed){
 		EntityManager.entityList.put(id, accessed);
 	}
+	
+	
 	
 	public static  List<Access> getEntity(String id){
 		
