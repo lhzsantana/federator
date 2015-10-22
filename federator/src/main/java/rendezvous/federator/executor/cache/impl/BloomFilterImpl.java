@@ -23,6 +23,7 @@ public class BloomFilterImpl implements Cache {
 	private static double cleaningLevel = 0.9;
 	
 	private static BloomFilter<Field>  bf = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
+	private static BloomFilter<Entity>  bfEntities = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
 	private static Map<Field,CachedValue> values = new HashMap<Field,CachedValue>();
 
 	private final static Logger logger = Logger.getLogger(BloomFilterImpl.class);
@@ -55,6 +56,8 @@ public class BloomFilterImpl implements Cache {
 	public void add(Entity entity) {
 
 		logger.info("Adding entity <"+entity.getName()+"> to cache ");
+		
+		if(entity.isComplete()) bfEntities.add(entity);
 		
 		for (Value value : entity.getValues()) {
 			add(value);
@@ -105,5 +108,15 @@ public class BloomFilterImpl implements Cache {
 	@Override
 	public void evictAll() {
 		bf.clear();		
+	}
+
+	@Override
+	public boolean contains(Entity entity) {
+		
+		if(entity.isComplete() && bfEntities.contains(entity)){
+			return true;
+		}
+		
+		return false;
 	}
 }

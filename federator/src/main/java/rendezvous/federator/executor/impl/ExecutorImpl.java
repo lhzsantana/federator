@@ -1,6 +1,7 @@
 package rendezvous.federator.executor.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +55,9 @@ public class ExecutorImpl implements Executor {
 		List<Hit> hits = this.executeGet(plan);
 		
 		for(Hit hit:hits){
-			cache.add(hit.getEntity());			
+			for(Value value:hit.getValues()){
+				cache.add(value);	
+			}
 		}
 
 		GetResponse response = new GetResponse();
@@ -69,7 +72,9 @@ public class ExecutorImpl implements Executor {
 		List<Hit> hits = this.executeQuery(plan);
 
 		for(Hit hit:hits){
-			cache.add(hit.getEntity());			
+			for(Value value:hit.getValues()){
+				cache.add(value);	
+			}
 		}
 		
 		QueryResponse response = new QueryResponse();
@@ -101,6 +106,10 @@ public class ExecutorImpl implements Executor {
 				
 				access.getDataSource().insert(access.getEntity(), access.getValues());
 				values.addAll(access.getValues());
+
+				for(Value value:values){
+					cache.add(value);	
+				}				
 				
 			} catch (ParseException e) {
 				logger.debug(e);
@@ -121,9 +130,19 @@ public class ExecutorImpl implements Executor {
 	private List<Hit> executeGet(Plan plan) throws Exception {
 
 		//TODO: change the String value for a Entity reference
-		Map<String, List<Value>> intermediateValues = new HashMap<String, List<Value>>();
+		Map<String, Collection<Value>> intermediateValues = new HashMap<String, Collection<Value>>();
 
+		List<Access> finalAccesses = new ArrayList<Access>();
+		
 		for (Access access : plan.getAccesses()) {
+			if(cache.contains(access.getEntity())){					
+				intermediateValues.put(access.getEntity().getName(), access.getEntity().getValues());
+			}else{
+				finalAccesses.add(access);
+			}
+		}		
+		
+		for (Access access : finalAccesses) {
 
 			logger.info("Getting the access plan "+access.getEntity().getName()+" for the datasource "+access.getDataSource().getDataSourceType());
 			
@@ -153,7 +172,7 @@ public class ExecutorImpl implements Executor {
 				
 				for(Value value : hit.getValues()){
 				
-					List<Value> volatileValues = intermediateValues.get(value.getEntity());
+					List<Value> volatileValues = (List<Value>) intermediateValues.get(value.getEntity());
 					
 					if(volatileValues==null) volatileValues=new ArrayList<Value>();				
 					volatileValues.add(value);
@@ -169,16 +188,26 @@ public class ExecutorImpl implements Executor {
 	private List<Hit> executeQuery(Plan plan) throws Exception {
 
 		//TODO: change the String value for a Entity reference
-		Map<String, List<Value>> intermediateValues = new HashMap<String, List<Value>>();
-
+		Map<String, Collection<Value>> intermediateValues = new HashMap<String, Collection<Value>>();
+		
+		List<Access> finalAccesses = new ArrayList<Access>();
+		
 		for (Access access : plan.getAccesses()) {
+			if(cache.contains(access.getEntity())){					
+				intermediateValues.put(access.getEntity().getName(), access.getEntity().getValues());
+			}else{
+				finalAccesses.add(access);
+			}
+		}		
+		
+		for (Access access : finalAccesses) {
 			
 			List<Hit> hits = access.getDataSource().query(access.getEntity().getName(), access.getValues());
 			
 			for(Hit hit : hits){
 				for(Value value : hit.getValues()){
 					
-					List<Value> volatileValues = intermediateValues.get(value.getEntity());
+					List<Value> volatileValues = (List<Value>) intermediateValues.get(value.getEntity());
 					
 					if(volatileValues == null) volatileValues = new ArrayList<Value>();
 					volatileValues.add(value);
@@ -191,7 +220,7 @@ public class ExecutorImpl implements Executor {
 		return this.mergeHits(intermediateValues);
 	}
 
-	private List<Hit> mergeHits(Map<String, List<Value>> intermediateValues) {
+	private List<Hit> mergeHits(Map<String, Collection<Value>> intermediateValues) {
 
 		logger.debug("Merging <"+intermediateValues.size()+"> intermediate values");
 				
@@ -200,7 +229,7 @@ public class ExecutorImpl implements Executor {
 		
 		for(String entity: intermediateValues.keySet()){
 			Hit hit = new Hit();
-			hit.setValues(intermediateValues.get(entity));
+			hit.setValues((List<Value>) intermediateValues.get(entity));
 			hit.setRelevance(relevance);
 			hit.setEntity(new Entity(entity,hit.getValues()));
 			
