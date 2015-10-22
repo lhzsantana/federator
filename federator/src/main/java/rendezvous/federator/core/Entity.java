@@ -10,6 +10,7 @@ public class Entity {
 	private String id;
 	private String source;
 	private Set<Value> values; 
+	private Set<Field> fields; 
 		
 	public Entity(String name, String id, String source){
 		this.name=name;
@@ -56,6 +57,24 @@ public class Entity {
 
 	public void setValues(Set<Value> values) {
 		this.values = values;
+	}
+	
+	public Set<Field> getFields() {
+		return fields;
+	}
+
+	public void setFields(Set<Field> fields) {
+		this.fields = fields;
+	}
+
+
+	public boolean isComplete() {
+		
+		if(this.getValues().size()==this.getFields().size()){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	

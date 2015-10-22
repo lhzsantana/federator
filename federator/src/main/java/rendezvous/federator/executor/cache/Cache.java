@@ -16,4 +16,7 @@ public interface Cache {
 	public void add(Entity entity);
 	public void add(Value value);
 
+	public boolean contains(Entity entity);
+
+
 }
