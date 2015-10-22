@@ -1,6 +1,13 @@
 package rendezvous.federator.core;
 
+import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Field {
+	
+	private final static Logger logger = Logger.getLogger(Field.class);
 
 	public Field(String fieldName, String entityName){
 		this.fieldName = fieldName;
@@ -46,5 +53,19 @@ public class Field {
 				return false;
 			}			
 		}
+	}
+	
+	@Override
+	public String toString() {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			logger.error(e);
+		}
+		
+		return null;
 	}
 }

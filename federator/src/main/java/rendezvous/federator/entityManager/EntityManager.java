@@ -17,11 +17,13 @@ public class EntityManager {
 	
 	private static Map<Entity,String> mappings = new HashMap<Entity,String>();
 	
+	public static void addMapping(String id, List<Access> accessed){
+		//mappings.put(key, value)
+	}
+	
 	public static void addEntity(String id, List<Access> accessed){
 		EntityManager.entityList.put(id, accessed);
 	}
-	
-	
 	
 	public static  List<Access> getEntity(String id){
 		

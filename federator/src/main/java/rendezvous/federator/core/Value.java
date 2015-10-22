@@ -13,7 +13,7 @@ import rendezvous.federator.datasources.document.mongodb.MongoDB;
 
 public class Value {
 
-	private final static Logger logger = Logger.getLogger(MongoDB.class);
+	private final static Logger logger = Logger.getLogger(Value.class);
 	
 	private Field field;
 	private Entity entity;

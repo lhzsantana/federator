@@ -15,8 +15,6 @@ import rendezvous.federator.api.endpoint.impl.GetEndpoint;
 import rendezvous.federator.api.response.GetResponse;
 import rendezvous.federator.api.response.InsertResponse;
 import rendezvous.federator.api.response.QueryResponse;
-import rendezvous.federator.cache.Cache;
-import rendezvous.federator.cache.impl.BloomFilterImpl;
 import rendezvous.federator.core.Access;
 import rendezvous.federator.core.Action;
 import rendezvous.federator.core.Entity;
@@ -26,6 +24,8 @@ import rendezvous.federator.core.Value;
 import rendezvous.federator.entityManager.EntityManager;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.TransactionManager;
+import rendezvous.federator.executor.cache.Cache;
+import rendezvous.federator.executor.cache.impl.BloomFilterImpl;
 
 public class ExecutorImpl implements Executor {
 
