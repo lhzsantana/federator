@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.json.simple.parser.ParseException;
+import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.factory.GraphDatabaseSettings;
-import static org.neo4j.graphdb.DynamicRelationshipType.*;
 
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
@@ -21,11 +20,6 @@ import rendezvous.federator.datasources.graph.DatasourceGraph;
 public class Neo4J extends DatasourceGraph {
 	
 	GraphDatabaseService graphDb;
-	
-	private static enum RelTypes implements RelationshipType
-	{
-	    KNOWS
-	}
 	
 	@Override
 	public String getDataSourceType() {
@@ -47,8 +41,8 @@ public class Neo4J extends DatasourceGraph {
 
 	@Override
 	public boolean connect() throws Exception {
-		graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(
-		        "target/read-only-db/location" )
+		graphDb = new GraphDatabaseFactory()
+				.newEmbeddedDatabaseBuilder("target/read-only-db/location" )
                 .setConfig( GraphDatabaseSettings.read_only, "true" )
                 .newGraphDatabase();
 		
@@ -57,16 +51,23 @@ public class Neo4J extends DatasourceGraph {
 
 	@Override
 	public String insert(Entity entity, Set<Value> values) throws ParseException, Exception {
-		
-		Node firstNode = graphDb.createNode();
-		firstNode.setProperty( "message", "Hello, " );
-		Node secondNode = graphDb.createNode();
-		secondNode.setProperty( "message", "World!" );
 
-		Relationship relationship = firstNode.createRelationshipTo( secondNode, RelTypes.KNOWS);
-		relationship.setProperty( "message", "brave Neo4j " );
+		if(values==null||values.isEmpty()||values.size()==0) throw new Exception("Cannot insert an empty list");
+		
+		Node node = graphDb.createNode();
+		
+		for(Value value : values){
+			node.setProperty(value.getField().getFieldName(), value.getValue());
+			
+			if(value.getType().equals("entity")){
+
+				Node related = graphDb.getNodeById(Long.valueOf(value.getValue()));
 				
-		return null;
+				node.createRelationshipTo( related, DynamicRelationshipType.withName(value.getField().getFieldName()));				
+			}
+		}
+		
+		return entity.getId();
 	}
 
 	@Override
@@ -83,7 +84,6 @@ public class Neo4J extends DatasourceGraph {
 
 	@Override
 	public void createDataElements(Entity entity, Set<Field> fields) {
-		// TODO Auto-generated method stub
 
 	}
 

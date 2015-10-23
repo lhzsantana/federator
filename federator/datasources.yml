@@ -8,4 +8,12 @@ datasources:
     host: 127.0.0.1
     port: 9042
     keyspace: federator
+  neo4j:
+    host: 127.0.0.1
+    port: 7474
+    keyspace: federator
+  redis:
+    host: 127.0.0.1
+    port: 7474
+  
   

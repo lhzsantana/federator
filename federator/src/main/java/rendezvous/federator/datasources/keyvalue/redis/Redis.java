@@ -1,4 +1,4 @@
-package rendezvous.federator.datasources.graph.titandb;
+package rendezvous.federator.datasources.keyvalue.redis;
 
 import java.util.List;
 import java.util.Set;
@@ -9,14 +9,14 @@ import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
-import rendezvous.federator.datasources.DataSourceType;
-import rendezvous.federator.datasources.graph.DatasourceGraph;
+import rendezvous.federator.datasources.keyvalue.KeyValueDatasource;
 
-public class TitanDB extends DatasourceGraph{
+public class Redis extends KeyValueDatasource {
 
 	@Override
 	public String getDataSourceType() {
-		return DataSourceType.TITANDB.toString().toLowerCase();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class TitanDB extends DatasourceGraph{
 	@Override
 	public void setName(String name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class TitanDB extends DatasourceGraph{
 	@Override
 	public void createDataElements(Entity entity, Set<Field> fields) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
