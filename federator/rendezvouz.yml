@@ -14,7 +14,10 @@ entities:
         source: ['mongodb','cassandra']
     email:
         type: [string]
-        source: ['cassandra']
+        source: ['cassandra']        
+    follows:
+        type: [usuario99]
+        source: ['entity']
   posts1:
     body: 
         type: [string]

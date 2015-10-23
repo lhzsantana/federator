@@ -1,5 +1,5 @@
 package rendezvous.federator.datasources;
 
 public enum DataSourceType {
-	MONGODB, CASSANDRA
+	MONGODB, CASSANDRA, TITANDB, NEO4J, HBASE, COUCHDB
 }
