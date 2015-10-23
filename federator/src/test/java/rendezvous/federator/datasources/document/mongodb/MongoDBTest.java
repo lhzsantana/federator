@@ -53,8 +53,7 @@ public class MongoDBTest {
 
 	@Test
 	public void testConnect() throws NumberFormatException, Exception {
-		assertEquals(mongodb.connect(),true);
-		assertEquals(mongodb.connect(),false);
+		mongodb.connect();
 	}
 
 	@Test
@@ -92,11 +91,13 @@ public class MongoDBTest {
 		values.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
 		values.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
-		String id = mongodb.insert(new Entity(entity,"1",""), values);
+		Entity e = new Entity(entity,"1","");
+		
+		String id = mongodb.insert(e, values);
 		
 		logger.info("The id of the inserted entity is <"+id+">");
 		
-		Hit hit = mongodb.get(entity, id);
+		Hit hit = mongodb.get(e);
 		
 		for(Value value : hit.getValues()){
 			logger.info("The value <"+value.getField()+"> and <"+value.getValue()+">");

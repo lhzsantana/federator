@@ -53,8 +53,7 @@ public class CassandraTest {
 
 	@Test
 	public void testConnect() throws NumberFormatException, Exception {
-		assertEquals(cassandra.connect(),true);
-		assertEquals(cassandra.connect(),false);
+		cassandra.connect();
 	}
 
 	@Test
@@ -102,7 +101,7 @@ public class CassandraTest {
 		
 		logger.info("The id of the inserted entity is <"+id+">");
 		
-		Hit hit = cassandra.get(entity, id);
+		Hit hit = cassandra.get(entityObjec);
 		
 		for(Value value : hit.getValues()){
 			logger.info("The value <"+value.getField()+"> and <"+value.getValue()+">");

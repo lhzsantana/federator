@@ -49,7 +49,7 @@ public class Cassandra extends DatasourceColumn {
 	}
 
 	@Override
-	public boolean connect() throws Exception {
+	public void connect() throws Exception {
 		
 		logger.info("Connecting to " + getDataSourceType());		
 		
@@ -76,12 +76,9 @@ public class Cassandra extends DatasourceColumn {
 				
 				session.execute(query);
 				session = cluster.connect(keyspace);
-			}
-			
-			return true;
+			}			
 		}else{
 			logger.debug("Already connected");
-			return false;
 		}		
 	}
 	
@@ -134,9 +131,9 @@ public class Cassandra extends DatasourceColumn {
 	}
 
 	@Override
-	public Hit get(String entity, String id) throws Exception {
+	public Hit get(Entity entity) throws Exception {
 
-		String cql = "SELECT * FROM "+entity+" WHERE rendezvous_id = '" + id + "'";
+		String cql = "SELECT * FROM "+entity+" WHERE rendezvous_id = '" + entity.getId() + "'";
 
 		logger.info(cql);
 		
@@ -150,7 +147,7 @@ public class Cassandra extends DatasourceColumn {
 				String field = definition.getName();
 				
 				if(!field.equals("rendezvous_id")){
-					values.add(new Value(entity,field,row.getString(field),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,row.getString(field),DataType.STRING.toString(), this));
 					
 					logger.info("Added a value for the field "+field);
 				}
@@ -214,6 +211,7 @@ public class Cassandra extends DatasourceColumn {
 		return hits;
 	}
 
+	@Override
 	public void close() {
 		cluster.close();
 	}

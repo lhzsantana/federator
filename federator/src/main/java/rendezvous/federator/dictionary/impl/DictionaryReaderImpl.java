@@ -18,8 +18,11 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.DataSourceType;
 import rendezvous.federator.datasources.RelationshipManager;
+import rendezvous.federator.datasources.column.DatasourceColumn;
 import rendezvous.federator.datasources.column.cassandra.Cassandra;
+import rendezvous.federator.datasources.document.DatasourceDocument;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;
 import rendezvous.federator.dictionary.DictionaryReader;
 import rendezvous.federator.dictionary.Rendezvous;
@@ -129,7 +132,12 @@ public class DictionaryReaderImpl implements DictionaryReader {
 			fields.addAll(merged.get(entity));
 			
 			for(DataSource source : dictionarySources.get(fields.get(0))){
-				source.createDataElements(new Entity(entity), merged.get(entity));
+				
+				if (source instanceof DatasourceColumn) {
+					((DatasourceColumn)source).createDataElements(new Entity(entity), merged.get(entity));
+				}else if (source instanceof DatasourceDocument) {
+					((DatasourceColumn)source).createDataElements(new Entity(entity), merged.get(entity));					
+				}
 			}
 		}
 	}

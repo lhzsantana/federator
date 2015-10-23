@@ -44,7 +44,7 @@ public class MongoDB extends DatasourceDocument {
 	}
 
 	@Override
-	public boolean connect() throws NumberFormatException, Exception {
+	public void connect() throws NumberFormatException, Exception {
 		
 		if (db == null) {			
 			mongoClient = new MongoClient(getConfiguration().get("host"),
@@ -54,13 +54,10 @@ public class MongoDB extends DatasourceDocument {
 			collection = db.getCollection(getConfiguration().get("database"));
 			
 			logger.info("Connected to " + getDataSourceType());
-			
-			return true;
 		}
-		
-		return false;
 	}
-	
+
+	@Override
 	public void close(){
 		mongoClient.close();
 	}
@@ -109,14 +106,14 @@ public class MongoDB extends DatasourceDocument {
 	}
 
 	@Override
-	public Hit get(String entity, String id) throws Exception {
+	public Hit get(Entity entity) throws Exception {
 		
-		if(!db.collectionExists(entity)){
+		if(!db.collectionExists(entity.getName())){
 			throw new Exception ("This entity does not exists");
 		}else{
-			collection = db.getCollection(entity);
+			collection = db.getCollection(entity.getName());
 			
-			DBCursor cursor = collection.find(new BasicDBObject("rendezvous_id", id));
+			DBCursor cursor = collection.find(new BasicDBObject("rendezvous_id", entity.getId()));
 			
 			while(cursor.hasNext()){
 				
@@ -130,7 +127,7 @@ public class MongoDB extends DatasourceDocument {
 				DBObject document = cursor.next();
 				
 				for(String field : document.keySet()){
-					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,document.get(field).toString(),DataType.STRING.toString(), this));
 				}
 				
 				hit.setValues(values);

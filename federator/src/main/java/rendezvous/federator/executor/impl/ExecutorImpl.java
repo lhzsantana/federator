@@ -168,7 +168,7 @@ public class ExecutorImpl implements Executor {
 				intermediateValues.put(access.getEntity().getName(), subValues);
 			}else{
 				
-				Hit hit = access.getDataSource().get(access.getEntity().getName(), access.getEntity().getId());
+				Hit hit = access.getDataSource().get(access.getEntity());
 				
 				for(Value value : hit.getValues()){
 				

@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import rendezvous.federator.core.Entity;
-import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 
@@ -25,12 +24,12 @@ public abstract class DataSource {
 	
 	public abstract String getDataSourceType();
 	public abstract String getName();
+	public abstract void close();
 	public abstract void setName(String name);
-	public abstract boolean connect() throws Exception;	
+	public abstract void connect() throws Exception;	
 	public abstract String insert(Entity entity, Set<Value> values) throws ParseException, Exception;	
 	public abstract List<Hit> query(String entity, Set<Value> values) throws Exception;
-	public abstract Hit get(String entity, String id) throws Exception;
-	public abstract void createDataElements(Entity entity, Set<Field> fields);
+	public abstract Hit get(Entity entity) throws Exception;
 	
     @Override
     public int hashCode() {

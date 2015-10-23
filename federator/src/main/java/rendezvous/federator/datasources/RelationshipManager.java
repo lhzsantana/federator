@@ -6,7 +6,6 @@ import java.util.Set;
 import org.json.simple.parser.ParseException;
 
 import rendezvous.federator.core.Entity;
-import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 
@@ -31,9 +30,7 @@ public class RelationshipManager extends DataSource {
 	}
 
 	@Override
-	public boolean connect() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public void connect() throws Exception {
 	}
 
 	@Override
@@ -49,13 +46,13 @@ public class RelationshipManager extends DataSource {
 	}
 
 	@Override
-	public Hit get(String entity, String id) throws Exception {
+	public Hit get(Entity entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void createDataElements(Entity entity, Set<Field> fields) {
+	public void close() {
 		// TODO Auto-generated method stub
 		
 	}
