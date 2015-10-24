@@ -7,11 +7,11 @@ import java.util.Set;
 import com.fasterxml.jackson.core.JsonParseException;
 
 import rendezvous.federator.core.Field;
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 
 public interface DictionaryReader {
 
-	public Set<DataSource> getDatasources(Field field) throws JsonParseException, IOException, Exception;
+	public Set<Datasource> getDatasources(Field field) throws JsonParseException, IOException, Exception;
 
 	public Set<Field> getFields() throws Exception;
 

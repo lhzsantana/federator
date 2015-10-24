@@ -162,7 +162,7 @@ public class Cassandra extends DatasourceColumn {
 	}
 
 	@Override
-	public List<Hit> query(String entity, Set<Value> queryValues) throws Exception {
+	public List<Hit> query(Entity entity, Set<Value> queryValues) throws Exception {
 		
 		logger.debug("Searching from Cassandra");
 		
@@ -198,7 +198,7 @@ public class Cassandra extends DatasourceColumn {
 				String field = definition.getName();
 				
 				if(!field.equals("rendezvous_id")){
-					values.add(new Value(entity,field,row.getString(field),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,row.getString(field),DataType.STRING.toString(), this));
 				}
 			}
 			

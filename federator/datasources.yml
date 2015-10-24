@@ -11,9 +11,9 @@ datasources:
   neo4j:
     host: 127.0.0.1
     port: 7474
-    keyspace: federator
+    neo4j.path: /target
   redis:
-    host: 127.0.0.1
-    port: 7474
+    redis.host: 127.0.0.1
+    redis.port: 6379
   
   

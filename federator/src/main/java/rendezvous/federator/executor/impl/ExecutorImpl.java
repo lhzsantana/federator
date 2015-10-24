@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.hamcrest.core.IsInstanceOf;
 import org.json.simple.parser.ParseException;
 
 import rendezvous.federator.api.endpoint.impl.GetEndpoint;
@@ -22,6 +23,7 @@ import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.core.Value;
+import rendezvous.federator.datasources.QueryableDatasource;
 import rendezvous.federator.entityManager.EntityManager;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.TransactionManager;
@@ -202,17 +204,20 @@ public class ExecutorImpl implements Executor {
 		
 		for (Access access : finalAccesses) {
 			
-			List<Hit> hits = access.getDataSource().query(access.getEntity().getName(), access.getValues());
+			if(access.getDataSource() instanceof QueryableDatasource){
 			
-			for(Hit hit : hits){
-				for(Value value : hit.getValues()){
-					
-					List<Value> volatileValues = (List<Value>) intermediateValues.get(value.getEntity());
-					
-					if(volatileValues == null) volatileValues = new ArrayList<Value>();
-					volatileValues.add(value);
-					
-					intermediateValues.put(value.getEntity().getName(), volatileValues);
+				List<Hit> hits = ((QueryableDatasource) access.getDataSource()).query(access.getEntity(), access.getValues());
+				
+				for(Hit hit : hits){
+					for(Value value : hit.getValues()){
+						
+						List<Value> volatileValues = (List<Value>) intermediateValues.get(value.getEntity());
+						
+						if(volatileValues == null) volatileValues = new ArrayList<Value>();
+						volatileValues.add(value);
+						
+						intermediateValues.put(value.getEntity().getName(), volatileValues);
+					}
 				}
 			}
 		}

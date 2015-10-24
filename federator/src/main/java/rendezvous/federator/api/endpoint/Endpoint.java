@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Value;
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.dictionary.DictionaryReader;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 import rendezvous.federator.executor.Executor;
@@ -71,7 +71,7 @@ public abstract class Endpoint {
 
 				Field dicField = new Field(rawField,rawEntity);
 				
-				Set<DataSource> sources = dictionary.getDatasources(dicField);
+				Set<Datasource> sources = dictionary.getDatasources(dicField);
 
 				List<String>types = dictionary.getTypes(dicField);
 				

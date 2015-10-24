@@ -14,7 +14,7 @@ import rendezvous.federator.core.Action;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.core.Value;
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.planner.Planner;
 
 public class PlannerImpl implements Planner {
@@ -28,9 +28,9 @@ public class PlannerImpl implements Planner {
 
 		List<Access> accesses = new ArrayList<Access>();
 		
-		Map<DataSource,Set<Value>> reorderedValues = reorder(values);
+		Map<Datasource,Set<Value>> reorderedValues = reorder(values);
 
-		for(DataSource dataSource:reorderedValues.keySet()){
+		for(Datasource dataSource:reorderedValues.keySet()){
 
 			Access access = new Access();
 			access.setAction(action);
@@ -56,15 +56,15 @@ public class PlannerImpl implements Planner {
 		return plan;
 	}
 	
-	private Map<DataSource,Set<Value>> reorder(Set<Value> values){
+	private Map<Datasource,Set<Value>> reorder(Set<Value> values){
 		
-		Map<DataSource,Set<Value>> result = new HashMap<DataSource,Set<Value>>();
+		Map<Datasource,Set<Value>> result = new HashMap<Datasource,Set<Value>>();
 		
 		for(Value value:values){
 			
 			logger.info("Value "+value.getValue()+" for the field "+value.getField());
 			
-			for(DataSource dataSource:value.getSources()){
+			for(Datasource dataSource:value.getSources()){
 				Set<Value> valuesForDataSource = result.get(dataSource);
 				if(valuesForDataSource==null){
 					valuesForDataSource=new HashSet<Value>();

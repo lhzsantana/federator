@@ -140,14 +140,14 @@ public class MongoDB extends DatasourceDocument {
 	}
 
 	@Override
-	public List<Hit> query(String entity, Set<Value> queryValues) throws Exception {
+	public List<Hit> query(Entity entity, Set<Value> queryValues) throws Exception {
 
 		logger.info("Searching from MongoDB");
 
-		if(!db.collectionExists(entity)){
+		if(!db.collectionExists(entity.getName())){
 			throw new Exception ("This entity does not exists");
 		}else{
-			collection = db.getCollection(entity);
+			collection = db.getCollection(entity.getName());
 
 			DBObject queryDocument=new BasicDBObject();			
 			
@@ -171,7 +171,7 @@ public class MongoDB extends DatasourceDocument {
 				DBObject document = cursor.next();
 				
 				for(String field : document.keySet()){
-					values.add(new Value(entity,field,document.get(field).toString(),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,document.get(field).toString(),DataType.STRING.toString(), this));
 				}
 				
 				hit.setValues(values);

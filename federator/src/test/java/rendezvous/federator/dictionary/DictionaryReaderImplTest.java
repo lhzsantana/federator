@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 
 import rendezvous.federator.core.Field;
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 
 public class DictionaryReaderImplTest {
@@ -21,7 +21,7 @@ public class DictionaryReaderImplTest {
 
 		for (Field field : reader.getFields()) {
 			
-			for (DataSource source : reader.getDatasources(field)) {
+			for (Datasource source : reader.getDatasources(field)) {
 				logger.debug("The datasource <"+source.getName()+"> for the field <"+field.getFieldName()+"> was found in the entity <"+field.getEntityName()+">");
 			}
 		}

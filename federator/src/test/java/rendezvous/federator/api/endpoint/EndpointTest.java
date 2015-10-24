@@ -12,7 +12,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import rendezvous.federator.api.endpoint.impl.InsertEndpoint;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 
 public class EndpointTest {
 
@@ -27,7 +27,7 @@ public class EndpointTest {
 				.extractValues("{\"user\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
 
 		for (Value value : extractedValues) {
-			for (DataSource source : value.getSources()) {
+			for (Datasource source : value.getSources()) {
 				logger.debug("The extracted value have the field <" + value.getField() + ">, the value <"
 						+ value.getValue() + "> and the source <" + source.getName() + ">");
 			}

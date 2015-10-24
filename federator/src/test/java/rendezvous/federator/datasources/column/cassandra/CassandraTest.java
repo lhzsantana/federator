@@ -141,13 +141,15 @@ public class CassandraTest {
 		values4.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
 		values4.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
-		cassandra.insert(new Entity(entity,"3",""), values4);
+		Entity e = new Entity(entity,"3","");
+		
+		cassandra.insert(e, values4);
 		
 		Set<Value> valuesQuery = new HashSet<Value>();
 		valuesQuery.add(new Value(entity,"field1","xpto",DataType.STRING.toString()));
 		valuesQuery.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
 			
-		List<Hit> hits = cassandra.query(entity, valuesQuery);
+		List<Hit> hits = cassandra.query(e, valuesQuery);
 
 		logger.info("--------------------------------------------------------------");
 		

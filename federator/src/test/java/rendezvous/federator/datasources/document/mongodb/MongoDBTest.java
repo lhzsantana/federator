@@ -137,12 +137,14 @@ public class MongoDBTest {
 		values4.add(new Value(entity,"field2","value2",DataType.STRING.toString()));
 		values4.add(new Value(entity,"field3","value3",DataType.STRING.toString()));
 		
-		mongodb.insert(new Entity(entity,"1",""), values4);
+		Entity e1 = new Entity(entity,"1","");
+		
+		mongodb.insert(e1, values4);
 		
 		Set<Value> valuesQuery = new HashSet<Value>();
 		valuesQuery.add(new Value(entity,"field1","xpto",DataType.STRING.toString()));
 			
-		List<Hit> hits = mongodb.query(entity, valuesQuery);
+		List<Hit> hits = mongodb.query(e1, valuesQuery);
 
 		logger.info("--------------------------------------------------------------");
 		

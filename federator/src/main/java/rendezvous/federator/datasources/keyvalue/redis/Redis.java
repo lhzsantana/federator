@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
 import redis.clients.jedis.Jedis;
@@ -12,10 +13,13 @@ import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
+import rendezvous.federator.datasources.graph.neo4j.Neo4J;
 import rendezvous.federator.datasources.keyvalue.KeyValueDatasource;
 
 public class Redis extends KeyValueDatasource {
 
+	private final static Logger logger = Logger.getLogger(Jedis.class);
+	
 	private Jedis jedis;
 
 	public Redis() throws Exception {
@@ -57,12 +61,6 @@ public class Redis extends KeyValueDatasource {
 	}
 
 	@Override
-	public List<Hit> query(String entity, Set<Value> values) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Hit get(Entity entity) throws Exception {
 
 		Hit hit = new Hit();
@@ -81,8 +79,6 @@ public class Redis extends KeyValueDatasource {
 
 	@Override
 	public void close() {
-		jedis.close();
-		
+		jedis.close();		
 	}
-
 }

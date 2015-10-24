@@ -17,7 +17,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.datasources.DataSourceType;
 import rendezvous.federator.datasources.RelationshipManager;
 import rendezvous.federator.datasources.column.DatasourceColumn;
@@ -31,7 +31,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 	private final static Logger logger = Logger.getLogger(DictionaryReaderImpl.class);
 
-	private final static Map<Field, Set<DataSource>> dictionarySources = new HashMap<Field, Set<DataSource>>();
+	private final static Map<Field, Set<Datasource>> dictionarySources = new HashMap<Field, Set<Datasource>>();
 	private final static Map<Field, List<String>> dictionaryTypes = new HashMap<Field, List<String>>();
 
 	@Override
@@ -61,7 +61,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				
 				List<String> sources = rendezvous.getEntities().get(entityName).get(fieldName).get("source");
 				
-				Set<DataSource> dataSources = new HashSet<DataSource>();
+				Set<Datasource> dataSources = new HashSet<Datasource>();
 				for(String source:sources){
 					logger.debug("The source <" + source + "> was found in the dictionary for the field <"+fieldName+"> of the entity <" + entityName + ">");
 					dataSources.add(this.getDataSource(source));				
@@ -80,9 +80,9 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		createDataElements();
 	}
 	
-	private DataSource getDataSource(String sourceName) throws Exception{
+	private Datasource getDataSource(String sourceName) throws Exception{
 
-		DataSource source = null;
+		Datasource source = null;
 		
 		switch (sourceName) {
 		
@@ -105,7 +105,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 	}
 	
 	@Override
-	public Set<DataSource> getDatasources(Field field) throws JsonParseException, IOException, Exception {
+	public Set<Datasource> getDatasources(Field field) throws JsonParseException, IOException, Exception {
 		
 		this.refreshDictionary();
 
@@ -131,7 +131,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 			List<Field> fields = new ArrayList<Field>();
 			fields.addAll(merged.get(entity));
 			
-			for(DataSource source : dictionarySources.get(fields.get(0))){
+			for(Datasource source : dictionarySources.get(fields.get(0))){
 				
 				if (source instanceof DatasourceColumn) {
 					((DatasourceColumn)source).createDataElements(new Entity(entity), merged.get(entity));

@@ -4,13 +4,13 @@ import java.util.Map;
 import java.util.Set;
 
 import rendezvous.federator.core.Value;
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 
 public class DataElement {
 
 	private Set<Value> values;
 	private String entity;
-	private Map<String, DataSource> datasources;
+	private Map<String, Datasource> datasources;
 
 	public String getEntity() {
 		return entity;
@@ -20,11 +20,11 @@ public class DataElement {
 		this.entity = entity;
 	}
 
-	public Map<String, DataSource> getDatasources() {
+	public Map<String, Datasource> getDatasources() {
 		return this.datasources;
 	}
 
-	public void setDataSources(Map<String, DataSource> datasources) {
+	public void setDataSources(Map<String, Datasource> datasources) {
 		this.datasources = datasources;
 	}
 

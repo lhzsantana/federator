@@ -16,9 +16,9 @@ import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 
-public abstract class DataSource {
+public abstract class Datasource {
 
-	private final static Logger logger = Logger.getLogger(DataSource.class);
+	private final static Logger logger = Logger.getLogger(Datasource.class);
 	
 	private static Configuration configurations = null;
 	
@@ -27,8 +27,7 @@ public abstract class DataSource {
 	public abstract void close();
 	public abstract void setName(String name);
 	public abstract void connect() throws Exception;	
-	public abstract String insert(Entity entity, Set<Value> values) throws ParseException, Exception;	
-	public abstract List<Hit> query(String entity, Set<Value> values) throws Exception;
+	public abstract String insert(Entity entity, Set<Value> values) throws ParseException, Exception;
 	public abstract Hit get(Entity entity) throws Exception;
 	
     @Override
@@ -39,10 +38,10 @@ public abstract class DataSource {
 	@Override
 	public boolean equals(Object obj) {
 
-		if (!(obj instanceof DataSource)) {
+		if (!(obj instanceof Datasource)) {
 			return false;
 		}else{			
-			DataSource dataSource = (DataSource) obj;
+			Datasource dataSource = (Datasource) obj;
 			
 			if(dataSource.getName().equals(this.getName())){
 				return true;

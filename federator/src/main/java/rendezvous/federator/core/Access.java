@@ -2,11 +2,11 @@ package rendezvous.federator.core;
 
 import java.util.Set;
 
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 
 public class Access {
 
-	private DataSource dataSource;
+	private Datasource dataSource;
 	private Action action;
 	private Entity entity;
 	private Set<Value> values;
@@ -23,10 +23,10 @@ public class Access {
 	public void setValues(Set<Value> values) {
 		this.values = values;
 	}
-	public DataSource getDataSource() {		
+	public Datasource getDataSource() {		
 		return dataSource;
 	}
-	public void setDataSource(DataSource dataSource) {
+	public void setDataSource(Datasource dataSource) {
 		this.dataSource = dataSource;
 	}
 	public Entity getEntity() {

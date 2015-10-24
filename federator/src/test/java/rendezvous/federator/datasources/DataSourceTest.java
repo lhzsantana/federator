@@ -12,7 +12,7 @@ public class DataSourceTest {
 	@Test
 	public void testConfiguration() throws Exception {
 		
-		DataSource source = new MongoDB();		
+		Datasource source = new MongoDB();		
 		assertNotNull(source.getConfiguration());
 
 		source = new Cassandra();

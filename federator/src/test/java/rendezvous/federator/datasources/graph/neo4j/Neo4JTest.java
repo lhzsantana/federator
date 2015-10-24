@@ -1,9 +1,9 @@
 package rendezvous.federator.datasources.graph.neo4j;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
+import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 
 public class Neo4JTest {
@@ -46,18 +47,38 @@ public class Neo4JTest {
 	}
 
 	@Test
-	public void testQuery() {
-		fail("Not yet implemented");
+	public void testQuery() throws Exception {
+
+		Entity entity = new Entity("entity","2","");
+		
+		Set<Value> values = new HashSet<Value>();
+		values.add(new Value("entity",String.valueOf(Math.random()),"value1",DataType.STRING.toString()));
+		
+		assertNotNull(neo4j.insert(entity, values));
+		
+		assertNotNull(neo4j.query(entity, values));
+		
+		List<Hit> hits = neo4j.query(entity, values);
+		
+		assertEquals(1,hits.size());
 	}
 
 	@Test
-	public void testGet() {
-		fail("Not yet implemented");
+	public void testGet() throws ParseException, Exception {
+			
+		Entity entity = new Entity("entity","2","");
+		entity.setId(String.valueOf(Math.random()));
+		
+		Set<Value> values = new HashSet<Value>();
+		values.add(new Value("entity","field1","value1",DataType.STRING.toString()));
+		values.add(new Value("entity","field2","value2",DataType.STRING.toString()));
+		values.add(new Value("entity","field3","value3",DataType.STRING.toString()));
+		
+		assertNotNull(neo4j.insert(entity, values));
+		
+		assertNotNull(neo4j.query(entity, values));
+		
+		Hit hit = neo4j.get(entity);
+	
 	}
-
-	@Test
-	public void testCreateDataElements() {
-		fail("Not yet implemented");
-	}
-
 }

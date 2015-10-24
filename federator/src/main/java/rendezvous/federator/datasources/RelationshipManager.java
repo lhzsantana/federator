@@ -9,7 +9,7 @@ import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Value;
 
-public class RelationshipManager extends DataSource {
+public class RelationshipManager extends QueryableDatasource {
 
 	@Override
 	public String getDataSourceType() {
@@ -40,12 +40,6 @@ public class RelationshipManager extends DataSource {
 	}
 
 	@Override
-	public List<Hit> query(String entity, Set<Value> values) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Hit get(Entity entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
@@ -55,6 +49,12 @@ public class RelationshipManager extends DataSource {
 	public void close() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Hit> query(Entity entity, Set<Value> values) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

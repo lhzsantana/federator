@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import rendezvous.federator.datasources.DataSource;
+import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;
 
 public class Value {
@@ -19,9 +19,9 @@ public class Value {
 	private Entity entity;
 	private String value;
 	private String type;
-	private Set<DataSource> sources;
+	private Set<Datasource> sources;
 	
-	public Value(String entity, String field, String value, String type, Set<DataSource> sources){
+	public Value(String entity, String field, String value, String type, Set<Datasource> sources){
 		this.entity=new Entity(entity);
 		this.field=new Field(field,entity);
 		this.value=value;
@@ -29,13 +29,13 @@ public class Value {
 		this.sources=sources;
 	}
 	
-	public Value(String entity, String field, String value, String type, DataSource dataSource) {
+	public Value(String entity, String field, String value, String type, Datasource dataSource) {
 		this.entity=new Entity(entity);
 		this.field=new Field(field,entity);
 		this.value=value;
 		this.type=type;
 	
-		Set<DataSource> sources = new HashSet<DataSource>();
+		Set<Datasource> sources = new HashSet<Datasource>();
 		sources.add(dataSource);
 		this.sources=sources;	
 	}
@@ -66,11 +66,11 @@ public class Value {
 		this.type = type;
 	}
 
-	public Set<DataSource> getSources() {
+	public Set<Datasource> getSources() {
 		return sources;
 	}
 
-	public void setSources(Set<DataSource> sources) {
+	public void setSources(Set<Datasource> sources) {
 		this.sources = sources;
 	}
 
