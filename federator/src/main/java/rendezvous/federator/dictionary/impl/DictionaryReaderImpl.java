@@ -18,18 +18,19 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.datasources.Datasource;
-import rendezvous.federator.datasources.DataSourceType;
 import rendezvous.federator.datasources.RelationshipManager;
 import rendezvous.federator.datasources.column.DatasourceColumn;
 import rendezvous.federator.datasources.column.cassandra.Cassandra;
 import rendezvous.federator.datasources.document.DatasourceDocument;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;
+import rendezvous.federator.dictionary.DictionaryManager;
 import rendezvous.federator.dictionary.DictionaryReader;
 import rendezvous.federator.dictionary.Rendezvous;
 
 public class DictionaryReaderImpl implements DictionaryReader {
 
 	private final static Logger logger = Logger.getLogger(DictionaryReaderImpl.class);
+	private final static DictionaryManager manager = new DictionaryManager();
 
 	private final static Map<Field, Set<Datasource>> dictionarySources = new HashMap<Field, Set<Datasource>>();
 	private final static Map<Field, List<String>> dictionaryTypes = new HashMap<Field, List<String>>();
@@ -45,37 +46,42 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 		Rendezvous rendezvous = mapper.readValue(new File("rendezvouz.yml"), Rendezvous.class);
 
-		for (String entityName : rendezvous.getEntities().keySet()) {
+		if(!manager.containsMapping(rendezvous.hashCode())){
 			
-			logger.debug("The entity <" + entityName + "> was found in the dictionary");
-			
-			for (String fieldName : rendezvous.getEntities().get(entityName).keySet()) {
+			for (String entityName : rendezvous.getEntities().keySet()) {
+				
+				logger.debug("The entity <" + entityName + "> was found in the dictionary");
+				
+				for (String fieldName : rendezvous.getEntities().get(entityName).keySet()) {
+						
+					logger.debug("The field <" + fieldName + "> was found in the dictionary for entity <" + entityName + ">");
+				
+					List<String> types = rendezvous.getEntities().get(entityName).get(fieldName).get("type");
+						
+					for(String type:types){
+						logger.debug("The type <" + type + "> was found in the dictionary for entity <" + entityName + ">");
+					}
 					
-				logger.debug("The field <" + fieldName + "> was found in the dictionary for entity <" + entityName + ">");
-			
-				List<String> types = rendezvous.getEntities().get(entityName).get(fieldName).get("type");
+					List<String> sources = rendezvous.getEntities().get(entityName).get(fieldName).get("source");
 					
-				for(String type:types){
-					logger.debug("The type <" + type + "> was found in the dictionary for entity <" + entityName + ">");
-				}
-				
-				List<String> sources = rendezvous.getEntities().get(entityName).get(fieldName).get("source");
-				
-				Set<Datasource> dataSources = new HashSet<Datasource>();
-				for(String source:sources){
-					logger.debug("The source <" + source + "> was found in the dictionary for the field <"+fieldName+"> of the entity <" + entityName + ">");
-					dataSources.add(this.getDataSource(source));				
-				}
-				
-				logger.debug("Adding the field <" + fieldName + "> of the entity field <" + entityName+ ">");
-				
-				Field field = new Field(fieldName, entityName);
-				
-				dictionarySources.put(field, dataSources);
-				dictionaryTypes.put(field, types);
-			}			
+					Set<Datasource> dataSources = new HashSet<Datasource>();
+					for(String source:sources){
+						logger.debug("The source <" + source + "> was found in the dictionary for the field <"+fieldName+"> of the entity <" + entityName + ">");
+						dataSources.add(this.getDataSource(source));				
+					}
+					
+					logger.debug("Adding the field <" + fieldName + "> of the entity field <" + entityName+ ">");
+					
+					Field field = new Field(fieldName, entityName);
+					
+					dictionarySources.put(field, dataSources);
+					dictionaryTypes.put(field, types);
+				}	
+			}
+			
+			manager.addMapping(rendezvous);
 		}
-
+		
 		logger.info("Creating data elements");
 		createDataElements();
 	}
