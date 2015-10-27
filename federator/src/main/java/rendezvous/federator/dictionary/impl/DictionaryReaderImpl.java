@@ -35,6 +35,16 @@ public class DictionaryReaderImpl implements DictionaryReader {
 	private final static Map<Field, Set<Datasource>> dictionarySources = new HashMap<Field, Set<Datasource>>();
 	private final static Map<Field, List<String>> dictionaryTypes = new HashMap<Field, List<String>>();
 
+	private String path=null;
+
+	public DictionaryReaderImpl(){
+		this.path="rendezvouz.yml";
+	}	
+	
+	public DictionaryReaderImpl(String path){
+		this.path=path;
+	}	
+	
 	@Override
 	public List<String> getTypes(Field field) {
 		return dictionaryTypes.get(field);
@@ -44,7 +54,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-		Rendezvous rendezvous = mapper.readValue(new File("rendezvouz.yml"), Rendezvous.class);
+		Rendezvous rendezvous = mapper.readValue(new File(path), Rendezvous.class);
 
 		if(!manager.containsMapping(rendezvous.hashCode())){
 			
