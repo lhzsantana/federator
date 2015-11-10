@@ -22,7 +22,12 @@
 			<url>http://jcenter.bintray.com</url>
 		</repository>
 	</repositories>
-	<dependencies>
+	<dependencies>	
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.1.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -111,6 +116,12 @@
 			<artifactId>mongo-java-driver</artifactId>
 			<version>3.0.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_2.10</artifactId>
+			<version>1.5.1</version>
+		</dependency>
+		
 		<!-- datasources -->
 
 	</dependencies>
