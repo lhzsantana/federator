@@ -2,6 +2,10 @@ package rendezvous.federator.api.endpoint.impl;
 
 import java.util.List;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
 import org.apache.log4j.Logger;
 
 import rendezvous.federator.api.endpoint.Endpoint;
@@ -10,11 +14,14 @@ import rendezvous.federator.core.Access;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.entityManager.EntityManager;
 
+@Path("/_get")
 public class GetEndpoint extends Endpoint {
 
 	final static Logger logger = Logger.getLogger(GetEndpoint.class);
 
-	public GetResponse get(String id) throws Exception {
+	@GET
+	@Path("/{id}")
+	public Response get(String id) throws Exception {
 		
 		logger.info("Getting the entity <"+id+">");
 		
@@ -22,15 +29,15 @@ public class GetEndpoint extends Endpoint {
 		
 		List<Access> access = EntityManager.getEntity(id);
 		
-		GetResponse getResponse = new GetResponse();
+		GetResponse response = new GetResponse();
 		
 		if(access!=null && !access.isEmpty()){
 		
 			plan.setAccesses(access);
 		
-			return super.executor.getExecute(plan);
+			return Response.status(200).entity(super.executor.getExecute(plan).toString()).build();
 		}
-		
-		return getResponse;
+
+		return Response.status(200).entity(response.toString()).build();
 	}
 }
