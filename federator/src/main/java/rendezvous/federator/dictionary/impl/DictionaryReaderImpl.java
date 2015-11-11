@@ -11,10 +11,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.datasources.Datasource;
@@ -25,7 +21,11 @@ import rendezvous.federator.datasources.document.DatasourceDocument;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;
 import rendezvous.federator.dictionary.DictionaryManager;
 import rendezvous.federator.dictionary.DictionaryReader;
-import rendezvous.federator.dictionary.Rendezvous;
+import rendezvous.federator.dictionary.Mapping;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class DictionaryReaderImpl implements DictionaryReader {
 
@@ -54,25 +54,25 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-		Rendezvous rendezvous = mapper.readValue(new File(path), Rendezvous.class);
+		Mapping mapping = mapper.readValue(new File(path), Mapping.class);
 
-		if(!manager.containsMapping(rendezvous.hashCode())){
+		if(!manager.containsMapping(mapping.hashCode())){
 			
-			for (String entityName : rendezvous.getEntities().keySet()) {
+			for (String entityName : mapping.getEntities().keySet()) {
 				
 				logger.debug("The entity <" + entityName + "> was found in the dictionary");
 				
-				for (String fieldName : rendezvous.getEntities().get(entityName).keySet()) {
+				for (String fieldName : mapping.getEntities().get(entityName).keySet()) {
 						
 					logger.debug("The field <" + fieldName + "> was found in the dictionary for entity <" + entityName + ">");
 				
-					List<String> types = rendezvous.getEntities().get(entityName).get(fieldName).get("type");
+					List<String> types = mapping.getEntities().get(entityName).get(fieldName).get("type");
 						
 					for(String type:types){
 						logger.debug("The type <" + type + "> was found in the dictionary for entity <" + entityName + ">");
 					}
 					
-					List<String> sources = rendezvous.getEntities().get(entityName).get(fieldName).get("source");
+					List<String> sources = mapping.getEntities().get(entityName).get(fieldName).get("source");
 					
 					Set<Datasource> dataSources = new HashSet<Datasource>();
 					for(String source:sources){
@@ -89,7 +89,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				}	
 			}
 			
-			manager.addMapping(rendezvous);
+			manager.addMapping(mapping);
 		}
 		
 		logger.info("Creating data elements");

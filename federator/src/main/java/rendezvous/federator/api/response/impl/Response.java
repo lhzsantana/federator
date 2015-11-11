@@ -2,23 +2,12 @@ package rendezvous.federator.api.response.impl;
 
 import java.util.Date;
 
-public abstract class Response {
+public abstract class Response extends javax.ws.rs.core.Response {
 	
 	public Response(){
-		status=Status.PROCESSING;
 		date=new Date();
 	}
 	
-	private Status status;
 	private Date date;
 	
-	public Status getStatus() {
-		return status;
-	}
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	public Date getDate() {
-		return date;
-	}
 }

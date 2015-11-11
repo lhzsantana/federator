@@ -5,17 +5,17 @@ import java.util.Map;
 
 public class DictionaryManager {
 	
-	public Map<Integer, Rendezvous> mappings = new HashMap<Integer, Rendezvous>();
+	public static Map<Integer, Mapping> mappings = new HashMap<Integer, Mapping>();
 	
-	public Rendezvous getMapping(Integer hash){
+	public static Mapping getMapping(Integer hash){
 		return mappings.get(hash);
 	}
 
-	public void addMapping(Rendezvous mapping){
+	public static void addMapping(Mapping mapping){
 		mappings.put(mapping.hashCode(), mapping);
 	}
 	
-	public boolean containsMapping(Integer hash){
-		return mappings.containsKey(hash);
+	public static boolean containsMapping(Integer hash){
+		return  mappings.containsKey(hash);
 	}
 }

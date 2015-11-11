@@ -6,17 +6,17 @@ import java.util.Set;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-import com.fasterxml.jackson.core.JsonParseException;
-
 import rendezvous.federator.api.endpoint.Endpoint;
+import rendezvous.federator.api.response.QueryResponse;
 import rendezvous.federator.core.Action;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.core.Value;
+
+import com.fasterxml.jackson.core.JsonParseException;
 
 @Path("/_query")
 public class QueryEndpoint extends Endpoint{
@@ -25,7 +25,7 @@ public class QueryEndpoint extends Endpoint{
 
 	@GET
 	@Path("/{json}")
-	public Response query(@PathParam("json") String json) throws JsonParseException, IOException, Exception {
+	public QueryResponse query(@PathParam("json") String json) throws JsonParseException, IOException, Exception {
 
 		String extractedEntity = super.extractEntity(json);
 		
@@ -33,6 +33,6 @@ public class QueryEndpoint extends Endpoint{
 		
 		Plan plan = super.planner.createPlan(Action.QUERY, new Entity(extractedEntity), extractedValues);
 
-		return Response.status(200).entity(super.executor.queryExecute(plan).toString()).build();	
+		return super.executor.queryExecute(plan);	
 	}
 }

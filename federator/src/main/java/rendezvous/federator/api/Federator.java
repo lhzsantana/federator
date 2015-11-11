@@ -7,34 +7,42 @@ import java.net.UnknownHostException;
 
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.log4j.Logger;
+
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.net.httpserver.HttpServer;
 
+@SuppressWarnings("restriction")
 public class Federator {
 
+	final static Logger logger = Logger.getLogger(Federator.class);
+
+	@SuppressWarnings("restriction")
 	public static void main(String[] args) throws IOException {
 
-		System.out.println("Starting Federator Embedded Jersey HTTPServer...\n");
+		logger.info("Starting Federator Server");
+		
 		HttpServer crunchifyHTTPServer = createHttpServer();
 		crunchifyHTTPServer.start();
-		System.out.println(
-				String.format("\nJersey Application Server started with WADL available at " + "%sapplication.wadl\n",
-						getFederatorURI()));
-		System.out.println("Started Federator Embedded Jersey HTTPServer Successfully !!!");
+		
+		logger.info(String.format(
+				"\nFederator Server started with WADL available at %sapplication.wadl ",
+				getFederatorURI())
+		);
 	}
 
 	private static HttpServer createHttpServer() throws IOException {
-		ResourceConfig federatorResourceConfig = new PackagesResourceConfig("rendezvous.federator.api.endpoint.impl");
-		// This tutorial required and then enable below line:
-		// http://crunfy.me/1DZIui5
-		// crunchifyResourceConfig.getContainerResponseFilters().add(CrunchifyCORSFilter.class);
-		return HttpServerFactory.create(getFederatorURI(), federatorResourceConfig);
+		ResourceConfig federatorResourceConfig = new PackagesResourceConfig(
+				"rendezvous.federator.api.endpoint.impl");
+		return HttpServerFactory.create(getFederatorURI(),
+				federatorResourceConfig);
 	}
 
 	private static URI getFederatorURI() {
-		return UriBuilder.fromUri("http://" + federatorGetHostName() + "/").port(8085).build();
+		return UriBuilder.fromUri("http://" + federatorGetHostName() + "/")
+				.port(8085).build();
 	}
 
 	private static String federatorGetHostName() {

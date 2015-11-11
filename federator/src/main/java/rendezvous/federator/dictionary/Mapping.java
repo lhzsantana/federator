@@ -3,7 +3,7 @@ package rendezvous.federator.dictionary;
 import java.util.List;
 import java.util.Map;
 
-public class Rendezvous {
+public class Mapping {
 
 	private Map<String, Map<String, Map<String, List<String>>>> entities;
 	

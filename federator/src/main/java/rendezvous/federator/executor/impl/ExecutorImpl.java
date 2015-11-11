@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.hamcrest.core.IsInstanceOf;
 import org.json.simple.parser.ParseException;
 
 import rendezvous.federator.api.endpoint.impl.GetEndpoint;

@@ -21,7 +21,7 @@ public class GetEndpoint extends Endpoint {
 
 	@GET
 	@Path("/{id}")
-	public Response get(String id) throws Exception {
+	public GetResponse get(String id) throws Exception {
 		
 		logger.info("Getting the entity <"+id+">");
 		
@@ -35,9 +35,9 @@ public class GetEndpoint extends Endpoint {
 		
 			plan.setAccesses(access);
 		
-			return Response.status(200).entity(super.executor.getExecute(plan).toString()).build();
+			return super.executor.getExecute(plan);
 		}
 
-		return Response.status(200).entity(response.toString()).build();
+		return null;
 	}
 }

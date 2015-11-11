@@ -5,11 +5,11 @@ import java.util.Set;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
 import rendezvous.federator.api.endpoint.Endpoint;
+import rendezvous.federator.api.response.InsertResponse;
 import rendezvous.federator.core.Action;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Plan;
@@ -22,7 +22,7 @@ public class InsertEndpoint extends Endpoint {
 
 	@GET
 	@Path("/{json}")
-	public Response insert(@PathParam("json") String json) throws Exception {
+	public InsertResponse insert(@PathParam("json") String json) throws Exception {
 
 		String extractedEntity = super.extractEntity(json);
 		
@@ -30,6 +30,6 @@ public class InsertEndpoint extends Endpoint {
 
 		Plan plan = super.planner.createPlan(Action.INSERT, new Entity(extractedEntity), extractedValues);
 		
-		return Response.status(200).entity(super.executor.insertExecute(plan).toString()).build();
+		return super.executor.insertExecute(plan);
 	}
 }

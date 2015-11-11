@@ -4,11 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import javax.ws.rs.core.Response;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import rendezvous.federator.api.endpoint.EndpointTest;
-import rendezvous.federator.api.response.DeleteResponse;
 import rendezvous.federator.api.response.GetResponse;
 import rendezvous.federator.api.response.InsertResponse;
 import rendezvous.federator.api.response.impl.Status;
@@ -21,7 +22,7 @@ public class GetEndpointTest extends EndpointTest {
 	public void testGetUnexistent() throws Exception {
 
 		DeleteEndpoint deleteEndpoint = new DeleteEndpoint();
-		DeleteResponse response = deleteEndpoint.delete("12345");
+		Response response = deleteEndpoint.delete("12345");
 		assertEquals(Status.SUCCESS,response.getStatus());
 				
 		GetEndpoint getEndpoint = new GetEndpoint();
