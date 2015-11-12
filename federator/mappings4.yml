@@ -16,7 +16,7 @@ entities:
         type: [string]
         source: ['cassandra']        
     follows:
-        type: [user]
+        type: [usuario99]
         source: ['entity']
   posts1:
     body: 

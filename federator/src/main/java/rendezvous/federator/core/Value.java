@@ -28,7 +28,7 @@ public class Value {
 		this.type=type;
 		this.sources=sources;
 	}
-	
+		
 	public Value(String entity, String field, String value, String type, Datasource dataSource) {
 		this.entity=new Entity(entity);
 		this.field=new Field(field,entity);
