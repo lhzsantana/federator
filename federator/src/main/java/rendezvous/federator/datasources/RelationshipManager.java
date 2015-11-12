@@ -13,14 +13,12 @@ public class RelationshipManager extends QueryableDatasource {
 
 	@Override
 	public String getDataSourceType() {
-		// TODO Auto-generated method stub
 		return "Relationship";
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Relationship";
 	}
 
 	@Override

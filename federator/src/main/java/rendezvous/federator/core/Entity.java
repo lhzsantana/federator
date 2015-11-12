@@ -4,11 +4,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Entity {
+
+	private final static Logger logger = Logger.getLogger(Entity.class);
 
 	private String name;
 	private String id;
 	private String source;
+	private String mappingHash;
+	
+	
 	private Set<Value> values; 
 	private Set<Field> fields; 
 		
@@ -76,6 +86,47 @@ public class Entity {
 		
 		return false;
 	}
+
+	public String getMappingHash() {
+		return mappingHash;
+	}
+
+	public void setMappingHash(String mappingHash) {
+		this.mappingHash = mappingHash;
+	}	
+
+	@Override
+    public int hashCode() {
+        return (this.getName()+this.mappingHash).hashCode();
+    }
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (!(obj instanceof Entity)) {
+			return false;
+		}else{			
+			Entity entity = (Entity) obj;
+			
+			if(this.hashCode()==entity.hashCode()){
+				return true;
+			}else{
+				return false;
+			}			
+		}
+	}
 	
-	
+	@Override
+	public String toString() {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			logger.error(e);
+		}
+		
+		return null;
+	}
 }

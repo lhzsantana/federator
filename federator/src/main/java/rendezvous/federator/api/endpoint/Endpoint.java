@@ -14,6 +14,7 @@ import org.json.simple.parser.ParseException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.google.gson.Gson;
 
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.Datasource;
@@ -70,13 +71,13 @@ public abstract class Endpoint {
 	
 				logger.debug("The value <"+rawValue+"> was extracted for field <"+rawField+"> of the entity <"+rawEntity+">");
 
-				Field dicField = new Field(rawField,rawEntity);
+				Field dicField = new Field(rawField,new Entity(rawEntity));
 				
 				Set<Datasource> sources = dictionary.getDatasources(dicField);
 
 				List<String>types = dictionary.getTypes(dicField);
 				
-				if(types==null || types.size() == 0 || types.isEmpty()) throw new MappingException("Mapping error the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntityName()+"> does not exists");
+				if(types==null || types.size() == 0 || types.isEmpty()) throw new MappingException("Mapping error the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntity().getName()+"> does not exists");
 				
 				for(String type:types){
 					values.add(new Value(rawEntity,rawField,rawValue,type, sources));

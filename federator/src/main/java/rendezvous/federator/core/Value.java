@@ -22,8 +22,8 @@ public class Value {
 	private Set<Datasource> sources;
 	
 	public Value(String entity, String field, String value, String type, Set<Datasource> sources){
-		this.entity=new Entity(entity);
-		this.field=new Field(field,entity);
+		this.entity=new Entity(entity);		
+		this.field=new Field(field,this.entity);
 		this.value=value;
 		this.type=type;
 		this.sources=sources;
@@ -31,7 +31,7 @@ public class Value {
 		
 	public Value(String entity, String field, String value, String type, Datasource dataSource) {
 		this.entity=new Entity(entity);
-		this.field=new Field(field,entity);
+		this.field=new Field(field,this.entity);
 		this.value=value;
 		this.type=type;
 	
@@ -42,7 +42,7 @@ public class Value {
 
 	public Value(String entity, String field, String value, String type) {
 		this.entity=new Entity(entity);
-		this.field=new Field(field,entity);
+		this.field=new Field(field,this.entity);
 		this.value=value;
 		this.type=type;
 	}

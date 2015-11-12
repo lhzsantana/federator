@@ -69,7 +69,7 @@ public class Hit {
 			if(expectedValue==null||expectedValue.equals(value.getValue())){
 				mergedValues.put(value.getField().getFieldName(), value.getValue());
 				
-				finalList.add(value.getField().getEntityName()+":"+value.getValue());
+				finalList.add(value.getField().getEntity().getName()+":"+value.getValue());
 			}else{
 				throw new InconsistencyException();
 			}

@@ -22,7 +22,7 @@ public class DictionaryReaderImplTest {
 		for (Field field : reader.getFields()) {
 			
 			for (Datasource source : reader.getDatasources(field)) {
-				logger.debug("The datasource <"+source.getName()+"> for the field <"+field.getFieldName()+"> was found in the entity <"+field.getEntityName()+">");
+				logger.debug("The datasource <"+source.getName()+"> for the field <"+field.getFieldName()+"> was found in the entity <"+field.getEntity().getName()+">");
 			}
 		}
 	}

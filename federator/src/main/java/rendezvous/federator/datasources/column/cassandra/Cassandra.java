@@ -51,10 +51,10 @@ public class Cassandra extends DatasourceColumn {
 	@Override
 	public void connect() throws Exception {
 		
-		logger.info("Connecting to " + getDataSourceType());		
-		
 		if(cluster==null){
-			
+
+			logger.info("Connecting to " + getDataSourceType());		
+						
 			cluster = Cluster.builder().addContactPoint(getConfiguration().get("host")).build();
 
 			String keyspace = getConfiguration().get("keyspace");
@@ -85,7 +85,7 @@ public class Cassandra extends DatasourceColumn {
 	@Override
 	public void createDataElements(Entity entity, Set<Field> fields){
 
-		String fieldListTable = "rendezvous_id text,";
+		String fieldListTable = "rendezvous_id text, mapping_hash text,";
 
 		for(Field field:fields){
 			fieldListTable+=field.getFieldName()+" text,";
@@ -94,7 +94,9 @@ public class Cassandra extends DatasourceColumn {
 		String cql = "";
 		
 		try{
-			cql = "CREATE TABLE "+entity.getName()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY (rendezvous_id));";
+			cql = "CREATE TABLE "+entity.getName()+"_"+entity.getMappingHash()+" (" +fieldListTable.substring(0,fieldListTable.length()-1)+ ", PRIMARY KEY (rendezvous_id));";
+			
+			logger.info(cql);
 			
 			session.execute(cql);
 			
@@ -112,15 +114,15 @@ public class Cassandra extends DatasourceColumn {
 	public String insert(Entity entity, Set<Value> values) throws ParseException {
 				
 		String id = entity.getId();
-		String fieldList = "rendezvous_id,";
-		String valueList = "'"+id+"',";
+		String fieldList = "rendezvous_id, mapping_hash,";
+		String valueList = "'"+id+"',"+"'"+entity.getMappingHash()+"',";
 
 		for(Value value:values){
 			fieldList+=value.getField().getFieldName()+",";
 			valueList+= "'"+value.getValue()+"',";			
 		}
 		
-		String cql = "INSERT INTO "+entity.getName()+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
+		String cql = "INSERT INTO "+entity.getName()+"_"+entity.getMappingHash()+" ("+fieldList.substring(0,fieldList.length()-1)+") " +
 			      "VALUES ("+valueList.substring(0,valueList.length()-1)+")";
 
 		logger.info(cql);
@@ -133,7 +135,7 @@ public class Cassandra extends DatasourceColumn {
 	@Override
 	public Hit get(Entity entity) throws Exception {
 
-		String cql = "SELECT * FROM "+entity+" WHERE rendezvous_id = '" + entity.getId() + "'";
+		String cql = "SELECT * FROM "+entity.getName()+"_"+entity.getMappingHash()+" WHERE rendezvous_id = '" + entity.getId() + "'";
 
 		logger.info(cql);
 		
@@ -169,7 +171,7 @@ public class Cassandra extends DatasourceColumn {
 		if(queryValues==null || queryValues.isEmpty() || queryValues.size() == 0) throw new Exception("No parameter for the query");
 		
 		int index = 0;
-		String cql = "SELECT * FROM "+entity+" WHERE ";
+		String cql = "SELECT * FROM "+entity.getName()+"_"+entity.getMappingHash()+" WHERE ";
 
 		for(Value value:queryValues){
 

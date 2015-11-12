@@ -9,13 +9,13 @@ public class Field {
 	
 	private final static Logger logger = Logger.getLogger(Field.class);
 
-	public Field(String fieldName, String entityName){
+	public Field(String fieldName, Entity entity){
 		this.fieldName = fieldName;
-		this.entityName = entityName;
+		this.entity = entity;
 	}
 
 	private String fieldName;
-	private String entityName;
+	private Entity entity;
 
 	public String getFieldName() {
 		return fieldName;
@@ -25,17 +25,17 @@ public class Field {
 		this.fieldName = fieldName;
 	}
 
-	public String getEntityName() {
-		return entityName;
+	public Entity getEntity() {
+		return entity;
 	}
 
-	public void setEntityName(String entityName) {
-		this.entityName = entityName;
+	public void setEntity(Entity entity) {
+		this.entity = entity;
 	}
 
 	@Override
     public int hashCode() {
-        return (getEntityName()+getFieldName()).hashCode();
+        return (getEntity().getName()+getFieldName()).hashCode();
     }
 
 	@Override
@@ -46,7 +46,7 @@ public class Field {
 		}else{			
 			Field field = (Field) obj;
 			
-			if(field.getEntityName().equals(this.getEntityName())
+			if(field.getEntity().getName().equals(this.getEntity().getName())
 			 && field.getFieldName().equals(this.getFieldName())){
 				return true;
 			}else{

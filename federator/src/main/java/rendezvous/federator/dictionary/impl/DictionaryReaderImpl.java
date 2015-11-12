@@ -34,6 +34,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 	private final static Map<Field, Set<Datasource>> dictionarySources = new HashMap<Field, Set<Datasource>>();
 	private final static Map<Field, List<String>> dictionaryTypes = new HashMap<Field, List<String>>();
+	private final static Map<Entity, Set<Datasource>> dictionaryEntities = new HashMap<Entity, Set<Datasource>>();
 	
 	private final static ObjectMapper mapper = new ObjectMapper(new YAMLFactory());	
 
@@ -76,6 +77,11 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				
 				logger.debug("The entity <" + entityName + "> was found in the dictionary");
 				
+				Entity entity = new Entity(entityName);
+				entity.setMappingHash(Integer.toString(mapping.hashCode()));
+				
+				Set<Field> fields = new HashSet<Field>();
+				
 				for (String fieldName : mapping.getEntities().get(entityName).keySet()) {
 						
 					logger.debug("The field <" + fieldName + "> was found in the dictionary for entity <" + entityName + ">");
@@ -90,23 +96,30 @@ public class DictionaryReaderImpl implements DictionaryReader {
 					
 					Set<Datasource> dataSources = new HashSet<Datasource>();
 					for(String source:sources){
-						logger.debug("The source <" + source + "> was found in the dictionary for the field <"+fieldName+"> of the entity <" + entityName + ">");
+						logger.info("The source <" + source + "> was found in the dictionary for the field <"+fieldName+"> of the entity <" + entityName + ">");
 						dataSources.add(this.getDataSource(source));				
 					}
 					
 					logger.debug("Adding the field <" + fieldName + "> of the entity field <" + entityName+ ">");
 					
-					Field field = new Field(fieldName, entityName);
+					Field field = new Field(fieldName, entity);
+					fields.add(field);
 					
 					dictionarySources.put(field, dataSources);
+					dictionaryEntities.put(entity, dataSources);
+
+					logger.info("Putting the entity "+entity.getName());
 					dictionaryTypes.put(field, types);
-				}	
+				}
+				
+				entity.setFields(fields);
 			}
 			
 			manager.addMapping(mapping);
 		}
 		
 		logger.info("Creating data elements");
+		
 		createDataElements();
 	}
 	
@@ -137,7 +150,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 	@Override
 	public Set<Datasource> getDatasources(Field field) throws JsonParseException, IOException, Exception {
 		
-		logger.info("Querying for the field "+field.getFieldName()+" from the entity "+field.getEntityName());
+		logger.info("Querying for the field "+field.getFieldName()+" from the entity "+field.getEntity().getName());
 		
 		return dictionarySources.get(field);
 	}
@@ -150,21 +163,26 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		return dictionarySources.keySet();
 	}
 	
-	private void createDataElements(){
-		
+	private void createDataElements() throws InvalidDatasource{
+
 		Map<String,Set<Field>> merged = mergeByEntity(dictionarySources.keySet());
 		
-		for(String entity:merged.keySet()){
+		for(Entity entity:dictionaryEntities.keySet()){
 			
-			List<Field> fields = new ArrayList<Field>();
-			fields.addAll(merged.get(entity));
-			
-			for(Datasource source : dictionarySources.get(fields.get(0))){
-				
+			logger.info("Entity "+entity.getName());
+
+			for(Datasource source : dictionaryEntities.get(entity)){
+
+				logger.info("Checking the source <"+source.getName()+"> for the entity <"+entity.getName()+">");
+								
 				if (source instanceof DatasourceColumn) {
-					((DatasourceColumn)source).createDataElements(new Entity(entity), merged.get(entity));
+					((DatasourceColumn)source).createDataElements(entity, merged.get(entity));
 				}else if (source instanceof DatasourceDocument) {
-					((DatasourceDocument)source).createDataElements(new Entity(entity), merged.get(entity));					
+					((DatasourceDocument)source).createDataElements(entity, merged.get(entity));					
+				}else if (source instanceof RelationshipManager) {
+					logger.warn("Relationship not implemented yet");				
+				}else{
+					throw new InvalidDatasource();
 				}
 			}
 		}
@@ -175,12 +193,13 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		Map<String,Set<Field>> merger = new HashMap<String,Set<Field>>();
 		
 		for(Field field:fields){
-			Set<Field> mergedFields = merger.get(field.getEntityName());
+			
+			Set<Field> mergedFields = merger.get(field.getEntity().getName());
 			
 			if(mergedFields==null) mergedFields = new HashSet<Field>();
 			mergedFields.add(field);
 			
-			merger.put(field.getEntityName(), mergedFields);
+			merger.put(field.getEntity().getName(), mergedFields);
 		}		
 		
 		return merger;

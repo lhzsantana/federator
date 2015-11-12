@@ -54,7 +54,7 @@ public class BloomFilterImplTest {
 		Value value1 = new Value("a", "a", "a", "a");
 		cache.add(value1);
 		
-		Field field = new Field("a","a");
+		Field field = new Field("a",new Entity("a"));
 		
 		Value v = cache.get(field);
 		
@@ -72,7 +72,7 @@ public class BloomFilterImplTest {
 			cache.add(value);
 		}
 		
-		Field field = new Field("a","a");
+		Field field = new Field("a",new Entity("a"));
 		
 		Value v = cache.get(field);
 		

@@ -50,6 +50,8 @@ public class NormalFlowTest {
 			
 			insertEndpoint.insert("{\"user\":{\"address\":\"lagoa\"}}");
 
+			logger.info("----------------------------------------");
+			
 			mappingEndpoint.put(mapping4);
 			
 			insertEndpoint.insert("{\"user\":{\"name\":\"luiz\", \"address\":\"lagoa\"}}");
