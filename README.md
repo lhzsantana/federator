@@ -20,7 +20,7 @@ This project aims to create a middleware in between the Applications API and NoS
 Theoretically, the Federator can be used with any underlying data source. However,  the current offers out-of-the-box only access to Neo4J, Cassandra, MongoDB and Redis. To use these databases, you have to setup its details in the file datasources.yml. For instance:
 
 
-´´´
+```
 datasources:
   mongodb:
     host: 127.0.0.1
@@ -38,14 +38,13 @@ datasources:
   redis:
     redis.host: 127.0.0.1
     redis.port: 6379
-
-´´´
+```
 
 #Mapping
 
 For using each datasource, the Federator expects to receive a mapping. The mapping contains all the entities that will be stored in the Federator and how this entity should be spanned through the architecture. For instance:
 
-´´´
+```
 entities:
   user: 
     name: 
@@ -86,5 +85,4 @@ entities:
     parent:
         type: [post]
         source: [entity]
-
-´´´
+```
