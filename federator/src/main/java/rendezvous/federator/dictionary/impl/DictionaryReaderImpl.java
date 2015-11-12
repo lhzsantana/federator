@@ -137,8 +137,6 @@ public class DictionaryReaderImpl implements DictionaryReader {
 	@Override
 	public Set<Datasource> getDatasources(Field field) throws JsonParseException, IOException, Exception {
 		
-		this.refreshDictionary();
-
 		logger.info("Querying for the field "+field.getFieldName()+" from the entity "+field.getEntityName());
 		
 		return dictionarySources.get(field);
@@ -166,7 +164,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				if (source instanceof DatasourceColumn) {
 					((DatasourceColumn)source).createDataElements(new Entity(entity), merged.get(entity));
 				}else if (source instanceof DatasourceDocument) {
-					((DatasourceColumn)source).createDataElements(new Entity(entity), merged.get(entity));					
+					((DatasourceDocument)source).createDataElements(new Entity(entity), merged.get(entity));					
 				}
 			}
 		}

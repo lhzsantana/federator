@@ -18,6 +18,7 @@ import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.dictionary.DictionaryReader;
+import rendezvous.federator.dictionary.MappingException;
 import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 import rendezvous.federator.executor.Executor;
 import rendezvous.federator.executor.impl.ExecutorImpl;
@@ -75,7 +76,7 @@ public abstract class Endpoint {
 
 				List<String>types = dictionary.getTypes(dicField);
 				
-				if(types==null || types.size() == 0 || types.isEmpty()) throw new Exception("Mapping error, the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntityName()+">");
+				if(types==null || types.size() == 0 || types.isEmpty()) throw new MappingException("Mapping error the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntityName()+"> does not exists");
 				
 				for(String type:types){
 					values.add(new Value(rawEntity,rawField,rawValue,type, sources));

@@ -70,7 +70,7 @@ public class Entity {
 
 	public boolean isComplete() {
 		
-		if(this.getValues().size()==this.getFields().size()){
+		if(this.getValues()!=null && this.getFields()!=null && this.getValues().size()==this.getFields().size()){
 			return true;
 		}
 		
