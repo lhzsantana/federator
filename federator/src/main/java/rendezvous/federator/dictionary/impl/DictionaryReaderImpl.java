@@ -34,11 +34,13 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 	private final static Map<Field, Set<Datasource>> dictionarySources = new HashMap<Field, Set<Datasource>>();
 	private final static Map<Field, List<String>> dictionaryTypes = new HashMap<Field, List<String>>();
+	
+	private final static ObjectMapper mapper = new ObjectMapper(new YAMLFactory());	
 
 	private String path=null;
 
 	public DictionaryReaderImpl(){
-		this.path="rendezvouz.yml";
+		this.path="mapping.yml";
 	}	
 	
 	public DictionaryReaderImpl(String path){
@@ -51,10 +53,22 @@ public class DictionaryReaderImpl implements DictionaryReader {
 	}
 
 	private void refreshDictionary() throws Exception {
-
-		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-
+		
 		Mapping mapping = mapper.readValue(new File(path), Mapping.class);
+		
+		refreshDictionary(mapping);
+	}
+	
+
+	public void refreshDictionary(String newMapping) throws Exception {
+
+		Mapping mapping = mapper.readValue(newMapping, Mapping.class);
+		
+		refreshDictionary(mapping);
+		
+	}
+	
+	private void refreshDictionary(Mapping mapping) throws Exception {
 
 		if(!manager.containsMapping(mapping.hashCode())){
 			

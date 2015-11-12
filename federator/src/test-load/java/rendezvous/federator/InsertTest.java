@@ -1,4 +1,4 @@
-package federator;
+package rendezvous.federator;
 
 public interface InsertTest {
 

@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import rendezvous.federator.api.endpoint.Endpoint;
-import rendezvous.federator.dictionary.DictionaryManager;
+import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 
 @Path("/_mapping")
 public class MappingEndpoint extends Endpoint{
@@ -17,9 +17,13 @@ public class MappingEndpoint extends Endpoint{
 
 	@PUT
 	@Path("/{json}")
-	public Response put(@PathParam("json") String json) {
+	public Response put(@PathParam("json") String json) throws Exception {
+		
+		DictionaryReaderImpl reader = new DictionaryReaderImpl();
+		
+		reader.refreshDictionary(json);
 
-		DictionaryManager.addMapping(null);	
+		logger.info("A new mapping was added");
 		
 		return null;
 	}
