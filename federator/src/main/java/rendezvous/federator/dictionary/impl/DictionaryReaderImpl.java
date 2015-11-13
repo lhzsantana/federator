@@ -2,7 +2,6 @@ package rendezvous.federator.dictionary.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
@@ -19,13 +22,11 @@ import rendezvous.federator.datasources.column.DatasourceColumn;
 import rendezvous.federator.datasources.column.cassandra.Cassandra;
 import rendezvous.federator.datasources.document.DatasourceDocument;
 import rendezvous.federator.datasources.document.mongodb.MongoDB;
+import rendezvous.federator.datasources.graph.neo4j.Neo4J;
+import rendezvous.federator.datasources.keyvalue.redis.Redis;
 import rendezvous.federator.dictionary.DictionaryManager;
 import rendezvous.federator.dictionary.DictionaryReader;
 import rendezvous.federator.dictionary.Mapping;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class DictionaryReaderImpl implements DictionaryReader {
 
@@ -134,6 +135,12 @@ public class DictionaryReaderImpl implements DictionaryReader {
 				break;
 			case "cassandra":
 				source = new Cassandra();
+				break;
+			case "neo4j":
+				source = new Neo4J();
+				break;
+			case "redis":
+				source = new Redis();
 				break;
 			case "entity":
 				source = new RelationshipManager();
