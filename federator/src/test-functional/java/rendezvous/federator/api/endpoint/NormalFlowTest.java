@@ -35,7 +35,7 @@ public class NormalFlowTest {
 		    String mapping2 = IOUtils.toString(inputStream2);
 		    String mapping3 = IOUtils.toString(inputStream3);
 		    String mapping4 = IOUtils.toString(inputStream4);
-			
+			/*
 			mappingEndpoint.put(mapping2);
 			
 			insertEndpoint.insert("{\"user\":{\"name\":\"luiz\"}}");
@@ -51,7 +51,8 @@ public class NormalFlowTest {
 			insertEndpoint.insert("{\"user\":{\"address\":\"lagoa\"}}");
 
 			logger.info("----------------------------------------");
-			
+			*/
+		    
 			mappingEndpoint.put(mapping4);
 			
 			insertEndpoint.insert("{\"user\":{\"name\":\"luiz\", \"address\":\"lagoa\"}}");

@@ -60,8 +60,8 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		
 		refreshDictionary(mapping);
 	}
-	
 
+	@Override
 	public void refreshDictionary(String newMapping) throws Exception {
 
 		Mapping mapping = mapper.readValue(newMapping, Mapping.class);
@@ -69,51 +69,64 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		refreshDictionary(mapping);
 		
 	}
+
+	private Set<Datasource> getSources(Mapping mapping, Entity entity, Field field) throws Exception{
+
+		List<String> sources = mapping.getEntities().get(entity.getName()).get(field.getFieldName()).get("source");
+		
+		Set<Datasource> dataSources = new HashSet<Datasource>();
+		for(String source:sources){
+			logger.info("The source <" + source + "> was found in the dictionary for the field <"+field.getFieldName()+"> of the entity <" + entity.getName() + ">");
+			dataSources.add(this.getDataSource(source));				
+		}
+		
+		return dataSources;
+	}
+	
+	private Set<Field> getFields(Mapping mapping, Entity entity) throws Exception{
+
+		Set<Field> fields= new HashSet<Field>();
+		
+		for (String fieldName : mapping.getEntities().get(entity.getName()).keySet()) {
+
+			Field field = new Field(fieldName, entity);
+			fields.add(field);
+			
+			logger.debug("The field <" + fieldName + "> was found in the dictionary for entity <" + entity.getName() + ">");
+		
+			List<String> types = mapping.getEntities().get(entity.getName()).get(field.getFieldName()).get("type");
+				
+			for(String type:types){
+				logger.debug("The type <" + type + "> was found in the dictionary for entity <" + entity.getName() + ">");
+			}
+			
+			logger.debug("Adding the field <" + fieldName + "> of the entity field <" + entity.getName()+ ">");
+			
+			Set<Datasource> datasources = getSources(mapping, entity, field);
+			
+			dictionarySources.put(field, datasources);
+			dictionaryEntities.put(entity, datasources);
+			dictionaryTypes.put(field, types);
+		}
+		
+		return fields;
+	}
 	
 	private void refreshDictionary(Mapping mapping) throws Exception {
 
-		if(!manager.containsMapping(mapping.hashCode())){
+		Integer mappingHash = mapping.hashCode();
+		
+		if(!manager.containsMapping(mappingHash)){
 			
 			for (String entityName : mapping.getEntities().keySet()) {
 				
 				logger.debug("The entity <" + entityName + "> was found in the dictionary");
 				
 				Entity entity = new Entity(entityName);
-				entity.setMappingHash(Integer.toString(mapping.hashCode()));
 				
-				Set<Field> fields = new HashSet<Field>();
-				
-				for (String fieldName : mapping.getEntities().get(entityName).keySet()) {
-						
-					logger.debug("The field <" + fieldName + "> was found in the dictionary for entity <" + entityName + ">");
-				
-					List<String> types = mapping.getEntities().get(entityName).get(fieldName).get("type");
-						
-					for(String type:types){
-						logger.debug("The type <" + type + "> was found in the dictionary for entity <" + entityName + ">");
-					}
-					
-					List<String> sources = mapping.getEntities().get(entityName).get(fieldName).get("source");
-					
-					Set<Datasource> dataSources = new HashSet<Datasource>();
-					for(String source:sources){
-						logger.info("The source <" + source + "> was found in the dictionary for the field <"+fieldName+"> of the entity <" + entityName + ">");
-						dataSources.add(this.getDataSource(source));				
-					}
-					
-					logger.debug("Adding the field <" + fieldName + "> of the entity field <" + entityName+ ">");
-					
-					Field field = new Field(fieldName, entity);
-					fields.add(field);
-					
-					dictionarySources.put(field, dataSources);
-					dictionaryEntities.put(entity, dataSources);
-
-					logger.info("Putting the entity "+entity.getName());
-					dictionaryTypes.put(field, types);
-				}
-				
-				entity.setFields(fields);
+				entity.setMappingHash(mappingHash);
+								
+				entity.setFields(getFields(mapping, entity));
 			}
 			
 			manager.addMapping(mapping);

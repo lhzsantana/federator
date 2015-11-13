@@ -16,9 +16,16 @@ public class Entity {
 	private String name;
 	private String id;
 	private String source;
-	private String mappingHash;
-	
-	
+	private Integer mappingHash;
+		
+	public Integer getMappingHash() {
+		return mappingHash;
+	}
+
+	public void setMappingHash(Integer mappingHash) {
+		this.mappingHash = mappingHash;
+	}
+
 	private Set<Value> values; 
 	private Set<Field> fields; 
 		
@@ -86,14 +93,6 @@ public class Entity {
 		
 		return false;
 	}
-
-	public String getMappingHash() {
-		return mappingHash;
-	}
-
-	public void setMappingHash(String mappingHash) {
-		this.mappingHash = mappingHash;
-	}	
 
 	@Override
     public int hashCode() {

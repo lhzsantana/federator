@@ -17,4 +17,6 @@ public interface DictionaryReader {
 
 	public List<String> getTypes(Field field);
 
+	void refreshDictionary(String newMapping) throws Exception;
+
 }
