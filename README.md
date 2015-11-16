@@ -65,7 +65,7 @@ entities:
     follows:
         type: [usuario99]
         source: ['entity']
-  posts1:
+  posts:
     body: 
         type: [string]
         source: ['mongodb']
@@ -75,7 +75,7 @@ entities:
     author:
         type: [usuario]
         source: [entity]
-  comments1:
+  comments:
     body: 
         type: [string]
         source: ['mongodb']
