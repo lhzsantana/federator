@@ -4,11 +4,12 @@ This project aims to create a middleware in between the Applications API and NoS
 
 #Usage (we are still improving this section)
 
+0. Build the project issuing "mvn package" in the folder /federator
+
 ##As a middleware
-1. Start the server by issuing
+1. Start the server by issuing "java -jar federator-0.0.1-SNAPSHOT.jar"         
 2. Add a new mapping in the endpoint "http://localhost:8085/_mapping"
 3. Start adding new entities
-
 
 ##As a framework
 1. Import the Maven dependency
