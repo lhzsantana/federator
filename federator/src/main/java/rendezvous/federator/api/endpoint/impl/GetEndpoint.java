@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.PathParam;
 
 import org.apache.log4j.Logger;
 
@@ -21,7 +21,7 @@ public class GetEndpoint extends Endpoint {
 
 	@GET
 	@Path("/{id}")
-	public GetResponse get(String id) throws Exception {
+	public GetResponse get(@PathParam("id") String id) throws Exception {
 		
 		logger.info("Getting the entity <"+id+">");
 		
@@ -38,6 +38,6 @@ public class GetEndpoint extends Endpoint {
 			return super.executor.getExecute(plan);
 		}
 
-		return null;
+		return new GetResponse();
 	}
 }
