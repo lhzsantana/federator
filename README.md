@@ -70,7 +70,7 @@ entities:
         type: [string]
         source: ['cassandra']        
     follows:
-        type: [usuario99]
+        type: [user]
         source: ['entity']
   posts:
     body: 
