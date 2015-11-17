@@ -160,8 +160,6 @@
 			<version>1.19</version>
 		</dependency>
 
-
-
 		<!-- datasources -->
 		<dependency>
 			<groupId>redis.clients</groupId>
