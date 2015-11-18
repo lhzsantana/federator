@@ -104,7 +104,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 						logger.debug("The datasource <"+datasourceName+"> for field <" + fieldName + "> of entity <"+entityName+"> was found in the dictionary");
 						
-						Datasource datasource = this.getDataSource(datasourceName);
+						Datasource datasource = this.getDatasource(datasourceName);
 						
 						addFieldForDatasource(datasource,field);
 					}
@@ -161,7 +161,7 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		Set<Datasource> dataSources = new HashSet<Datasource>();
 		for(String source:sources){
 			logger.info("The source <" + source + "> was found in the dictionary for the field <"+field.getFieldName()+"> of the entity <" + entity.getName() + ">");
-			Datasource datasource = this.getDataSource(source);
+			Datasource datasource = this.getDatasource(source);
 			
 			dataSources.add(datasource);
 
@@ -220,11 +220,9 @@ public class DictionaryReaderImpl implements DictionaryReader {
 			
 			manager.addMapping(mapping);
 		}
-				
-		createDataElements();
 	}
 	
-	private Datasource getDataSource(String sourceName) throws Exception{
+	private Datasource getDatasource(String sourceName) throws Exception{
 
 		Datasource source = null;
 		
@@ -270,36 +268,4 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		return dictionarySources.keySet();
 	}
 	
-	private void createDataElements() throws InvalidDatasource{
-
-		logger.info("Creating data elements");
-		
-		for(Entity entity:dictionaryEntitySourceFields.keySet()){
-
-			logger.info(entity.getName());
-
-			for(Datasource datasource : dictionaryEntitySourceFields.get(entity).keySet()){
-			
-
-				logger.info(datasource.getName());
-for(Field field:dictionaryEntitySourceFields.get(entity).get(datasource)){
-	logger.info(field.getFieldName());
-}
-				
-/*
-				Entity subEntity = entity;
-				subEntity.setFields(dictionaryEntitySourceFields.get(entity).get(datasource));
-				
-				if (datasource instanceof DatasourceColumn) {
-					((DatasourceColumn)datasource).createDataElements(subEntity, dictionaryEntitiesFields.get(entity));
-				}else if (datasource instanceof DatasourceDocument) {
-					((DatasourceDocument)datasource).createDataElements(subEntity, dictionaryEntitiesFields.get(entity));					
-				}else if (datasource instanceof RelationshipManager) {
-					logger.warn("Relationship not implemented yet");				
-				}else{
-					throw new InvalidDatasource();
-				}*/
-			}
-		}
-	}
 }
