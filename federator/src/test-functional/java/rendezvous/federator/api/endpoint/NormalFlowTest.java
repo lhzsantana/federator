@@ -12,7 +12,6 @@ import rendezvous.federator.api.endpoint.impl.MappingEndpoint;
 import rendezvous.federator.api.endpoint.impl.QueryEndpoint;
 import rendezvous.federator.api.response.QueryResponse;
 import rendezvous.federator.core.Hit;
-import rendezvous.federator.core.Value;
 
 public class NormalFlowTest {
 

@@ -21,6 +21,7 @@ import rendezvous.federator.core.Action;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
 import rendezvous.federator.core.Plan;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.QueryableDatasource;
 import rendezvous.federator.entityManager.EntityManager;

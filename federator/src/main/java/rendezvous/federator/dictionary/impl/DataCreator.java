@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import rendezvous.federator.api.endpoint.impl.MappingEndpoint;
+import rendezvous.federator.api.endpoint.impl.MappingEndpointTest;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.datasources.Datasource;
@@ -15,7 +15,7 @@ import rendezvous.federator.datasources.document.DatasourceDocument;
 
 public class DataCreator {
 
-	final static Logger logger = Logger.getLogger(MappingEndpoint.class);
+	final static Logger logger = Logger.getLogger(MappingEndpointTest.class);
 
 	public void createDataElements(Map<Entity, Map<Datasource, Set<Field>>> dictionaryEntitySourceFields)
 			throws InvalidDatasource {

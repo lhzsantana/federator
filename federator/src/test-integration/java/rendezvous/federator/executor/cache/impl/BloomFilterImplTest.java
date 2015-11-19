@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.executor.cache.Cache;
 
@@ -30,7 +31,7 @@ public class BloomFilterImplTest {
 
 		Set<Value> values = new HashSet<Value>();
 		for(int i=0;i<1;i++){
-			Value value = new Value(n, "a"+i, "a"+i, "a"+i);
+			Value value = new Value(n, "a"+i, "a"+i, new Type("a"+i));
 			values.add(value);
 		}
 		e.setValues(values);
@@ -47,11 +48,11 @@ public class BloomFilterImplTest {
 		logger.info("Starting test testAddValue");
 				
 		for(int i=0;i<10000;i++){
-			Value value = new Value("a"+i, "a"+i, "a"+i, "a"+i);
+			Value value = new Value("a"+i, "a"+i, "a"+i, new Type("a"+i));
 			cache.add(value);
 		}
 
-		Value value1 = new Value("a", "a", "a", "a");
+		Value value1 = new Value("a", "a", "a", new Type("a"));
 		cache.add(value1);
 		
 		Field field = new Field("a",new Entity("a"));
@@ -64,11 +65,11 @@ public class BloomFilterImplTest {
 	@Test
 	public void testEvictionValue() {	
 
-		Value value1 = new Value("a", "a", "a", "a");
+		Value value1 = new Value("a", "a", "a", new Type("a"));
 		cache.add(value1);
 		
 		for(int i=0;i<10000;i++){
-			Value value = new Value("a"+i, "a"+i, "a"+i, "a"+i);
+			Value value = new Value("a"+i, "a"+i, "a"+i,new Type("a"+i));
 			cache.add(value);
 		}
 		

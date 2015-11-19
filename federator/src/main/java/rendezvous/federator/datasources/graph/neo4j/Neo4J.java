@@ -17,9 +17,9 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
-import rendezvous.federator.datasources.document.mongodb.MongoDB;
 import rendezvous.federator.datasources.graph.DatasourceGraph;
 
 public class Neo4J extends DatasourceGraph {
@@ -107,7 +107,7 @@ public class Neo4J extends DatasourceGraph {
 
 					for (String property : node.getAllProperties().keySet()) {
 						Value value = new Value(entity.getName(), property,
-								node.getAllProperties().get(property).toString(), DataType.STRING.toString());
+								node.getAllProperties().get(property).toString(), new Type(DataType.STRING.toString()));
 						tempValues.add(value);
 					}
 
@@ -140,7 +140,7 @@ public class Neo4J extends DatasourceGraph {
 
 				for (String property : node.getAllProperties().keySet()) {
 					Value value = new Value(entity.getName(), property,
-							node.getAllProperties().get(property).toString(), DataType.STRING.toString());
+							node.getAllProperties().get(property).toString(), new Type(DataType.STRING.toString()));
 					tempValues.add(value);
 
 					logger.info("Field " + value.getField().getFieldName() + " value " + value.getValue());
