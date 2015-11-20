@@ -15,6 +15,7 @@ import org.junit.Test;
 import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 
 public class Neo4JTest {
@@ -39,9 +40,9 @@ public class Neo4JTest {
 		Entity entity = new Entity("entity","1","");
 		
 		Set<Value> values = new HashSet<Value>();
-		values.add(new Value("entity1","field1","value1",DataType.STRING.toString()));
-		values.add(new Value("entity1","field2","value2",DataType.STRING.toString()));
-		values.add(new Value("entity1","field3","value3",DataType.STRING.toString()));
+		values.add(new Value("entity1","field1","value1",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity1","field2","value2",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity1","field3","value3",new Type(DataType.STRING.toString())));
 		
 		assertNotNull(neo4j.insert(entity, values));	
 	}
@@ -52,7 +53,7 @@ public class Neo4JTest {
 		Entity entity = new Entity("entity","2","");
 		
 		Set<Value> values = new HashSet<Value>();
-		values.add(new Value("entity",String.valueOf(Math.random()),"value1",DataType.STRING.toString()));
+		values.add(new Value("entity",String.valueOf(Math.random()),"value1",new Type(DataType.STRING.toString())));
 		
 		assertNotNull(neo4j.insert(entity, values));
 		
@@ -70,9 +71,9 @@ public class Neo4JTest {
 		entity.setId(String.valueOf(Math.random()));
 		
 		Set<Value> values = new HashSet<Value>();
-		values.add(new Value("entity","field1","value1",DataType.STRING.toString()));
-		values.add(new Value("entity","field2","value2",DataType.STRING.toString()));
-		values.add(new Value("entity","field3","value3",DataType.STRING.toString()));
+		values.add(new Value("entity","field1","value1",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity","field2","value2",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity","field3","value3",new Type(DataType.STRING.toString())));
 		
 		assertNotNull(neo4j.insert(entity, values));
 		

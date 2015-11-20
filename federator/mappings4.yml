@@ -16,9 +16,9 @@ entities:
         type: [string]
         source: ['cassandra']        
     follows:
-        type: [usuario99]
+        type: [user]
         source: ['entity']
-  posts1:
+  posts:
     body: 
         type: [string]
         source: ['mongodb']
@@ -28,7 +28,7 @@ entities:
     author:
         type: [usuario]
         source: [entity]
-  comments1:
+  comments:
     body: 
         type: [string]
         source: ['mongodb']

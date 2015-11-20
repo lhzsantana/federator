@@ -13,6 +13,7 @@ import org.junit.Test;
 import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 
 public class RedisTest {
@@ -38,9 +39,9 @@ public class RedisTest {
 		entity.setId(String.valueOf(Math.random()));
 		
 		Set<Value> values = new HashSet<Value>();
-		values.add(new Value("entity","field1","value1",DataType.STRING.toString()));
-		values.add(new Value("entity","field2","value2",DataType.STRING.toString()));
-		values.add(new Value("entity","field3","value3",DataType.STRING.toString()));
+		values.add(new Value("entity","field1","value1",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity","field2","value2",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity","field3","value3",new Type(DataType.STRING.toString())));
 		
 		assertNotNull(redis.insert(entity, values));
 	}
@@ -52,9 +53,9 @@ public class RedisTest {
 		entity.setId(String.valueOf(Math.random()));
 		
 		Set<Value> values = new HashSet<Value>();
-		values.add(new Value("entity","field1","value1",DataType.STRING.toString()));
-		values.add(new Value("entity","field2","value2",DataType.STRING.toString()));
-		values.add(new Value("entity","field3","value3",DataType.STRING.toString()));
+		values.add(new Value("entity","field1","value1",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity","field2","value2",new Type(DataType.STRING.toString())));
+		values.add(new Value("entity","field3","value3",new Type(DataType.STRING.toString())));
 		
 		assertNotNull(redis.insert(entity, values));
 				

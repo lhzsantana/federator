@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.Datasource;
 import rendezvous.federator.dictionary.DictionaryReader;
@@ -71,17 +72,17 @@ public abstract class Endpoint {
 	
 				logger.debug("The value <"+rawValue+"> was extracted for field <"+rawField+"> of the entity <"+rawEntity+">");
 
-				Field dicField = new Field(rawField,new Entity(rawEntity));
+				Entity trueEntity = new Entity(rawEntity);
 				
-				Set<Datasource> sources = dictionary.getDatasources(dicField);
+				Field dicField = new Field(rawField,trueEntity);
+				
+				Set<Datasource> sources = dictionary.dictionaryEntityFieldDatasources.get(trueEntity).get(dicField);
 
-				List<String>types = dictionary.getTypes(dicField);
+				Type type = dictionary.dictionaryEntityFieldType.get(trueEntity).get(dicField);
 				
-				if(types==null || types.size() == 0 || types.isEmpty()) throw new MappingException("Mapping error the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntity().getName()+"> does not exists");
+				if(type==null) throw new MappingException("Mapping error the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntity().getName()+"> does not exists");
 				
-				for(String type:types){
-					values.add(new Value(rawEntity,rawField,rawValue,type, sources));
-				}
+				values.add(new Value(rawEntity,rawField,rawValue,type, sources));
 			}
 		}
 		 

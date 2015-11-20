@@ -1,22 +1,20 @@
 package rendezvous.federator.dictionary;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonParseException;
-
+import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.datasources.Datasource;
 
 public interface DictionaryReader {
 
-	public Set<Datasource> getDatasources(Field field) throws JsonParseException, IOException, Exception;
+	public static Map<Entity, Map<Field, Set<Datasource>>> dictionaryEntityFieldDatasources = new HashMap<Entity, Map<Field, Set<Datasource>>>();
+	public static Map<Entity, Map<Datasource, Set<Field>>> dictionaryEntityDatasourceFields = new HashMap<Entity, Map<Datasource, Set<Field>>>();
+	public static Map<Entity, Map<Field, Type>> dictionaryEntityFieldType = new HashMap<Entity, Map<Field, Type>>();
 
-	public Set<Field> getFields() throws Exception;
-
-	public List<String> getTypes(Field field);
-
-	void refreshDictionary(String newMapping) throws Exception;
+	public Map<Entity, Map<Datasource, Set<Field>>> refreshDictionary(String newMapping) throws Exception;
 
 }

@@ -17,6 +17,7 @@ import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
 import rendezvous.federator.datasources.document.DatasourceDocument;
@@ -127,7 +128,7 @@ public class MongoDB extends DatasourceDocument {
 				DBObject document = cursor.next();
 				
 				for(String field : document.keySet()){
-					values.add(new Value(entity.getName(),field,document.get(field).toString(),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,document.get(field).toString(),new Type(DataType.STRING.toString()), this));
 				}
 				
 				hit.setValues(values);
@@ -171,7 +172,7 @@ public class MongoDB extends DatasourceDocument {
 				DBObject document = cursor.next();
 				
 				for(String field : document.keySet()){
-					values.add(new Value(entity.getName(),field,document.get(field).toString(),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,document.get(field).toString(),new Type(DataType.STRING.toString()), this));
 				}
 				
 				hit.setValues(values);

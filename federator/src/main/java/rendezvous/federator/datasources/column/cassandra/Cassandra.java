@@ -18,6 +18,7 @@ import rendezvous.federator.canonicalModel.DataType;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Hit;
+import rendezvous.federator.core.Type;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.DataSourceType;
 import rendezvous.federator.datasources.column.DatasourceColumn;
@@ -149,7 +150,7 @@ public class Cassandra extends DatasourceColumn {
 				String field = definition.getName();
 				
 				if(!field.equals("rendezvous_id")){
-					values.add(new Value(entity.getName(),field,row.getString(field),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,row.getString(field),new Type(DataType.STRING.toString()), this));
 					
 					logger.info("Added a value for the field "+field);
 				}
@@ -200,7 +201,7 @@ public class Cassandra extends DatasourceColumn {
 				String field = definition.getName();
 				
 				if(!field.equals("rendezvous_id")){
-					values.add(new Value(entity.getName(),field,row.getString(field),DataType.STRING.toString(), this));
+					values.add(new Value(entity.getName(),field,row.getString(field),new Type(DataType.STRING.toString()), this));
 				}
 			}
 			
