@@ -55,7 +55,7 @@ public class BloomFilterImpl implements Cache {
 	@Override
 	public void add(Entity entity) {
 
-		logger.info("Adding entity <"+entity.getName()+"> to cache ");
+		logger.debug("Adding entity <"+entity.getName()+"> to cache ");
 		
 		if(entity.isComplete()) bfEntities.add(entity);
 		
@@ -66,7 +66,7 @@ public class BloomFilterImpl implements Cache {
 
 	private void evict() {
 
-		logger.info("Starting eviction");
+		logger.debug("Starting eviction");
 		
 		BloomFilter<Field>  newBF = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
 		Map<Field,CachedValue> newValues = new HashMap<Field,CachedValue>();
@@ -86,7 +86,7 @@ public class BloomFilterImpl implements Cache {
 		currentSize=newCurrentSize;
 		
 		System.gc();
-		logger.info("Finished eviction");	
+		logger.debug("Finished eviction");	
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class BloomFilterImpl implements Cache {
 		values.put(value.getField(), cachedValue);
 		
 		currentSize++;
-		logger.info("Current size "+ currentSize);
+		logger.debug("Current size "+ currentSize);
 	}
 
 	@Override

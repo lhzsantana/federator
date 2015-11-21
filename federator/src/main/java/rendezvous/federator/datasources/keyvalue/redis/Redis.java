@@ -69,7 +69,7 @@ public class Redis extends KeyValueDatasource {
 		for (Field field : entity.getFields()) {
 			String value = jedis.get(entity.getId()+field.getFieldName());
 			
-			values.add(new Value(entity.getName(),field.getFieldName(),value,null));
+			values.add(new Value(entity,field,value,null));
 		}
 		
 		hit.setValues(values);

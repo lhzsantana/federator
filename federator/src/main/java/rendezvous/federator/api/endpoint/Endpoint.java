@@ -70,19 +70,32 @@ public abstract class Endpoint {
 				String rawField = field.toString();
 				String rawValue = jsonField.get(field).toString();
 	
-				logger.debug("The value <"+rawValue+"> was extracted for field <"+rawField+"> of the entity <"+rawEntity+">");
+				logger.info("The value <"+rawValue+"> was extracted for field <"+rawField+"> of the entity <"+rawEntity+">");
 
 				Entity trueEntity = new Entity(rawEntity);
+				trueEntity.setMappingHash(DictionaryReaderImpl.getLastMapping());
 				
-				Field dicField = new Field(rawField,trueEntity);
+				Field trueField = new Field(rawField,trueEntity);
 				
-				Set<Datasource> sources = dictionary.dictionaryEntityFieldDatasources.get(trueEntity).get(dicField);
+				if(dictionary==null){
+					logger.info("Something is strange, dictionary is null");
+				}else{
+					if(dictionary.dictionaryEntityDatasourceFields==null){
+						logger.info("Something is strange, dictionary for entities is null");						
+					}else{
+						if(dictionary.dictionaryEntityFieldDatasources.get(trueEntity)==null){
+							logger.info("Something is strange, dictionary for entity <"+trueEntity.getName()+"> is null");							
+						}
+					}
+				}
+				
+				Set<Datasource> sources = dictionary.dictionaryEntityFieldDatasources.get(trueEntity).get(trueField);
 
-				Type type = dictionary.dictionaryEntityFieldType.get(trueEntity).get(dicField);
+				Type type = dictionary.dictionaryEntityFieldType.get(trueEntity).get(trueField);
 				
-				if(type==null) throw new MappingException("Mapping error the Field <"+dicField.getFieldName()+"> of the Entity <"+dicField.getEntity().getName()+"> does not exists");
+				if(type==null) throw new MappingException("Mapping error the Field <"+trueField.getFieldName()+"> of the Entity <"+trueField.getEntity().getName()+"> does not exists");
 				
-				values.add(new Value(rawEntity,rawField,rawValue,type, sources));
+				values.add(new Value(trueEntity,trueField,rawValue,type, sources));
 			}
 		}
 		 

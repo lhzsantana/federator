@@ -96,7 +96,7 @@ public class Entity {
 
 	@Override
     public int hashCode() {
-        return (this.getName()+this.mappingHash).hashCode();
+        return (this.getName()).hashCode();
     }
 
 	@Override
@@ -107,12 +107,16 @@ public class Entity {
 		}else{			
 			Entity entity = (Entity) obj;
 			
-			if(this.hashCode()==entity.hashCode()){
+			if(createEquals(this).equals(createEquals(entity))){
 				return true;
 			}else{
 				return false;
 			}			
 		}
+	}
+	
+	private String createEquals(Entity entity){
+		return entity.getName() + entity.getId();
 	}
 	
 	@Override

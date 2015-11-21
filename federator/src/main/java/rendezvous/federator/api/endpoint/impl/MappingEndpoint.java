@@ -26,10 +26,13 @@ public class MappingEndpoint extends Endpoint{
 		DictionaryReaderImpl reader = new DictionaryReaderImpl();
 		
 		Map<Entity, Map<Datasource, Set<Field>>> dictionaryEntitySourceFields = reader.refreshDictionary(json);
-		
-		DataCreator dataCreator = new DataCreator();
-		dataCreator.createDataElements(dictionaryEntitySourceFields);
-
-		logger.info("A new mapping was added");
+				
+		if(!reader.mappingExists(json)){
+			
+			DataCreator dataCreator = new DataCreator();
+			dataCreator.createDataElements(dictionaryEntitySourceFields);
+	
+			logger.info("A new mapping was added");
+		}
 	}
 }

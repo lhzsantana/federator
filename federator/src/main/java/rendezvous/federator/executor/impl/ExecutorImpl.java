@@ -42,12 +42,12 @@ public class ExecutorImpl implements Executor {
 	public InsertResponse insertExecute(Plan plan) throws Exception {
 
 		InsertResponse response = new InsertResponse();
-		
+
 		Entity entity = this.executeInsert(plan);
 		response.setId(entity.getId());
-		
+
 		cache.add(entity);
-		
+
 		return response;
 	}
 
@@ -55,16 +55,16 @@ public class ExecutorImpl implements Executor {
 	public GetResponse getExecute(Plan plan) throws Exception {
 
 		List<Hit> hits = this.executeGet(plan);
-		
-		for(Hit hit:hits){
-			for(Value value:hit.getValues()){
-				cache.add(value);	
+
+		for (Hit hit : hits) {
+			for (Value value : hit.getValues()) {
+				cache.add(value);
 			}
 		}
 
 		GetResponse response = new GetResponse();
 		response.setHits(hits);
-		
+
 		return response;
 	}
 
@@ -73,12 +73,12 @@ public class ExecutorImpl implements Executor {
 
 		List<Hit> hits = this.executeQuery(plan);
 
-		for(Hit hit:hits){
-			for(Value value:hit.getValues()){
-				cache.add(value);	
+		for (Hit hit : hits) {
+			for (Value value : hit.getValues()) {
+				cache.add(value);
 			}
 		}
-		
+
 		QueryResponse response = new QueryResponse();
 		response.setHits(hits);
 
@@ -93,7 +93,7 @@ public class ExecutorImpl implements Executor {
 
 		List<Access> accessed = new ArrayList<Access>();
 		Set<Value> values = new HashSet<Value>();
-		
+
 		for (Access access : plan.getAccesses()) {
 
 			logger.debug("Executing a new access");
@@ -105,14 +105,14 @@ public class ExecutorImpl implements Executor {
 				Entity entity = access.getEntity();
 				entity.setId(entityId);
 				access.setEntity(entity);
-				
+
 				access.getDataSource().insert(access.getEntity(), access.getValues());
 				values.addAll(access.getValues());
 
-				for(Value value:values){
-					cache.add(value);	
-				}				
-				
+				for (Value value : values) {
+					cache.add(value);
+				}
+
 			} catch (ParseException e) {
 				logger.debug(e);
 			}
@@ -122,102 +122,112 @@ public class ExecutorImpl implements Executor {
 			accessed.add(access);
 		}
 
-		logger.info("The entity <"+entityId+"> was added to the Federator");
-		
+		logger.info("The entity <" + entityId + "> was added to the Federator");
+
 		EntityManager.addEntity(entityId, accessed);
 
-		return new Entity(entityId,values);
+		return new Entity(entityId, values);
 	}
 
 	private List<Hit> executeGet(Plan plan) throws Exception {
 
-		//TODO: change the String value for a Entity reference
-		Map<String, Collection<Value>> intermediateValues = new HashMap<String, Collection<Value>>();
+		// TODO: change the String value for a Entity reference
+		Map<Entity, Collection<Value>> intermediateValues = new HashMap<Entity, Collection<Value>>();
 
 		List<Access> finalAccesses = new ArrayList<Access>();
-		
+
 		for (Access access : plan.getAccesses()) {
-			if(cache.contains(access.getEntity())){					
-				intermediateValues.put(access.getEntity().getName(), access.getEntity().getValues());
-			}else{
+			if (cache.contains(access.getEntity())) {
+				intermediateValues.put(access.getEntity(), access.getEntity().getValues());
+			} else {
 				finalAccesses.add(access);
 			}
-		}		
-		
+		}
+
 		for (Access access : finalAccesses) {
 
-			logger.info("Getting the access plan "+access.getEntity().getName()+" for the datasource "+access.getDataSource().getDataSourceType());
-			
-			if(access.getDataSource().getDataSourceType().equals("Relationship")){
-				
-				GetEndpoint get = new GetEndpoint();
-			
-				List<Value> subValues = new ArrayList<Value>();
-				
-				for(Value value : access.getValues()){
+			logger.info("Getting the access plan " + access.getEntity().getName() + " for the datasource "
+					+ access.getDataSource().getDataSourceType());
 
-					logger.info("Getting the relationship "+value.getValue());
-					
+			if (access.getDataSource().getDataSourceType().equals("Relationship")) {
+
+				GetEndpoint get = new GetEndpoint();
+
+				List<Value> subValues = new ArrayList<Value>();
+
+				for (Value value : access.getValues()) {
+
+					logger.info("Getting the relationship " + value.getValue());
+
 					GetResponse response = get.get(value.getValue());
-										
-					for(Hit hit:response.getHits()){
-						
-						Value subValue = new Value(access.getEntity().getName(), value.getField().getFieldName(), hit.getValues().toString(), value.getType());
+
+					for (Hit hit : response.getHits()) {
+
+						Value subValue = new Value(access.getEntity(), value.getField(), hit.getValues().toString(),
+								value.getType());
 						subValues.add(subValue);
 					}
 				}
-				
-				intermediateValues.put(access.getEntity().getName(), subValues);
-			}else{
-				
+
+				intermediateValues.put(access.getEntity(), subValues);
+			} else {
+
 				Hit hit = access.getDataSource().get(access.getEntity());
-				
-				for(Value value : hit.getValues()){
-				
+
+				for (Value value : hit.getValues()) {
+
 					List<Value> volatileValues = (List<Value>) intermediateValues.get(value.getEntity());
-					
-					if(volatileValues==null) volatileValues=new ArrayList<Value>();				
+
+					if (volatileValues == null)
+						volatileValues = new ArrayList<Value>();
 					volatileValues.add(value);
-					
-					intermediateValues.put(value.getEntity().getName(), volatileValues);
+
+					intermediateValues.put(value.getEntity(), volatileValues);
 				}
 			}
 		}
-		
+
 		return this.mergeHits(intermediateValues);
 	}
 
 	private List<Hit> executeQuery(Plan plan) throws Exception {
 
-		//TODO: change the String value for a Entity reference
-		Map<String, Collection<Value>> intermediateValues = new HashMap<String, Collection<Value>>();
-		
+		// TODO: change the String value for a Entity reference
+		Map<Entity, Collection<Value>> intermediateValues = new HashMap<Entity, Collection<Value>>();
+
 		List<Access> finalAccesses = new ArrayList<Access>();
-		
+
 		for (Access access : plan.getAccesses()) {
-			if(cache.contains(access.getEntity())){					
-				intermediateValues.put(access.getEntity().getName(), access.getEntity().getValues());
-			}else{
+			if (cache.contains(access.getEntity())) {
+				intermediateValues.put(access.getEntity(), access.getEntity().getValues());
+			} else {
 				finalAccesses.add(access);
 			}
-		}		
-		
+		}
+
 		for (Access access : finalAccesses) {
-			
-			if(access.getDataSource() instanceof QueryableDatasource){
-			
-				List<Hit> hits = ((QueryableDatasource) access.getDataSource()).query(access.getEntity(), access.getValues());
-				
-				for(Hit hit : hits){
-					for(Value value : hit.getValues()){
-						
-						List<Value> volatileValues = (List<Value>) intermediateValues.get(value.getEntity());
-						
-						if(volatileValues == null) volatileValues = new ArrayList<Value>();
-						volatileValues.add(value);
-						
-						intermediateValues.put(value.getEntity().getName(), volatileValues);
+
+			if (access.getDataSource() instanceof QueryableDatasource) {
+
+				try {
+
+					List<Hit> hits = ((QueryableDatasource) access.getDataSource()).query(access.getEntity(),
+							access.getValues());
+
+					for (Hit hit : hits) {
+						for (Value value : hit.getValues()) {
+
+							List<Value> volatileValues = (List<Value>) intermediateValues.get(value.getEntity());
+
+							if (volatileValues == null)
+								volatileValues = new ArrayList<Value>();
+							volatileValues.add(value);
+
+							intermediateValues.put(value.getEntity(), volatileValues);
+						}
 					}
+				} catch (Exception e) {
+					logger.error(e);
 				}
 			}
 		}
@@ -225,22 +235,23 @@ public class ExecutorImpl implements Executor {
 		return this.mergeHits(intermediateValues);
 	}
 
-	private List<Hit> mergeHits(Map<String, Collection<Value>> intermediateValues) {
+	private List<Hit> mergeHits(Map<Entity, Collection<Value>> intermediateValues) {
 
-		logger.debug("Merging <"+intermediateValues.size()+"> intermediate values");
-				
+		logger.debug("Merging <" + intermediateValues.size() + "> intermediate values");
+
 		List<Hit> finalHits = new ArrayList<Hit>();
 		Integer relevance = 0;
-		
-		for(String entity: intermediateValues.keySet()){
+
+		for (Entity entity : intermediateValues.keySet()) {
 			Hit hit = new Hit();
 			hit.setValues((List<Value>) intermediateValues.get(entity));
-			hit.setRelevance(relevance);
-			hit.setEntity(new Entity(entity,hit.getValues()));
-			
+			hit.setRelevance(relevance);			
+			entity.setValues(new HashSet(hit.getValues()));
+			hit.setEntity(entity);
+
 			finalHits.add(hit);
 		}
-				
+
 		return finalHits;
 	}
 }

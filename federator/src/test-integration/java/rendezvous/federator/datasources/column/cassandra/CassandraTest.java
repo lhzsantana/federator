@@ -39,7 +39,7 @@ public class CassandraTest {
 	
 	@Test
 	public void testGetDataSourceType() {		
-		assertEquals(cassandra.getDataSourceType(), DataSourceType.MONGODB.toString().toLowerCase());
+		assertEquals(cassandra.getDataSourceType(), DataSourceType.CASSANDRA.toString().toLowerCase());
 	}
 
 	@Test

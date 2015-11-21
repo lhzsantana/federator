@@ -16,5 +16,4 @@ public interface DictionaryReader {
 	public static Map<Entity, Map<Field, Type>> dictionaryEntityFieldType = new HashMap<Entity, Map<Field, Type>>();
 
 	public Map<Entity, Map<Datasource, Set<Field>>> refreshDictionary(String newMapping) throws Exception;
-
 }

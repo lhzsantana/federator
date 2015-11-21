@@ -31,6 +31,8 @@ public class DictionaryReaderImpl implements DictionaryReader {
 
 	private final static ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
+	private static Integer lastMapping = -1;
+
 	@Override
 	public Map<Entity, Map<Datasource, Set<Field>>> refreshDictionary(String newMapping) throws Exception {
 
@@ -90,19 +92,22 @@ public class DictionaryReaderImpl implements DictionaryReader {
 						dictionaryDatasourceFields.put(datasource, previousFields);
 						datasources.add(datasource);
 					}					
-					
+
 					dictionaryFieldDatasources.put(field, datasources);
 					dictionaryEntityFieldType.put(entity, dictionaryFieldType);
 				}
 
 				entity.setFields(fields);
-
+				
+				dictionaryEntityFieldDatasources.put(entity, dictionaryFieldDatasources);
 				dictionaryEntityDatasourceFields.put(entity, dictionaryDatasourceFields);
 			}
 
 			manager.addMapping(mapping);
 		}
-
+		
+		lastMapping = mappingHash;
+		
 		return dictionaryEntityDatasourceFields;
 	}
 
@@ -136,4 +141,12 @@ public class DictionaryReaderImpl implements DictionaryReader {
 		return source;
 	}
 
+	public boolean mappingExists(String mapping) {
+
+		return manager.containsMapping(mapping.hashCode());
+	}
+
+	public static Integer getLastMapping() {
+		return DictionaryReaderImpl.lastMapping;
+	}
 }

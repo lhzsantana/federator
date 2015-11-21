@@ -15,6 +15,8 @@ import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Plan;
 import rendezvous.federator.core.Value;
 import rendezvous.federator.datasources.Datasource;
+import rendezvous.federator.dictionary.DictionaryReader;
+import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 import rendezvous.federator.planner.Planner;
 
 public class PlannerImpl implements Planner {
@@ -36,6 +38,9 @@ public class PlannerImpl implements Planner {
 			access.setAction(action);
 			access.setValues(reorderedValues.get(dataSource));
 			access.setDataSource(dataSource);
+			
+			entity.setMappingHash(DictionaryReaderImpl.getLastMapping());
+			
 			access.setEntity(entity);
 						
 			accesses.add(access);
@@ -43,7 +48,7 @@ public class PlannerImpl implements Planner {
 			for(Value value:access.getValues()){
 				logger.info(
 						"Added another access for the dataSource <"+dataSource.getName()+"> "
-						+ "for entity <"+entity+"> "
+						+ "for entity <"+entity.getName()+"> "
 						+ "in the field <"+value.getField()+"> "
 						+ "and value <"+value.getValue()+"> "
 						+ "and action <"+action+">"
@@ -62,7 +67,7 @@ public class PlannerImpl implements Planner {
 		
 		for(Value value:values){
 			
-			logger.info("Value "+value.getValue()+" for the field "+value.getField());
+			logger.debug("Value "+value.getValue()+" for the field "+value.getField());
 			
 			for(Datasource dataSource:value.getSources()){
 				Set<Value> valuesForDataSource = result.get(dataSource);

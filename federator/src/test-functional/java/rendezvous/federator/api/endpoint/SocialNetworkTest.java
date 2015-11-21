@@ -13,9 +13,9 @@ import rendezvous.federator.api.endpoint.impl.QueryEndpoint;
 import rendezvous.federator.api.response.QueryResponse;
 import rendezvous.federator.core.Hit;
 
-public class NormalFlowTest {
+public class SocialNetworkTest {
 
-	final static Logger logger = Logger.getLogger(NormalFlowTest.class);
+	final static Logger logger = Logger.getLogger(SocialNetworkTest.class);
 
 	MappingEndpoint mappingEndpoint = new MappingEndpoint();
 	InsertEndpoint insertEndpoint = new InsertEndpoint();
@@ -25,33 +25,30 @@ public class NormalFlowTest {
 	@Test
 	public void NormalFlowtest() throws Exception {
 
-		FileInputStream inputStream2 = new FileInputStream("mappings2.yml");
-		FileInputStream inputStream3 = new FileInputStream("mappings3.yml");
-		FileInputStream inputStream4 = new FileInputStream("mappings4.yml");
+		FileInputStream inputStream = new FileInputStream("mappings4.yml");
 		
 		try {
 			
-		    String mapping2 = IOUtils.toString(inputStream2);
-		    String mapping3 = IOUtils.toString(inputStream3);
-		    String mapping4 = IOUtils.toString(inputStream4);
-
+		    String mapping = IOUtils.toString(inputStream);
 		    
-			mappingEndpoint.put(mapping2);
+			mappingEndpoint.put(mapping);
 			
 			insertEndpoint.insert("{\"user\":{\"name\":\"luiz\"}}");
+
+			QueryResponse query = queryEndpoint.query("{\"user\":{\"name\":\"luiz\"}}");			
 			
+			for(Hit hit:query.getHits()){
+				logger.info(hit.pretty());
+			}
+			
+			/*
 			try {
 				insertEndpoint.insert("{\"user\":{\"address\":\"lagoa\"}}");				
 			}catch(Exception e){
 				logger.error(e);
 			}
 			
-			mappingEndpoint.put(mapping3);
-			
 			insertEndpoint.insert("{\"user\":{\"address\":\"lagoa\"}}");
-
-			mappingEndpoint.put(mapping4);
-			
 			insertEndpoint.insert("{\"user\":{\"name\":\"luiz\", \"address\":\"lagoa\"}}");
 			insertEndpoint.insert("{\"user\":{\"name\":\"joao\",\"address\":\"lagoa\"}}");
 
@@ -59,11 +56,10 @@ public class NormalFlowTest {
 			
 			for(Hit hit:query.getHits()){
 				logger.info(hit.pretty());
-			}
+			}*/
 			
 		} finally {
-		    inputStream2.close();
-		    inputStream3.close();
+		    inputStream.close();
 		}		
 	}
 }
