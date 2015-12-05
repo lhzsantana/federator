@@ -164,6 +164,11 @@
 			<artifactId>jersey-server</artifactId>
 			<version>1.19</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_2.10</artifactId>
+			<version>1.5.1</version>
+		</dependency>
 
 		<!-- datasources -->
 		<dependency>
@@ -186,12 +191,6 @@
 			<artifactId>mongo-java-driver</artifactId>
 			<version>3.0.2</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-streaming_2.10</artifactId>
-			<version>1.5.1</version>
-		</dependency>
-
 		<!-- datasources -->
 
 	</dependencies>
