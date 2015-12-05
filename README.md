@@ -1,4 +1,4 @@
-#NoSQL Federator [![Build Status](https://travis-ci.org/lhzsantana/federator.svg?branch=example-complete)](https://travis-ci.org/lhzsantana/federator)
+#NoSQL Federator [![Build Status](https://travis-ci.org/lhzsantana/federator.svg?branch=master)](https://travis-ci.org/lhzsantana/federator)
 
 This project aims to create a middleware in between the Applications API and NoSQL databases. Currently, we support MongoDB, Cassandra, Redis and Neo4J. 
 
