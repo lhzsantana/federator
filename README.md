@@ -9,6 +9,7 @@ This project aims to create a middleware in between the Applications API and NoS
 ##As a middleware
 1. Start the server by issuing "java -jar federator-0.0.1-SNAPSHOT.jar"         
 2. It will be started the following endpoints:
+
 * http://192.168.56.1:8085/_mapping/1
 * http://192.168.56.1:8085/_insert/1
 * http://192.168.56.1:8085/_query/1
