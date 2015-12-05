@@ -7,8 +7,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import orestes.bloomfilter.BloomFilter;
-import orestes.bloomfilter.FilterBuilder;
 import rendezvous.federator.core.Entity;
 import rendezvous.federator.core.Field;
 import rendezvous.federator.core.Value;
@@ -22,8 +20,8 @@ public class BloomFilterImpl implements Cache {
 	private static double evictionLevel = 0.999;
 	private static double cleaningLevel = 0.9;
 	
-	private static BloomFilter<Field>  bf = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
-	private static BloomFilter<Entity>  bfEntities = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
+	//private static BloomFilter<Field>  bf = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
+	//private static BloomFilter<Entity>  bfEntities = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
 	private static Map<Field,CachedValue> values = new HashMap<Field,CachedValue>();
 
 	private final static Logger logger = Logger.getLogger(BloomFilterImpl.class);
@@ -45,9 +43,10 @@ public class BloomFilterImpl implements Cache {
 	@Override
 	public Value get(Field field) {
 		
+		/*
 		if(bf.contains(field)){
 			return values.get(field).getValue();
-		}
+		}*/
 		
 		return null;
 	}
@@ -56,18 +55,18 @@ public class BloomFilterImpl implements Cache {
 	public void add(Entity entity) {
 
 		logger.info("Adding entity <"+entity.getName()+"> to cache ");
-		
+		/*
 		if(entity.isComplete()) bfEntities.add(entity);
 		
 		for (Value value : entity.getValues()) {
 			add(value);
-		}
+		}*/
 	}
 
 	private void evict() {
 
 		logger.info("Starting eviction");
-		
+		/*
 		BloomFilter<Field>  newBF = new FilterBuilder(maxSize, 0.1).buildBloomFilter();
 		Map<Field,CachedValue> newValues = new HashMap<Field,CachedValue>();
 		
@@ -86,7 +85,8 @@ public class BloomFilterImpl implements Cache {
 		currentSize=newCurrentSize;
 		
 		System.gc();
-		logger.info("Finished eviction");	
+		logger.info("Finished eviction");
+		*/
 	}
 
 	@Override
@@ -97,26 +97,27 @@ public class BloomFilterImpl implements Cache {
 		Long cachedSequence = (long) values.size()+1;
 		
 		CachedValue cachedValue = new CachedValue(value, cachedSequence);
-		
+		/*
 		bf.add(value.getField());		
 		values.put(value.getField(), cachedValue);
 		
 		currentSize++;
 		logger.info("Current size "+ currentSize);
+		*/
 	}
 
 	@Override
 	public void evictAll() {
-		bf.clear();		
+		//bf.clear();		
 	}
 
 	@Override
 	public boolean contains(Entity entity) {
-		
+		/*
 		if(entity.isComplete() && bfEntities.contains(entity)){
 			return true;
 		}
-		
+		*/
 		return false;
 	}
 }
