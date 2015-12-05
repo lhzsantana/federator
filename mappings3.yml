@@ -1,0 +1,8 @@
+entities:
+  user: 
+    name: 
+        type: [string]
+        source: ['mongodb']
+    address: 
+        type: [string]
+        source: ['mongodb']

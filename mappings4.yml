@@ -1,0 +1,41 @@
+entities:
+  user: 
+    name: 
+        type: [string]
+        source: ['mongodb','cassandra']
+    username:
+        type: [string]
+        source: ['mongodb']        
+    password: 
+        type: [string]
+        source: ['mongodb','cassandra']
+    address: 
+        type: [string]
+        source: ['mongodb','cassandra']
+    email:
+        type: [string]
+        source: ['cassandra']        
+    follows:
+        type: [user]
+        source: ['entity']
+  posts:
+    body: 
+        type: [string]
+        source: ['mongodb']
+    createdAt:
+        type: [date]
+        source: ['mongodb']
+    author:
+        type: [usuario]
+        source: [entity]
+  comments:
+    body: 
+        type: [string]
+        source: ['mongodb']
+    createdAt:
+        type: [date]
+        source: ['mongodb']
+    parent:
+        type: [post]
+        source: [entity]
+        
