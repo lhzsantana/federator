@@ -9,10 +9,11 @@ This project aims to create a middleware in between the Applications API and NoS
 ##As a middleware
 1. Start the server by issuing "java -jar federator-0.0.1-SNAPSHOT.jar"         
 2. It will be started the following endpoints:
-http://192.168.56.1:8085/_mapping/1
-http://192.168.56.1:8085/_insert/1
-http://192.168.56.1:8085/_query/1
-http://192.168.56.1:8085/_get/1
+
+* http://localhost:6666/_mapping/1
+* http://localhost:6666/_insert/1
+* http://localhost:6666/_query/1
+* http://localhost:6666/_get/1
 
 3. Start by adding a new mapping in the endpoint "http://localhost:8085/_mapping"
 4. Add some new entities based on the mapping (see section below)
@@ -25,7 +26,6 @@ http://192.168.56.1:8085/_get/1
 #Datasources
 
 Theoretically, the Federator can be used with any underlying data source. However,  the current offers out-of-the-box only access to Neo4J, Cassandra, MongoDB and Redis. To use these databases, you have to setup its details in the file datasources.yml. For instance:
-
 
 ```
 datasources:
