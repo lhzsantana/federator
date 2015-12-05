@@ -1,6 +1,6 @@
-#NoSQL Federator [![Circle CI](https://circleci.com/gh/lhzsantana/federator/tree/master.svg?style=svg)](https://circleci.com/gh/lhzsantana/federator/tree/master)
+#NoSQL Federator [![Build Status](https://travis-ci.org/lhzsantana/federator.svg?branch=example-complete)](https://travis-ci.org/lhzsantana/federator)
 
-This project aims to create a middleware in between the Applications API and NoSQL databases. Currently, we support MongoDB, Cassandra, Redis and Neo4J. The start point of Federator use is the rendezvous.yml file, where you can create a mapping between you application and the final NoSQL store.
+This project aims to create a middleware in between the Applications API and NoSQL databases. Currently, we support MongoDB, Cassandra, Redis and Neo4J. 
 
 #Usage (we are still improving this section)
 
