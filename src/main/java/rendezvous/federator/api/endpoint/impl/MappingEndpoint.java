@@ -18,7 +18,7 @@ import rendezvous.federator.dictionary.impl.DictionaryReaderImpl;
 @Path("/_mapping")
 public class MappingEndpoint extends Endpoint{
 
-	final static Logger logger = Logger.getLogger(MappingEndpointTest.class);
+	final static Logger logger = Logger.getLogger(MappingEndpoint.class);
 
 	@PUT
 	public void put(String json) throws Exception {
