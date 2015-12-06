@@ -22,6 +22,9 @@
 						<version>2.19</version>
 					</dependency>
 				</dependencies>
+				<configuration>
+					<groups>rendezvous.federator.api.endpoint.Endpoints</groups>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

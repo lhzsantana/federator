@@ -16,7 +16,7 @@ import rendezvous.federator.datasources.Datasource;
 
 public class EndpointTest {
 
-	private final static Logger logger = Logger.getLogger(EndpointTest.class);
+	private final static Logger logger = Logger.getLogger(EndpointsTest.class);
 
 	@Test
 	public void testExtractValues() throws JsonParseException, IOException, Exception {
