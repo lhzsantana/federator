@@ -23,7 +23,9 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<groups>rendezvous.federator.api.endpoint.Endpoints</groups>
+					<includes>
+						<include>rendezvous.federator.api.endpoint.Endpoints.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
