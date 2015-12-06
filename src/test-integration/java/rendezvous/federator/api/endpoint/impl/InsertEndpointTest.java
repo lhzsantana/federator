@@ -3,11 +3,11 @@ package rendezvous.federator.api.endpoint.impl;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import rendezvous.federator.api.endpoint.EndpointTest;
+import rendezvous.federator.api.endpoint.EndpointsTest;
 import rendezvous.federator.api.endpoint.impl.InsertEndpoint;
 import rendezvous.federator.api.response.impl.Response;
 
-public class InsertEndpointTest extends EndpointTest {
+public class InsertEndpointTest extends EndpointsTest {
 
 	@Test
 	public void testInsert() throws Exception {

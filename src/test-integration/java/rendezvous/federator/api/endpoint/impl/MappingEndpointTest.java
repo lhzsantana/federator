@@ -6,9 +6,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import rendezvous.federator.api.endpoint.EndpointTest;
+import rendezvous.federator.api.endpoint.EndpointsTest;
 
-public class MappingEndpointTest extends EndpointTest {
+public class MappingEndpointTest extends EndpointsTest {
 	
 	final static Logger logger = Logger.getLogger(MappingEndpointTest.class);
 
