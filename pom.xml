@@ -24,7 +24,7 @@
 				</dependencies>
 				<configuration>
 					<includes>
-						<include>rendezvous.federator.api.endpoint.Endpoints.java</include>
+						<include>**/*Test.java</include>
 					</includes>
 				</configuration>
 			</plugin>
