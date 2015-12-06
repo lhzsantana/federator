@@ -24,7 +24,7 @@
 				</dependencies>
 				<configuration>
 					<includes>
-						<include>**/*Test.java</include>
+						<include>**/EndpointsTest.java</include>
 					</includes>
 				</configuration>
 			</plugin>
