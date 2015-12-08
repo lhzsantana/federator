@@ -1,3 +1,6 @@
+/* This class is the start point for the hole architecture.
+ * Its responsibility is creating the endpoints so the clients can call the federator.
+ */
 package rendezvous.federator.api;
 
 import java.io.IOException;
@@ -42,7 +45,7 @@ public class Federator {
 
 	private static URI getFederatorURI() {
 		return UriBuilder.fromUri("http://" + federatorGetHostName() + "/")
-				.port(8085).build();
+				.port(8666).build();
 	}
 
 	private static String federatorGetHostName() {

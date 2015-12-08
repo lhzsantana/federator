@@ -54,8 +54,12 @@ public class NormalFlowTest {
 		    
 			mappingEndpoint.put(mapping4);
 			
-			insertEndpoint.insert("{\"user\":{\"name\":\"luiz\", \"address\":\"lagoa\"}}");
-			insertEndpoint.insert("{\"user\":{\"name\":\"joao\",\"address\":\"lagoa\"}}");
+			InsertParam param = new InsertParam();
+			param.entity="{\"user\":{\"name\":\"luiz\", \"address\":\"lagoa\"}}";			
+			insertEndpoint.insert(param);
+
+			param.entity="{\"user\":{\"name\":\"joao\",\"address\":\"lagoa\"}}";
+			insertEndpoint.insert(param);
 
 			QueryResponse query = queryEndpoint.query("{\"user\":{\"address\":\"lagoa\"}}");			
 			

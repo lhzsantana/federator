@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import rendezvous.federator.api.endpoint.EndpointTest;
+import rendezvous.federator.api.endpoint.InsertParam;
 import rendezvous.federator.api.response.GetResponse;
 import rendezvous.federator.api.response.InsertResponse;
 import rendezvous.federator.api.response.impl.Status;
@@ -35,11 +36,13 @@ public class GetEndpointTest extends EndpointTest {
 		
 		InsertEndpoint insertEndpoint = new InsertEndpoint();
 
-		InsertResponse insertResponse = insertEndpoint.insert("{\"usuarios1\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		InsertParam param = new InsertParam();
+		param.entity="{\"usuarios1\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}";
+		InsertResponse insertResponse = insertEndpoint.insert(param);
 		
 		logger.info("The insert response has the id <"+insertResponse.getId()+">");
-		
-		insertResponse = insertEndpoint.insert("{\"posts1\":{\"body\":\"TESTE BODY 1\",\"author\":\""+insertResponse.getId()+"\"}}");
+		param.entity="{\"posts1\":{\"body\":\"TESTE BODY 1\",\"author\":\""+insertResponse.getId()+"\"}}";
+		insertResponse = insertEndpoint.insert(param);
 		
 		logger.info("The insert response has the id <"+insertResponse.getId()+">");
 
@@ -52,16 +55,22 @@ public class GetEndpointTest extends EndpointTest {
 	@Test
 	public void testInsertGet() throws Exception {
 
+		InsertParam param = new InsertParam();
 		InsertEndpoint insertEndpoint = new InsertEndpoint();
-		InsertResponse insertResponse = insertEndpoint.insert("{\"usuarios1\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		
+		param.entity="{\"usuarios1\":{\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}";
+		
+		InsertResponse insertResponse = insertEndpoint.insert(param);
 		
 		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
+
+		param.entity="{\"usuarios1\":{\"email\":\"lhzsantana@gmail.com\",\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}";
 		
-		insertResponse = insertEndpoint.insert("{\"usuarios1\":{\"email\":\"lhzsantana@gmail.com\",\"username\":\"luiz\",\"password\":\"luiz\",\"address\":\"luiz\"}}");
+		insertResponse = insertEndpoint.insert(param);
 		
 		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
-		
-		insertResponse = insertEndpoint.insert("{\"posts1\":{\"body\":\"TESTE BODY 1\"}}");
+		param.entity="{\"posts1\":{\"body\":\"TESTE BODY 1\"}}";
+		insertResponse = insertEndpoint.insert(param);
 		
 		logger.debug("The insert response has the id <"+insertResponse.getId()+">");
 				
