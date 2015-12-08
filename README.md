@@ -6,7 +6,6 @@ This project aims to create a middleware in between the Applications API and NoS
 
 0. Build the project issuing "mvn package" in the folder /federator
 
-##As a middleware
 1. Start the server by issuing "java -jar federator-0.0.1-SNAPSHOT.jar"         
 2. It will be started the following endpoints:
 
@@ -15,13 +14,9 @@ This project aims to create a middleware in between the Applications API and NoS
 * http://localhost:6666/_query/1
 * http://localhost:6666/_get/1
 
+
 3. Start by adding a new mapping in the endpoint "http://localhost:8085/_mapping"
 4. Add some new entities based on the mapping (see section below)
-
-##As a framework
-1. Import the Maven dependency
-2. Change the file mapping in the root of the project
-3. Start adding new entities
 
 #Datasources
 
@@ -93,3 +88,23 @@ entities:
         type: [post]
         source: [entity]
 ```
+
+#Inserting
+
+All the communications with Federator must be done using JSON. For instance if we want to insert a User in the architecture, we have can do:
+
+```
+{
+\"user\":{
+\"username\":\"luiz\",
+\"password\":\"topsecret\",
+\"address\":\"Lagoa da Conceição, Florianópolis, Brazil\"
+}
+}
+```
+ 
+
+
+
+
+
