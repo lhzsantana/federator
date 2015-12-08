@@ -95,15 +95,14 @@ All the communications with Federator must be done using JSON. For instance if w
 
 ```
 {
-\"user\":{
-\"username\":\"luiz\",
-\"password\":\"topsecret\",
-\"address\":\"Lagoa da Conceição, Florianópolis, Brazil\"
+user:{
+name:'Luiz',
+username:'luiz',
+password:'topsecret',
+address: 'Lagoa da Conceição, Florianópolis, Brazil'
 }
 }
 ```
- 
-
 
 
 
